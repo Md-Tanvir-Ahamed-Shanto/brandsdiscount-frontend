@@ -17,6 +17,7 @@ const dummyUser = {
 
 const SingleUserPage = ({ params }: { params: Promise<{ id: string }> }) => {
     const { id } = use(params);
+    console.log(id);
     const user = dummyUser; // Replace with actual data fetch logic when needed
 
     const [formData, setFormData] = useState({

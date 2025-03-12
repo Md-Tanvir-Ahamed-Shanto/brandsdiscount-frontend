@@ -1,16 +1,11 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import {
-    MdNotifications,
-    MdOutlineChat,
-    MdPublic,
-    MdSearch
-} from 'react-icons/md';
+import { MdNotifications, MdOutlineChat, MdPublic } from 'react-icons/md';
 import Search from '../search/search';
 
 const Navbar: React.FC = () => {
-    const pathname = usePathname();
+    // const pathname = usePathname();
 
     return (
         <div className='p-5 rounded-lg bg-bgAdmin-soft flex items-center justify-between'>

@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import Search from '../../components/search/search';
 import Pagination from '../../components/pagination/pagination';
 
 const dummyProducts = [
@@ -42,6 +41,7 @@ const ProductsPage = async ({
     const q = searchParamsData?.q || '';
     const page = searchParamsData?.page || '1';
     console.log(q);
+    console.log(page);
 
     const count = dummyProducts.length;
 

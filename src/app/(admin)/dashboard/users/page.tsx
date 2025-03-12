@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import Pagination from '../../components/pagination/pagination';
-import Search from '../../components/search/search';
 
 interface User {
     id: number;
@@ -61,6 +60,8 @@ const UsersPage = async ({
     const searchParamsData = await searchParams;
     const q = searchParamsData?.q || '';
     const page = searchParamsData?.page || '1';
+    console.log(q);
+    console.log(page);
 
     const count = dummyUsers.length;
     const users = dummyUsers; // Use dummy users directly

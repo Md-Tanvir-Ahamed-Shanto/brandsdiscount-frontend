@@ -26,6 +26,7 @@ const dummyProduct: Product = {
 
 const SingleProductPage = async ({ params }: { params: { id: string } }) => {
     // Simulating fetching the product by ID
+    console.log(params);
     const product = dummyProduct;
 
     return (
