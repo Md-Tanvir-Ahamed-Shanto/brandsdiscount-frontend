@@ -5,7 +5,8 @@ import { MdNotifications, MdOutlineChat, MdPublic } from 'react-icons/md';
 import Search from '../search/search';
 
 const Navbar: React.FC = () => {
-    // const pathname = usePathname();
+    const pathname = usePathname();
+    console.log(pathname);
 
     return (
         <div className='p-5 rounded-lg bg-bgAdmin-soft flex items-center justify-between'>
