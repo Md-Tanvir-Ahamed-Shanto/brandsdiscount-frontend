@@ -24,7 +24,11 @@ const dummyProduct: Product = {
     img: '/astronaut.png'
 };
 
-const SingleProductPage = async ({ params }: { params: { id: string } }) => {
+const SingleProductPage = async ({
+    params
+}: {
+    params: Promise<{ id: string }>;
+}) => {
     // Simulating fetching the product by ID
     console.log(params);
     const product = dummyProduct;

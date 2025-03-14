@@ -1,6 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import Pagination from '../../components/pagination/pagination';
+import withSuspense from '../../components/suspense/withSuspense';
+
+const SuspendedPagination = withSuspense(Pagination);
 
 const dummyProducts = [
     {
@@ -116,7 +119,7 @@ const ProductsPage = async ({
             </table>
 
             {/* Pagination */}
-            <Pagination count={count} />
+            <SuspendedPagination count={count} />
         </div>
     );
 };

@@ -3,6 +3,8 @@
 import { usePathname } from 'next/navigation';
 import { MdNotifications, MdOutlineChat, MdPublic } from 'react-icons/md';
 import Search from '../search/search';
+import withSuspense from '../suspense/withSuspense';
+const SuspendedSearch = withSuspense(Search);
 
 const Navbar: React.FC = () => {
     const pathname = usePathname();
@@ -26,7 +28,7 @@ const Navbar: React.FC = () => {
             <div className='flex items-center gap-5'>
                 {/* Search Box */}
                 <div className='flex items-center gap-2 bg-[#2e374a] p-2 rounded-lg'>
-                    <Search placeholder='Search' />
+                    <SuspendedSearch placeholder='Search' />
                 </div>
 
                 {/* Icons */}

@@ -1,17 +1,25 @@
 'use client';
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 interface PaginationProps {
     count: number;
 }
 
 const Pagination: React.FC<PaginationProps> = ({ count }) => {
+    const [page, setPage] = useState('1');
     const searchParams = useSearchParams();
     const { replace } = useRouter();
     const pathname = usePathname();
 
-    const page = searchParams.get('page') || '1';
+    useEffect(() => {
+        console.log(searchParams);
+        const page = searchParams.get('page') || '1';
+
+        setPage(page);
+    }, [searchParams]);
+
     const ITEM_PER_PAGE = 2;
 
     const hasPrev = ITEM_PER_PAGE * (parseInt(page) - 1) > 0;

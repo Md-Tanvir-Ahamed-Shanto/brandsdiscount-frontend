@@ -1,7 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import Pagination from '../../components/pagination/pagination';
+import withSuspense from '../../components/suspense/withSuspense';
 
+const SuspendedPagination = withSuspense(Pagination);
 interface User {
     id: number;
     username: string;
@@ -135,7 +137,7 @@ const UsersPage = async ({
                     ))}
                 </tbody>
             </table>
-            <Pagination count={count} />
+            <SuspendedPagination count={count} />
         </div>
     );
 };

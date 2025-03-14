@@ -3,15 +3,25 @@
 import { MdSearch } from 'react-icons/md';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
+import { useEffect, useState } from 'react';
 
 interface SearchProps {
     placeholder: string;
 }
 
 const Search: React.FC<SearchProps> = ({ placeholder }) => {
+    const [page, setPage] = useState('1');
     const searchParams = useSearchParams();
     const { replace } = useRouter();
     const pathname = usePathname();
+
+    useEffect(() => {
+        console.log(searchParams);
+        const pageData = searchParams.get('page') || '1';
+
+        setPage(pageData);
+        console.log(page);
+    }, [searchParams]);
 
     const handleSearch = useDebouncedCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {

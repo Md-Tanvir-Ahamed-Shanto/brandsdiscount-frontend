@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import Pagination from '../../components/pagination/pagination';
+import withSuspense from '../../components/suspense/withSuspense';
 
+const SuspendedPagination = withSuspense(Pagination);
 interface Transaction {
     name: string;
     status: 'Pending' | 'Done' | 'Cancelled';
@@ -101,7 +103,7 @@ const Transactions = () => {
                     ))}
                 </tbody>
             </table>
-            <Pagination count={transactions.length} />
+            <SuspendedPagination count={transactions.length} />
         </div>
     );
 };
