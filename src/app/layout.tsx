@@ -10,9 +10,7 @@ import {
 import { Metadata } from 'next';
 import React from 'react';
 import '../styles/global.css';
-import { TheFooter, TheHeader } from './components';
 import { ReduxProviders } from '@/providers';
-import { ScrollTop } from '@/lib';
 
 export const metadata: Metadata = {
     metadataBase: new URL(SITE_DOMAIN),
@@ -35,14 +33,9 @@ export default function RootLayout({
     return (
         <html lang='en' suppressHydrationWarning>
             <body className={`${FONT_DEFAULT.variable} ${switchThemeDuration}`}>
-                <main className='scroll-smooth' suppressHydrationWarning>
-                    <ReduxProviders>
-                        <TheHeader />
-                        {children}
-                        <TheFooter />
-                        <ScrollTop />
-                    </ReduxProviders>
-                </main>
+                <ReduxProviders>
+                    {children}
+                </ReduxProviders>
             </body>
         </html>
     );
