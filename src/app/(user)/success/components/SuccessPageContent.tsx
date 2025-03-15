@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { CheckCircle } from 'lucide-react';
-import { getSessionStatus } from '@/app/checkout/actions';
+import { getSessionStatus } from '@/app/(user)/checkout/actions';
 
 const SuccessPageContent = () => {
     const searchParams = useSearchParams();

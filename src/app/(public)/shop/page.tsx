@@ -1,5 +1,5 @@
 import React from 'react';
-import { CategorySlider, ProductCard } from '../components';
+import { CategorySlider, ProductCard } from '../../components';
 import {
     FilterSheet,
     Pagination,
