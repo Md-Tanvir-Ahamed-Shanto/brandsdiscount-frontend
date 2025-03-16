@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { getStripe } from '@/lib/stripe';
 import { createCheckoutSession } from './actions';
+import Users from './components/Users';
 
 // Define our products
 const products = [
@@ -80,6 +81,8 @@ export default function Home() {
             <h1 className='text-3xl font-bold mb-8 text-center'>
                 Our Products
             </h1>
+            
+            <Users />
 
             <div className='mb-12'>
                 <h3>Test Card Details:</h3>

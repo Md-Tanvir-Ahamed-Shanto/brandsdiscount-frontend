@@ -21,7 +21,7 @@ const Search: React.FC<SearchProps> = ({ placeholder }) => {
 
         setPage(pageData);
         console.log(page);
-    }, [searchParams]);
+    }, [searchParams, page]);
 
     const handleSearch = useDebouncedCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
