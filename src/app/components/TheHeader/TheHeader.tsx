@@ -13,15 +13,15 @@ const TheHeader = () => {
             <HeaderTop />
 
             {/* pc */}
-            <div className='hidden lg:flex container items-center justify-between py-4'>
+            <header className='hidden lg:flex container items-center justify-between py-4'>
                 <Logo />
                 <SearchComponent />
                 <LinkButton href='/'>
                     <Icons.ShoppingBag className='text-gray-800' />
                 </LinkButton>
-            </div>
+            </header>
             {/* mobile */}
-            <div className='block lg:hidden !w-full mb-4'>
+            <header className='block lg:hidden !w-full mb-4'>
                 <div className='flex container items-center justify-between py-4'>
                     <div className='flex gap-2'>
                         <button
@@ -39,7 +39,7 @@ const TheHeader = () => {
                 <div className='px-4 lg:px-0'>
                     <SearchComponent />
                 </div>
-            </div>
+            </header>
 
             <MegaMenu />
             <MobileMenu isOpen={isOpen} setIsOpen={setIsOpen} />
