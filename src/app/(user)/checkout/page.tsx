@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { getStripe } from '@/lib/stripe';
 import { createCheckoutSession } from './actions';
-import Users from './components/Users';
+import { ShoppingCart } from './components';
 
 // Define our products
 const products = [
@@ -78,18 +78,7 @@ export default function Home() {
 
     return (
         <main className='container mx-auto py-10 px-4'>
-            <h1 className='text-3xl font-bold mb-8 text-center'>
-                Our Products
-            </h1>
-            
-            <Users />
-
-            <div className='mb-12'>
-                <h3>Test Card Details:</h3>
-                <h3>Card: 4242 4242 4242 4242 </h3>
-                <h3>Ex: 12/25 </h3>
-                <h3>CVV: 123 </h3>
-            </div>
+            <ShoppingCart />
 
             <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mb-10'>
                 {products.map((product) => (
