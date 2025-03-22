@@ -5,7 +5,7 @@ import 'react-medium-image-zoom/dist/styles.css';
 import Image from 'next/image';
 import { Icons } from '@/components';
 
-const ProductImage = () => {
+const ProductImage = ({ image }: { image: string }) => {
     const imageRef = useRef<HTMLImageElement | null>(null);
 
     const handleZoom = () => {
@@ -24,7 +24,7 @@ const ProductImage = () => {
                     unoptimized
                     ref={imageRef}
                     className='w-full h-auto cursor-pointer object-fill rounded'
-                    src='/single-product/single.webp'
+                    src={image || '/single-product/single.webp'}
                 />
             </Zoom>
             <button

@@ -2,7 +2,7 @@ export const PRODUCTS = [
     {
         image: '/shop/one.webp',
         brand: 'I.N.C. International Concepts',
-        name: "NEW! Women's Printed Maxi Skirt, Exclusively at Macy's",
+        name: "Women's Printed Maxi Skirt",
         regularPrice: 110.0,
         vipPrice: 33.49,
         vipOffer: 10.0,
@@ -14,7 +14,7 @@ export const PRODUCTS = [
     {
         image: '/shop/four.webp',
         brand: 'I.N.C. International Concepts',
-        name: "NEW! Women's Printed Tie-Waist Button-Front Maxi Dress, Exclusively at Macy's",
+        name: "NEW Button Front Maxi Dress",
         regularPrice: 120.0,
         vipPrice: 35.99,
         vipOffer: 12.0,
@@ -26,7 +26,7 @@ export const PRODUCTS = [
     {
         image: '/shop/one.webp',
         brand: 'I.N.C. International Concepts',
-        name: "NEW! Women's Printed Maxi Skirt, Exclusively at Macy's",
+        name: "Exclusively Collection",
         regularPrice: 110.0,
         vipPrice: 33.49,
         vipOffer: 10.0,
@@ -38,7 +38,7 @@ export const PRODUCTS = [
     {
         image: '/shop/four.webp',
         brand: 'I.N.C. International Concepts',
-        name: "NEW! Women's Printed Tie-Waist Button-Front Maxi Dress, Exclusively at Macy's",
+        name: "Hot Product",
         regularPrice: 120.0,
         vipPrice: 35.99,
         vipOffer: 12.0,
@@ -50,7 +50,7 @@ export const PRODUCTS = [
     {
         image: '/shop/one.webp',
         brand: 'I.N.C. International Concepts',
-        name: "NEW! Women's Printed Maxi Skirt, Exclusively at Macy's",
+        name: "Macy's Printed Maxi Skirt Exclusive",
         regularPrice: 110.0,
         vipPrice: 33.49,
         vipOffer: 10.0,
@@ -62,7 +62,7 @@ export const PRODUCTS = [
     {
         image: '/shop/four.webp',
         brand: 'I.N.C. International Concepts',
-        name: "NEW! Women's Printed Tie-Waist Button-Front Maxi Dress, Exclusively at Macy's",
+        name: "Button Front Maxi Dress",
         regularPrice: 120.0,
         vipPrice: 35.99,
         vipOffer: 12.0,
@@ -74,7 +74,7 @@ export const PRODUCTS = [
     {
         image: '/shop/one.webp',
         brand: 'I.N.C. International Concepts',
-        name: "NEW! Women's Printed Maxi Skirt, Exclusively at Macy's",
+        name: "NEW Exclusive Collection",
         regularPrice: 110.0,
         vipPrice: 33.49,
         vipOffer: 10.0,
@@ -86,7 +86,7 @@ export const PRODUCTS = [
     {
         image: '/shop/four.webp',
         brand: 'I.N.C. International Concepts',
-        name: "NEW! Women's Printed Tie-Waist Button-Front Maxi Dress, Exclusively at Macy's",
+        name: "Bangladeshi Button Front Maxi Dress",
         regularPrice: 120.0,
         vipPrice: 35.99,
         vipOffer: 12.0,
@@ -98,7 +98,7 @@ export const PRODUCTS = [
     {
         image: '/shop/one.webp',
         brand: 'I.N.C. International Concepts',
-        name: "NEW! Women's Printed Maxi Skirt, Exclusively at Macy's",
+        name: "Lovely Pure Cotton Dress",
         regularPrice: 110.0,
         vipPrice: 33.49,
         vipOffer: 10.0,
@@ -110,7 +110,7 @@ export const PRODUCTS = [
     {
         image: '/shop/four.webp',
         brand: 'I.N.C. International Concepts',
-        name: "NEW! Women's Printed Tie-Waist Button-Front Maxi Dress, Exclusively at Macy's",
+        name: "International Pure Cotton Dress",
         regularPrice: 120.0,
         vipPrice: 35.99,
         vipOffer: 12.0,
@@ -122,7 +122,7 @@ export const PRODUCTS = [
     {
         image: '/shop/one.webp',
         brand: 'I.N.C. International Concepts',
-        name: "NEW! Women's Printed Maxi Skirt, Exclusively at Macy's",
+        name: "Beauty And Beast Product",
         regularPrice: 110.0,
         vipPrice: 33.49,
         vipOffer: 10.0,
@@ -134,7 +134,7 @@ export const PRODUCTS = [
     {
         image: '/shop/four.webp',
         brand: 'I.N.C. International Concepts',
-        name: "NEW! Women's Printed Tie-Waist Button-Front Maxi Dress, Exclusively at Macy's",
+        name: "NEW Women's Printed Tie-Waist",
         regularPrice: 120.0,
         vipPrice: 35.99,
         vipOffer: 12.0,
@@ -146,7 +146,7 @@ export const PRODUCTS = [
     {
         image: '/shop/one.webp',
         brand: 'I.N.C. International Concepts',
-        name: "NEW! Women's Printed Maxi Skirt, Exclusively at Macy's",
+        name: "Dhaka Exclusive Saree",
         regularPrice: 110.0,
         vipPrice: 33.49,
         vipOffer: 10.0,
@@ -158,7 +158,7 @@ export const PRODUCTS = [
     {
         image: '/shop/four.webp',
         brand: 'I.N.C. International Concepts',
-        name: "NEW! Women's Printed Tie-Waist Button-Front Maxi Dress, Exclusively at Macy's",
+        name: "NEW Blue Print Dress",
         regularPrice: 120.0,
         vipPrice: 35.99,
         vipOffer: 12.0,

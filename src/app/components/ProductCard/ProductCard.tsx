@@ -29,8 +29,8 @@ const ProductCard = ({
 
             {/* Product Image */}
             <Link
-                href={`/shop/${convertToUrl(brand)}`}
-                className='relative aspect-[3/4] overflow-hidden rounded-lg bg-gray-100 block'
+                href={`/shop/${convertToUrl(name)}`}
+                className='relative aspect-[3/4] overflow-hidden rounded-lg bg-gray-100 block mb-4'
             >
                 <Avatar
                     src={image || '/placeholder.svg'}
@@ -41,11 +41,11 @@ const ProductCard = ({
 
             {/* Product Details */}
             <Link
-                href={`/shop/${convertToUrl(brand)}`}
+                href={`/shop/${convertToUrl(name)}`}
                 className='mt-4 space-y-2'
             >
-                <h3 className='font-medium text-gray-700'>{brand}</h3>
-                <p className='text-sm text-gray-600'>{name}</p>
+                <p className='text-sm text-gray-600'>{brand}</p>
+                <h3 className='font-medium text-gray-700'>{name}</h3>
 
                 {/* Pricing */}
                 <div className='space-y-1'>

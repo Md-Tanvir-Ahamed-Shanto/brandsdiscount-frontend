@@ -1,13 +1,17 @@
 import React from 'react';
-import { TheFooter, TheHeader } from '../components';
+import { AuthFooter, AuthHeader } from '../components';
 import '../../styles/global.css';
 
-export default function UserLayout({ children }: { children: React.ReactNode }) {
+export default function UserLayout({
+    children
+}: {
+    children: React.ReactNode;
+}) {
     return (
         <main className='scroll-smooth'>
-            <TheHeader />
+            <AuthHeader />
             {children}
-            <TheFooter />
+            <AuthFooter />
         </main>
     );
 }

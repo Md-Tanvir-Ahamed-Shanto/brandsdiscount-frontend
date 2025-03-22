@@ -2,20 +2,20 @@
 import Avatar from '@/components/Avatar';
 import { Button } from '@/components/ui/button';
 import { IProduct, RECOMMENDED_PRODUCTS } from '@/static';
-import Link from 'next/link';
+import { ProductCardProps } from '@/types';
 
-const ProductDetails = () => {
+const ProductDetails = ({ product }: { product: ProductCardProps }) => {
     return (
         <>
             <div className='max-w-7xl mx-auto px-4 py-8'>
                 <div className='mb-12'>
-                    <h1 className='text-xl font-bold mb-2'>Epic Threads</h1>
-                    <p className='text-lg mb-4'>
-                        Girls Fairfield Wide Leg Jeans, Exclusively at Macys
-                    </p>
+                    <h1 className='text-xl font-bold mb-2'>{product?.brand}</h1>
+                    <p className='text-lg mb-4'>{product?.name}</p>
 
                     <div className='flex items-baseline gap-2 mb-4'>
-                        <span className='text-2xl font-bold'>BDT 5,535.86</span>
+                        <span className='text-2xl font-bold'>
+                            ${product?.regularPrice}
+                        </span>
                         <button className='text-sm text-blue-600 underline'>
                             Details
                         </button>
@@ -33,11 +33,9 @@ const ProductDetails = () => {
                             </button>
                         </div>
 
-                        <Link href='/checkout'>
-                            <Button className='w-full bg-red-700 hover:bg-red-800 text-white py-6'>
-                                Add To Bag
-                            </Button>
-                        </Link>
+                        <Button className='w-full bg-red-700 hover:bg-red-800 text-white py-6'>
+                            Add To Bag
+                        </Button>
                     </div>
                 </div>
             </div>

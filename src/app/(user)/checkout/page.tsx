@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { getStripe } from '@/lib/stripe';
 import { createCheckoutSession } from './actions';
-import { ShoppingCart } from './components';
 
 // Define our products
 const products = [
@@ -78,8 +77,6 @@ export default function Home() {
 
     return (
         <main className='container mx-auto py-10 px-4'>
-            <ShoppingCart />
-
             <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mb-10'>
                 {products.map((product) => (
                     <div key={product.id} className='overflow-hidden'>
