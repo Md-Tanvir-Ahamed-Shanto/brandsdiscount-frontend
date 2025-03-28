@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import {
     AdditionalInformation,
@@ -5,17 +7,33 @@ import {
     ProductImage
 } from './components';
 import { TrendingSlider } from '../components';
+import { useParams } from 'next/navigation';
+import { convertFromUrl } from '@/lib';
+import { PRODUCTS } from '@/static';
 
-const page = () => {
+const SingleProductPage = () => {
+    const params = useParams();
+    const slug = params?.title as string;
+
+    const productName = convertFromUrl(slug[0]);
+
+    // Find product by name
+    const product = PRODUCTS?.find(
+        (p) => p.name.toLowerCase() === productName?.toLowerCase()
+    );
+
+    if (!product) {
+        return <h1>Product not found</h1>;
+    }
     return (
         <div className='container py-12'>
             <div className='grid grid-cols-12'>
                 <div className='col-span-12 lg:col-span-6 lg:ml-5'>
-                    <ProductImage />
+                    <ProductImage image={product?.image} />
                 </div>
                 <div className='col-span-12 lg:col-span-1'></div>
                 <div className='col-span-12 lg:col-span-5'>
-                    <ProductDetails />
+                    <ProductDetails product={product} />
                 </div>
             </div>
 
@@ -31,4 +49,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default SingleProductPage;
