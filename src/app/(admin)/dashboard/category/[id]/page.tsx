@@ -1,38 +1,42 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { useEffect, useState } from 'react';
-import { useGetSingleSizeQuery, useUpdateSingleSizeMutation } from '@/api';
+import {
+    useGetSingleCategoryQuery,
+    useUpdateSingleCategoryMutation
+} from '@/api';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { LoaderWrapper } from '@/components';
 
-const SingleSizePage = ({ params }: { params: any }) => {
+const SingleCategoryPage = ({ params }: { params: any }) => {
     const router = useRouter();
     const { id } = params;
 
     const [
-        updateSize,
+        updateCategory,
         {
             isLoading: isLoadingUpdate,
             isError: isErrorUpdate,
             error: errorUpdate
         }
-    ] = useUpdateSingleSizeMutation();
+    ] = useUpdateSingleCategoryMutation();
 
-    const { data: userData, isLoading, isError } = useGetSingleSizeQuery(id);
+    const {
+        data: userData,
+        isLoading,
+        isError
+    } = useGetSingleCategoryQuery(id);
 
     const [formData, setFormData] = useState({
         name: ''
     });
 
-    // Update formData when userData is available
     useEffect(() => {
-        if (userData) {
-            setFormData({
-                name: userData.name || ''
-            });
+        if (userData?.name) {
+            setFormData({ name: userData.name });
         }
-    }, [userData]);
+    }, [userData?.name]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -44,37 +48,36 @@ const SingleSizePage = ({ params }: { params: any }) => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('Updated user data:', { id, ...formData });
 
         try {
-            const response = await updateSize({ id, ...formData }).unwrap(); // Ensure id is passed
+            const response = await updateCategory({ id, ...formData }).unwrap(); // Ensure id is passed
 
             if (response?.success) {
-                toast.success('Size Data Updated successfully');
-                router.push('/dashboard/size');
+                toast.success('Category Data Updated successfully');
+                router.push('/dashboard/category');
             }
         } catch (err: unknown) {
             const errorMessage =
                 (err as { data?: { message?: string } })?.data?.message ||
-                'Failed to update size';
+                'Failed to update Category';
             toast.error(errorMessage);
-            console.error('Error updating size:', err);
+            console.error('Error updating Category:', err);
         }
     };
 
     if (isLoading) return <p>Loading...</p>;
-    if (isError) return <p>Error loading user data.</p>;
+    if (isError) return <p>Error loading Category data.</p>;
 
     return (
         <div className='flex gap-12 mt-5'>
             {/* User Edit Form */}
             <div className='flex-[6] bg-bgAdminAdmin-soft p-5 rounded-lg'>
                 <form onSubmit={handleSubmit} className='flex flex-col'>
-                    <label className='text-sm'>Size</label>
+                    <label className='text-sm'>Category</label>
                     <input
                         type='text'
                         name='name'
-                        placeholder='Enter Size'
+                        placeholder='Enter Category'
                         value={formData.name}
                         onChange={handleInputChange}
                         className='p-5 border-2 border-[#2e374a] rounded-md !bg-transparent text-text mb-5'
@@ -98,4 +101,4 @@ const SingleSizePage = ({ params }: { params: any }) => {
     );
 };
 
-export default SingleSizePage;
+export default SingleCategoryPage;

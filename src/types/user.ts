@@ -19,3 +19,11 @@ export interface IUser {
     createdAt: string;
     updatedAt: string; 
   }
+  
+  export interface ICategory {
+    id: string;
+    name: string;
+    parentCategoryId: string | null;
+    createdAt: string;
+    updatedAt: string; 
+  }

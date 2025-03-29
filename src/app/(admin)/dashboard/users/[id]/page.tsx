@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
@@ -16,7 +17,7 @@ const dummyUser = {
     img: '/astronaut.png'
 };
 
-const SingleUserPage = ({ params }: { params: { id: string } }) => {
+const SingleUserPage = ({ params }: { params: any }) => {
     const router = useRouter();
     const [
         updateUser,
