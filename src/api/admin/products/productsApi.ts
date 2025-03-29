@@ -7,44 +7,49 @@ const productsApi = baseApi.injectEndpoints({
                 url: `/productroute/products`,
                 method: 'GET'
             }),
-            providesTags: [tagTypes.user]
+            providesTags: [tagTypes.product]
         }),
-        getSingleUser: build.query({
+        getSingleProduct: build.query({
             query: (id) => ({
-              url: `/userroute/user/${id}`,
+              url: `/productroute/product/${id}`,
               method: "GET", 
             }), 
-            providesTags: [tagTypes.user], 
+            providesTags: [tagTypes.product], 
         }), 
-        createUser: build.mutation({
+        createProduct: build.mutation({
             query: (data) => { 
               return {
-                url: "/userroute/new",
+                url: "/productroute/new",
                 method: "POST",
                 data: data,
               }
             },
-            invalidatesTags: [tagTypes.user],
+            invalidatesTags: [tagTypes.product],
         }),
-        updateSingleUser: build.mutation({
+        updateSingleProduct: build.mutation({
             query: ({ id, ...data }) => {  
               return {
-                url: `/userroute/update/${id}`,
+                url: `/productroute/update/${id}`,
                 method: "PATCH",
                 data: data,
               };
             },
-            invalidatesTags: [tagTypes.user],
+            invalidatesTags: [tagTypes.product],
           }),
-        deleteSingleUser: build.mutation({
+        deleteSingleProduct: build.mutation({
         query: (id) => ({
-            url: `/userroute/delete/${id}`,
+            url: `/productroute/delete/${id}`,
             method: "DELETE",
         }),
-        invalidatesTags: [tagTypes.user],  
+        invalidatesTags: [tagTypes.product],  
         }),
     })
 });
 
 export const { 
+  useGetAllProductsQuery,
+  useGetSingleProductQuery,
+  useCreateProductMutation,
+  useUpdateSingleProductMutation,
+  useDeleteSingleProductMutation
 } = productsApi;

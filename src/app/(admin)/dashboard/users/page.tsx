@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import Pagination from '../../components/pagination/pagination';
-import withSuspense from '../../components/suspense/withSuspense'; 
+import withSuspense from '../../components/suspense/withSuspense';
 import AllUsers from './components/AllUsers';
 
 const SuspendedPagination = withSuspense(Pagination);
@@ -19,7 +19,7 @@ const UsersPage = async ({
     searchParams
 }: {
     searchParams: Promise<{ q: string; page: string }>;
-}) => {  
+}) => {
     // Dummy data
     const dummyUsers: User[] = [
         {
@@ -90,9 +90,7 @@ const UsersPage = async ({
                         <td className='p-3'>Action</td>
                     </tr>
                 </thead>
-                <tbody>
-                    {/* <AllUsers />  */}
-                </tbody>
+                <tbody>{/* <AllUsers />  */}</tbody>
             </table>
             <SuspendedPagination count={count} />
         </div>
