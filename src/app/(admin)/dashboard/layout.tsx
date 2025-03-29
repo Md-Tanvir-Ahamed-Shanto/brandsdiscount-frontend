@@ -8,7 +8,7 @@ const AdminLayout = ({
     children: React.ReactNode;
 }>) => {
     return (
-        <div className='w-screen h-screen flex'>
+        <div className='w-screen h-screen flex' suppressHydrationWarning >
             {/* Sidebar takes 1/5 of the width */}
             <div className='flex-[1] h-full bg-bgAdmin-soft text-bgAdminText-soft'>
                 <Sidebar />

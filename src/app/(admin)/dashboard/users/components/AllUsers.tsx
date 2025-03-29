@@ -90,18 +90,29 @@ const AllUsers = ({ page }: { page: string }) => {
                       </tr>
                   ))
                 : null}
+                <tr>
+                    <td>
+                    <SuspendedPagination count={userData?.totalRecords | 1} />
+                    <LoaderWrapper
+                    isLoading={isLoading}
+                    isError={isError}
+                    error={error as { message: string } | undefined}
+                />
 
-            <div className='!w-full block'>
+                    </td>
+                </tr>
+
+            {/* <span className='!w-full block'>
                 <SuspendedPagination count={userData?.totalRecords | 1} />
-            </div>
+            </span> */}
 
-            {
+            {/* {
                 <LoaderWrapper
                     isLoading={isLoading}
                     isError={isError}
                     error={error as { message: string } | undefined}
                 />
-            }
+            } */}
         </>
     );
 };

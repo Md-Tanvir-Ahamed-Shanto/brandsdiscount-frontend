@@ -4,7 +4,7 @@ import Pagination from '../../components/pagination/pagination';
 import withSuspense from '../../components/suspense/withSuspense';
 import AllUsers from './components/AllUsers';
 
-const SuspendedPagination = withSuspense(Pagination);
+// const SuspendedPagination = withSuspense(Pagination);
 
 const UsersPage = async ({
     searchParams

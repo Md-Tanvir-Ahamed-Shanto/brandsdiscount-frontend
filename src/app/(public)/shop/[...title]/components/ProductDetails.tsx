@@ -2,6 +2,7 @@
 import Avatar from '@/components/Avatar';
 import { Button } from '@/components/ui/button';
 import { IProduct, RECOMMENDED_PRODUCTS } from '@/static';
+import { addToCart } from '@/store';
 import { ProductCardProps } from '@/types';
 
 const ProductDetails = ({ product }: { product: ProductCardProps }) => {

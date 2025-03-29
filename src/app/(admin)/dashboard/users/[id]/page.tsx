@@ -6,6 +6,7 @@ import { useGetSingleUserQuery, useUpdateSingleUserMutation } from '@/api';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { LoaderWrapper } from '@/components';
+import { useParams } from 'next/navigation';
 
 // Dummy user data for editing
 const dummyUser = {
@@ -17,7 +18,12 @@ const dummyUser = {
     img: '/astronaut.png'
 };
 
-const SingleUserPage = ({ params }: { params: any }) => {
+const SingleUserPage = () => {
+    const params = useParams();
+    console.log(params);
+    console.log(params.id);
+    const userId = params.id;
+    console.log(userId);
     const router = useRouter();
     const [
         updateUser,
@@ -31,7 +37,7 @@ const SingleUserPage = ({ params }: { params: any }) => {
         data: userData,
         isLoading,
         isError
-    } = useGetSingleUserQuery(params?.id);
+    } = useGetSingleUserQuery(userId);
 
     const [formData, setFormData] = useState({
         username: '',
@@ -65,9 +71,15 @@ const SingleUserPage = ({ params }: { params: any }) => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         console.log('Updated user data:', formData);
+        console.log('handle submitttttttttt');
+        console.log(userId);
 
         try {
-            const response = await updateUser(formData).unwrap(); // Ensures error handling
+            const response = await updateUser({
+                id: userId,
+                ...formData
+            }).unwrap(); // Ensures error handling
+            console.log(response);
 
             if (response?.success) {
                 toast.success('User Data Updated successfully');
