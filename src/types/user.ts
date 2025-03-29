@@ -13,3 +13,9 @@ export interface IUser {
     salt: Record<number, number>; // Uint8Array alternative
   }
   
+  export interface ISize {
+    id: string;
+    name: string;
+    createdAt: string;
+    updatedAt: string; 
+  }
