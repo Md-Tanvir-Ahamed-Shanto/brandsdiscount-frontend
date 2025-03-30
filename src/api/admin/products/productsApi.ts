@@ -3,8 +3,8 @@ import { baseApi, tagTypes } from '@/store';
 const productsApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
         getAllProducts: build.query({
-            query: () => ({
-                url: `/productroute/products`,
+            query: (page) => ({
+                url: `/productroute/products?page=${page}&limit=6`,
                 method: 'GET'
             }),
             providesTags: [tagTypes.product]
