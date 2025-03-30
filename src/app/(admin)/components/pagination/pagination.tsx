@@ -20,7 +20,7 @@ const Pagination: React.FC<PaginationProps> = ({ count }) => {
         setPage(page);
     }, [searchParams]);
 
-    const ITEM_PER_PAGE = 2;
+    const ITEM_PER_PAGE = 6;
 
     const hasPrev = ITEM_PER_PAGE * (parseInt(page) - 1) > 0;
     const hasNext =
@@ -39,7 +39,7 @@ const Pagination: React.FC<PaginationProps> = ({ count }) => {
     };
 
     return (
-        <div className='p-2 flex justify-between'>
+        <span className='p-2 flex justify-between mt-4 w-full'>
             <button
                 className='px-4 py-2 bg-blue-500 text-white rounded-md disabled:bg-gray-400 disabled:cursor-not-allowed'
                 disabled={!hasPrev}
@@ -54,7 +54,7 @@ const Pagination: React.FC<PaginationProps> = ({ count }) => {
             >
                 Next
             </button>
-        </div>
+        </span>
     );
 };
 

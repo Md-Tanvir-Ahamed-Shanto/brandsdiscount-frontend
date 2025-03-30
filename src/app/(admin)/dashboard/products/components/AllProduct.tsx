@@ -1,9 +1,9 @@
 'use client';
-import { useDeleteSingleUserMutation, useGetAllUsersQuery } from '@/api';
+import { useDeleteSingleProductMutation, useGetAllProductsQuery } from '@/api';
 import Pagination from '@/app/(admin)/components/pagination/pagination';
 import withSuspense from '@/app/(admin)/components/suspense/withSuspense';
 import { LoaderWrapper } from '@/components';
-import { IUser } from '@/types';
+import { IProduct } from '@/types';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
@@ -11,23 +11,32 @@ import toast from 'react-hot-toast';
 
 const SuspendedPagination = withSuspense(Pagination);
 
-const AllUsers = ({ page }: { page: string }) => {
+const AllProduct = ({
+    page,
+    searchKey
+}: {
+    page: string;
+    searchKey: string;
+}) => {
+    console.log('searchKey', searchKey);
+
     const {
-        data: userData,
+        data: productData,
         isLoading,
         isError,
         error
-    } = useGetAllUsersQuery(page);
-    const [deleteUser, { isLoading: isLoadingUser }] =
-        useDeleteSingleUserMutation();
+    } = useGetAllProductsQuery(page);
 
-    const [data, setData] = useState<IUser[]>([]);
+    const [deleteUser, { isLoading: isLoadingUser }] =
+        useDeleteSingleProductMutation();
+
+    const [data, setData] = useState<IProduct[]>([]);
 
     useEffect(() => {
-        if (Array.isArray(userData?.data)) {
-            setData(userData.data);
+        if (Array.isArray(productData?.data)) {
+            setData(productData.data);
         }
-    }, [userData]);
+    }, [productData]);
 
     const handleDelete = async (id: string) => {
         try {
@@ -48,13 +57,13 @@ const AllUsers = ({ page }: { page: string }) => {
     return (
         <>
             {!isLoading && data
-                ? data?.map((user) => (
-                      <tr key={user.id} className='border-b'>
+                ? data?.map((product) => (
+                      <tr key={product?.id} className='border-b'>
                           <td>
                               <span className='flex items-center gap-2 p-3'>
                                   <Image
                                       src={
-                                          user?.profilePicture ||
+                                          product?.images[0]?.url ||
                                           '/astronaut.png'
                                       }
                                       alt=''
@@ -62,18 +71,26 @@ const AllUsers = ({ page }: { page: string }) => {
                                       height={40}
                                       className='rounded-full object-cover'
                                   />
-                                  {user.username}
+                                  {product?.title}
                               </span>
                           </td>
-                          <td className='p-3'>{user.username}</td>
-                          <td className='p-3'>{user.email}</td>
-                          <td className='p-3'>{user.role ? user.role : ''}</td>
-                          <td className='p-3'>{user.loyaltyStatus}</td>
-                          <td className='p-3'>{user.orderPoint}</td>
-
+                          <td className='p-3'>{product?.brandName}</td>
+                          <td className='p-3'>{product?.color}</td>
+                          <td className='p-3'>{product?.sku}</td>
+                          <td className='p-3'>{product?.itemLocation}</td>
+                          <td className='p-3'>{product?.status}</td>
                           <td className='p-3 flex gap-2'>
                               <span className='flex gap-2'>
-                                  <Link href={`/dashboard/users/${user.id}`}>
+                                  <Link
+                                      href={`/dashboard/products/view/${product.id}`}
+                                  >
+                                      <button className='py-1 px-3 bg-teal-500 text-white rounded'>
+                                          View
+                                      </button>
+                                  </Link>
+                                  <Link
+                                      href={`/dashboard/products/${product.id}`}
+                                  >
                                       <button className='py-1 px-3 bg-teal-500 text-white rounded'>
                                           Edit
                                       </button>
@@ -81,7 +98,7 @@ const AllUsers = ({ page }: { page: string }) => {
                                   <button
                                       disabled={isLoadingUser}
                                       className='px-3 py-1 bg-red-500 text-white rounded'
-                                      onClick={() => handleDelete(user?.id)}
+                                      onClick={() => handleDelete(product.id)}
                                   >
                                       Delete
                                   </button>
@@ -90,17 +107,18 @@ const AllUsers = ({ page }: { page: string }) => {
                       </tr>
                   ))
                 : null}
-                <tr>
-                    <td>
-                    <SuspendedPagination count={userData?.totalRecords | 1} />
+            <tr>
+                <td>
+                    <SuspendedPagination
+                        count={productData?.totalRecords | 1}
+                    />
                     <LoaderWrapper
-                    isLoading={isLoading}
-                    isError={isError}
-                    error={error as { message: string } | undefined}
-                />
-
-                    </td>
-                </tr>
+                        isLoading={isLoading}
+                        isError={isError}
+                        error={error as { message: string } | undefined}
+                    />
+                </td>
+            </tr>
 
             {/* <span className='!w-full block'>
                 <SuspendedPagination count={userData?.totalRecords | 1} />
@@ -117,4 +135,4 @@ const AllUsers = ({ page }: { page: string }) => {
     );
 };
 
-export default AllUsers;
+export default AllProduct;

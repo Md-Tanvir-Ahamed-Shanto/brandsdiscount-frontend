@@ -1,20 +1,16 @@
 'use client';
-
-import { useCreateUserMutation } from '@/api';
+import { useCreateSizeMutation } from '@/api';
 import { LoaderWrapper } from '@/components';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 
 const AddUserPage = () => {
-    const [createUser, { isLoading, isError, error }] = useCreateUserMutation();
+    const [createSize, { isLoading, isError, error }] = useCreateSizeMutation();
     const router = useRouter();
 
     const [formData, setFormData] = useState({
-        username: '',
-        email: '',
-        password: '',
-        role: 'Admin' // Default role
+        name: ''
     });
 
     const handleInputChange = (
@@ -32,16 +28,16 @@ const AddUserPage = () => {
         console.log(formData); // Log form data on submit
 
         try {
-            const response = await createUser(formData).unwrap(); // Ensures error handling
+            const response = await createSize(formData).unwrap(); // Ensures error handling
 
             if (response?.success) {
-                toast.success('User created successfully');
-                router.push('/dashboard/users');
+                toast.success('Size created successfully');
+                router.push('/dashboard/size');
             }
         } catch (err: unknown) {
             const errorMessage =
                 (err as { data?: { message?: string } })?.data?.message ||
-                'Failed to create user';
+                'Failed to create size';
             toast.error(errorMessage);
             console.error('Error creating user:', err);
         }
@@ -55,42 +51,13 @@ const AddUserPage = () => {
             >
                 <input
                     type='text'
-                    placeholder='Username'
-                    name='username'
+                    placeholder='Add Size Name'
+                    name='name'
                     required
-                    value={formData.username}
+                    value={formData.name}
                     onChange={handleInputChange}
                     className='p-4 bg-bgAdmin text-text border-2 border-[#2e374a] rounded-md mb-6 w-full'
                 />
-                <input
-                    type='email'
-                    placeholder='Email'
-                    name='email'
-                    required
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className='p-4 bg-bgAdmin text-text border-2 border-[#2e374a] rounded-md mb-6 w-full'
-                />
-                <input
-                    type='password'
-                    placeholder='Password'
-                    name='password'
-                    required
-                    value={formData.password}
-                    onChange={handleInputChange}
-                    className='p-4 bg-bgAdmin text-text border-2 border-[#2e374a] rounded-md mb-6 w-full'
-                />
-                <select
-                    name='role'
-                    value={formData.role}
-                    onChange={handleInputChange}
-                    className='p-4 bg-bgAdmin text-text border-2 border-[#2e374a] rounded-md mb-6 w-full'
-                >
-                    <option value='Admin'>Admin</option>
-                    <option value='OfficeEmployee'>Office Employee</option>
-                    <option value='WareHouse'>Warehouse</option>
-                    <option value='PlatformUser'>Platform User</option>
-                </select>
                 <button
                     type='submit'
                     className='w-full py-4 bg-teal-500 text-text rounded-md cursor-pointer'

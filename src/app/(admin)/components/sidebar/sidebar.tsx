@@ -35,6 +35,16 @@ const menuItems: MenuCategory[] = [
                 icon: <MdSupervisedUserCircle />
             },
             {
+                title: 'Size',
+                path: '/dashboard/size',
+                icon: <MdShoppingBag />
+            },
+            {
+                title: 'Category',
+                path: '/dashboard/category',
+                icon: <MdShoppingBag />
+            },
+            {
                 title: 'Products',
                 path: '/dashboard/products',
                 icon: <MdShoppingBag />

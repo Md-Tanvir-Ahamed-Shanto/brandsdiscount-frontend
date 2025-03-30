@@ -4,7 +4,7 @@ import Pagination from '../../components/pagination/pagination';
 import withSuspense from '../../components/suspense/withSuspense';
 import AllUsers from './components/AllUsers';
 
-const SuspendedPagination = withSuspense(Pagination);
+// const SuspendedPagination = withSuspense(Pagination);
 
 const UsersPage = async ({
     searchParams
@@ -19,10 +19,12 @@ const UsersPage = async ({
     const count = 4;
 
     return (
-        <div className='bg-bgAdmin-soft p-5 rounded-lg mt-5' suppressHydrationWarning >
+        <div className='bg-bgAdmin-soft p-5 rounded-lg mt-5'>
             <div className='flex items-center justify-between mb-4'>
-                <h1 className='text-lg font-light text-bgAdminText'>Users</h1>
-                <Link href='/dashboard/users/add'>
+                <h1 className='text-lg font-light text-bgAdminText'>
+                    Category
+                </h1>
+                <Link href='/dashboard/category/add'>
                     <button className='py-2 px-4 bg-indigo-600 text-white rounded-md cursor-pointer'>
                         Add New
                     </button>
@@ -32,12 +34,7 @@ const UsersPage = async ({
                 <thead>
                     <tr>
                         <td className='p-3'>Name</td>
-                        <td className='p-3'>User Name</td>
-                        <td className='p-3'>Email</td>
-                        <td className='p-3'>Role</td>
-                        <td className='p-3'>Loyalty Status</td>
-                        <td className='p-3'>Points</td>
-                        <td className='p-3'>Action</td>
+                        <td className='p-3'>Actions</td>
                     </tr>
                 </thead>
                 <tbody className='w-full'>

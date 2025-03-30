@@ -1,2 +1,2 @@
 export * from './admin';
-export * from './products';
+export * from './admin/products';

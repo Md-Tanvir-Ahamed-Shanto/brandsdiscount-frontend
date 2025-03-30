@@ -1,39 +1,11 @@
-import Image from 'next/image';
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import Link from 'next/link';
 import Pagination from '../../components/pagination/pagination';
 import withSuspense from '../../components/suspense/withSuspense';
+import AllProduct from './components/AllProduct';
+import SearchBar from './components/SearchBar';
 
 const SuspendedPagination = withSuspense(Pagination);
-
-const dummyProducts = [
-    {
-        id: '1',
-        title: 'Product 1',
-        desc: 'This is the first product',
-        price: 29.99,
-        createdAt: new Date().toDateString(),
-        stock: 10,
-        img: '/astronaut.png'
-    },
-    {
-        id: '2',
-        title: 'Product 2',
-        desc: 'This is the second product',
-        price: 49.99,
-        createdAt: new Date().toDateString(),
-        stock: 5,
-        img: '/astronaut.png'
-    },
-    {
-        id: '3',
-        title: 'Product 3',
-        desc: 'This is the third product',
-        price: 19.99,
-        createdAt: new Date().toDateString(),
-        stock: 15,
-        img: '/astronaut.png'
-    }
-];
 
 const ProductsPage = async ({
     searchParams
@@ -43,83 +15,44 @@ const ProductsPage = async ({
     const searchParamsData = await searchParams;
     const q = searchParamsData?.q || '';
     const page = searchParamsData?.page || '1';
-    console.log(q);
     console.log(page);
 
-    const count = dummyProducts.length;
+    const count = 4;
 
     return (
-        <div className='bg-bgAdmin-soft p-5 rounded-lg mt-5'>
-            {/* Search and Add Button */}
+        <div
+            className='bg-bgAdmin-soft p-5 rounded-lg mt-5'
+            suppressHydrationWarning
+        >
             <div className='flex items-center justify-between mb-4'>
                 <h1 className='text-lg font-light text-bgAdminText'>
                     Products
                 </h1>
-                <Link href='/dashboard/products/add'>
-                    <button className='px-4 py-2 bg-indigo-600 text-white rounded-md cursor-pointer'>
-                        Add New
-                    </button>
-                </Link>
+                <div className=''>
+                    <SearchBar initialQ={q} />
+                    <Link href='/dashboard/products/add'>
+                        <button className='py-2 px-4 bg-indigo-600 text-white rounded-md cursor-pointer'>
+                            Add New
+                        </button>
+                    </Link>
+                </div>
             </div>
-
-            {/* Product Table */}
             <table className='w-full rounded-lg shadow-md'>
                 <thead>
                     <tr>
-                        <td className='p-3'>Title</td>
-                        <td className='p-3'>Description</td>
-                        <td className='p-3'>Price</td>
-                        <td className='p-3'>Created At</td>
-                        <td className='p-3'>Stock</td>
+                        <td className='p-3'>Product</td>
+                        <td className='p-3'>Brand Name</td>
+                        <td className='p-3'>Color</td>
+                        <td className='p-3'>SKU</td>
+                        <td className='p-3'>Item Location</td>
+                        <td className='p-3'>Status</td>
                         <td className='p-3'>Action</td>
                     </tr>
                 </thead>
-                <tbody>
-                    {dummyProducts.map((product) => (
-                        <tr key={product.id} className='border-b'>
-                            <td className='p-3 flex items-center gap-3'>
-                                <Image
-                                    src={product.img}
-                                    alt={product.title}
-                                    width={40}
-                                    height={40}
-                                    className='rounded-full object-cover'
-                                />
-                                {product.title}
-                            </td>
-                            <td className='p-3'>{product.desc}</td>
-                            <td className='p-3'>${product.price}</td>
-                            <td className='p-3'>{product.createdAt}</td>
-                            <td className='p-3'>{product.stock}</td>
-                            <td className='p-3 flex gap-2'>
-                                <Link
-                                    href={`/dashboard/products/${product.id}`}
-                                >
-                                    <button className='px-3 py-1 bg-teal-500 text-white rounded'>
-                                        View
-                                    </button>
-                                </Link>
-                                <form method='POST'>
-                                    <input
-                                        type='hidden'
-                                        name='id'
-                                        value={product.id}
-                                    />
-                                    <button
-                                        className='px-3 py-1 bg-red-500 text-white rounded'
-                                        type='submit'
-                                    >
-                                        Delete
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    ))}
+                <tbody className='w-full'>
+                    <AllProduct page={page} searchKey={q} />
                 </tbody>
             </table>
-
-            {/* Pagination */}
-            <SuspendedPagination count={count} />
         </div>
     );
 };

@@ -1,7 +1,11 @@
 // tagTypes for caching, refetching
 
 export enum tagTypes {
-    user = 'user'
+    user = 'user',
+    size = 'size',
+    category = 'category',
+    product = 'product',
+    order = 'order',
 }
 
-export const tagTypesList = [tagTypes.user];
+export const tagTypesList = [tagTypes.user, tagTypes.size, tagTypes.category, tagTypes.product, tagTypes.order];
