@@ -1,24 +1,38 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { useGetAllSizesQuery } from '@/api';
 import { AccordionContent } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
-import { SIZE_OPTIONS } from '@/static';
-import React from 'react';
+import React, { useEffect } from 'react';
 
-const SizeContent: React.FC<{ handleSizeClick: (size: string) => void }> = ({
-    handleSizeClick
-}) => {
+interface IProps {
+    setFilters: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const SizeContent: React.FC<IProps> = ({ setFilters }) => {
+    const { data, isLoading } = useGetAllSizesQuery('');
+
+    const handleSizeClick = (sizeId: string) => {
+        setFilters((prev) => `sizeId_${sizeId}`);
+    };
+
     return (
         <AccordionContent>
             <div className='grid grid-cols-3 gap-2'>
-                {SIZE_OPTIONS.map((size) => (
-                    <Button
-                        key={size}
-                        variant='outline'
-                        onClick={() => handleSizeClick(size)}
-                        className='w-full'
-                    >
-                        {size}
-                    </Button>
-                ))}
+                {isLoading ? (
+                    <p>Loading sizes...</p>
+                ) : (
+                    data?.data?.map((size: any) => (
+                        <Button
+                            key={size.id}
+                            variant='outline'
+                            onClick={() => handleSizeClick(size.id)}
+                            className='w-full'
+                        >
+                            {size.name}
+                        </Button>
+                    ))
+                )}
             </div>
         </AccordionContent>
     );

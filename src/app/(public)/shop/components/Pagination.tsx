@@ -14,25 +14,29 @@ interface PaginationProps {
     totalPages?: number;
     defaultPage?: number;
     defaultPageSize?: number;
+    onPageChange: (page: number) => void;
+    onPageSizeChange: (size: number) => void;
 }
 
 const Pagination = ({
     totalPages = 7,
     defaultPage = 1,
-    defaultPageSize = 60
+    defaultPageSize = 60,
+    onPageChange,
+    onPageSizeChange
 }: PaginationProps) => {
     const [currentPage, setCurrentPage] = useState(defaultPage);
     const [pageSize, setPageSize] = useState(defaultPageSize);
 
     const handlePageSizeChange = (size: number) => {
         setPageSize(size);
-        console.log('Items per page changed to:', size);
+        onPageSizeChange(size); // Update in parent
     };
 
     const handlePageChange = (page: number) => {
         if (page >= 1 && page <= totalPages) {
             setCurrentPage(page);
-            console.log('Page changed to:', page);
+            onPageChange(page); // Update in parent
         }
     };
 

@@ -4,3 +4,4 @@ export { default as RoundedBtn } from './RoundedBtn';
 export { default as FullLoading } from './FullLoading';
 export { default as ApiError } from './ApiError';
 export { default as LoaderWrapper } from './LoaderWrapper';
+export { default as LoadingPublic } from './LoadingPublic';
