@@ -27,5 +27,5 @@ export interface ISingleProduct {
     createdAt: string;
     updatedAt: string;
     updatedById: string;
-  }
+}
   

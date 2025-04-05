@@ -2,8 +2,10 @@
 import { useGetMayLikeProductsQuery } from '@/api/public';
 import Avatar from '@/components/Avatar';
 import { Button } from '@/components/ui/button';
+import { addToCart, useAppDispatch } from '@/store';
 import { IProduct, ISingleProduct } from '@/types';
 import Link from 'next/link';
+import toast from 'react-hot-toast';
 
 interface IProps {
     product: ISingleProduct;
@@ -13,7 +15,9 @@ const ProductDetails = ({ product }: IProps) => {
     const { data, isLoading, isError } = useGetMayLikeProductsQuery(
         product?.categoryId || ''
     );
-    console.log(data);
+
+    const dispatch = useAppDispatch();
+
     if (isLoading) return 'Loading...';
     if (isError) return 'Something went wrong';
     return (
@@ -46,7 +50,14 @@ const ProductDetails = ({ product }: IProps) => {
                             </button>
                         </div>
 
-                        <Button className='w-full bg-red-700 hover:bg-red-800 text-white py-6'>
+                        <Button
+                            className='w-full bg-red-700 hover:bg-red-800 
+                            text-white py-6'
+                            onClick={() => {
+                                dispatch(addToCart(product));
+                                toast.success('Product added successfully');
+                            }}
+                        >
                             Add To Bag
                         </Button>
                     </div>

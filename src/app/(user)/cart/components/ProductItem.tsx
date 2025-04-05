@@ -1,30 +1,26 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
-import Image from 'next/image';
+
 import { Button } from '@/components/ui/button';
-import { ICheckoutProduct } from '@/types';
+import {
+    decrementQuantity,
+    incrementQuantity,
+    removeFromCart,
+    useAppDispatch
+} from '@/store';
+import Image from 'next/image';
+import toast from 'react-hot-toast';
 
-interface ProductItemProps {
-    product: ICheckoutProduct;
-    onQuantityChange: (quantity: number) => void;
-}
-
-const ProductItem = ({ product, onQuantityChange }: ProductItemProps) => {
-    const handleIncrement = () => {
-        onQuantityChange(product.quantity + 1);
-    };
-
-    const handleDecrement = () => {
-        if (product.quantity > 1) {
-            onQuantityChange(product.quantity - 1);
-        }
-    };
-
+const ProductItem = ({ product }: any) => {
+    const dispatch = useAppDispatch();
     return (
         <div className='py-6 flex flex-col sm:flex-row gap-4'>
             <div className='sm:w-32 flex-shrink-0'>
                 <Image
-                    src={product.image || '/placeholder.svg'}
-                    alt={product.name}
+                    src={
+                        product?.images[0]?.url || '/single-product/single.webp'
+                    }
+                    alt={product?.title}
                     width={120}
                     height={150}
                     className='w-full object-cover'
@@ -32,16 +28,24 @@ const ProductItem = ({ product, onQuantityChange }: ProductItemProps) => {
             </div>
 
             <div className='flex-1'>
-                <h3 className='font-medium'>{product.brand}</h3>
-                <p className='text-sm mb-2'>{product.name}</p>
+                <h3 className='font-medium'>{product?.brand}</h3>
+                <p className='text-sm mb-2'>{product?.title}</p>
 
                 <div className='text-sm space-y-1 mb-3'>
-                    <p>Size: {product.size}</p>
-                    <p>Color: {product.color}</p>
-                    <p>Web ID: {product.webId}</p>
+                    <p>Size: {product?.sizeType || ''}</p>
+                    <p>Color: {product?.color}</p>
+                    <p>SKU: {product?.sku}</p>
                 </div>
 
-                <button className='text-sm underline mb-3'>Remove</button>
+                <button
+                    className='text-sm underline mb-3'
+                    onClick={() => {
+                        dispatch(removeFromCart(product.id));
+                        toast.success('product removed successfully');
+                    }}
+                >
+                    Remove
+                </button>
             </div>
 
             <div className='sm:w-48 flex-shrink-0'>
@@ -53,18 +57,22 @@ const ProductItem = ({ product, onQuantityChange }: ProductItemProps) => {
                                 variant='ghost'
                                 size='icon'
                                 className='h-10 w-10 rounded-r-none'
-                                onClick={handleDecrement}
+                                onClick={() =>
+                                    dispatch(decrementQuantity(product.id))
+                                }
                             >
                                 −
                             </Button>
                             <div className='flex items-center justify-center w-10 h-10 border-x'>
-                                {product.quantity}
+                                {product?.quantity}
                             </div>
                             <Button
                                 variant='ghost'
                                 size='icon'
                                 className='h-10 w-10 rounded-l-none'
-                                onClick={handleIncrement}
+                                onClick={() =>
+                                    dispatch(incrementQuantity(product.id))
+                                }
                             >
                                 +
                             </Button>
@@ -72,26 +80,14 @@ const ProductItem = ({ product, onQuantityChange }: ProductItemProps) => {
                     </div>
 
                     <div className='text-right'>
-                        {product.discount && (
-                            <div className='flex flex-col items-end'>
-                                <div className='flex items-center gap-2'>
-                                    <span className='font-medium'>
-                                        BDT {product.price.toFixed(2)}
-                                    </span>
-                                    <span className='text-sm text-red-500'>
-                                        ({product.discount})
-                                    </span>
-                                </div>
-                                <span className='text-sm line-through'>
-                                    BDT {product.originalPrice?.toFixed(2)}
-                                </span>
-                            </div>
-                        )}
-                        {!product.discount && (
-                            <span className='font-medium'>
-                                BDT {product.price.toFixed(2)}
+                        <div className='flex flex-col items-end'>
+                            <span className='text-sm line-through'>
+                                ${product?.regularPrice}
                             </span>
-                        )}
+                        </div>
+                        <span className='font-medium'>
+                            ${product?.salePrice}
+                        </span>
                     </div>
                 </div>
             </div>
