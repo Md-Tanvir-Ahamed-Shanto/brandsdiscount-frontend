@@ -3,7 +3,7 @@ import { Star } from 'lucide-react';
 import Avatar from '@/components/Avatar';
 import { IProduct } from '@/types';
 import Link from 'next/link';
-import { convertToUrl } from '@/lib';
+// import { convertToUrl } from '@/lib';
 
 const SingleProductCard = ({ product }: { product: IProduct }) => {
     const {
@@ -23,8 +23,6 @@ const SingleProductCard = ({ product }: { product: IProduct }) => {
         // status
     } = product; // Destructuring inside the function
 
-    console.log('Brand Name:', images[0]?.url); // Now this should log correctly
-
     return (
         <div className='group relative'>
             {/* Discount Badge */}
@@ -39,7 +37,7 @@ const SingleProductCard = ({ product }: { product: IProduct }) => {
 
             {/* Product Image */}
             <Link
-                href={`/shop/${convertToUrl(title ? title : '')}`}
+                href={`/shop/${product?.id}`}
                 // href={`/shop`}
                 className='relative aspect-[3/4] overflow-hidden rounded-lg bg-gray-100 block mb-4'
             >
@@ -49,14 +47,12 @@ const SingleProductCard = ({ product }: { product: IProduct }) => {
                     }
                     alt={title ? title : ''}
                     className='object-cover object-center'
+                    priority={true}
                 />
             </Link>
 
             {/* Product Details */}
-            <Link
-                href={`/shop/${convertToUrl(title ? title : '')}`}
-                className='mt-4 space-y-2'
-            >
+            <Link href={`/shop/${product?.id}`} className='mt-4 space-y-2'>
                 <p className='text-sm text-gray-600'>
                     {brandName ? brandName : ''}
                 </p>

@@ -1,8 +1,9 @@
 'use client';
+import { useGetNewTrendingProductsQuery } from '@/api/public';
 import { ProductCard } from '@/app/components';
 import { Icons } from '@/components';
 import { trendingSliderSettings } from '@/config';
-import { TRENDING_SHOP } from '@/static';
+import { ISingleProduct } from '@/types';
 import React from 'react';
 import { useRef } from 'react';
 import Slider from 'react-slick';
@@ -10,6 +11,15 @@ import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 
 const TrendingSlider = () => {
+    const {
+        data: trendingData = [],
+        isLoading,
+        isError,
+        error
+    } = useGetNewTrendingProductsQuery('');
+
+    console.log('trendingData', trendingData?.data); //
+
     const sliderRef = useRef<Slider | null>(null);
 
     const nextSlide = () => {
@@ -23,16 +33,20 @@ const TrendingSlider = () => {
             sliderRef.current.slickPrev();
         }
     };
+    if (isLoading) return 'loading';
+    if (isError || error) return 'something went wrong';
     return (
-        <div className='overflow-hidden relative trendingSlider'>
+        <div className=' relative trendingSlider max-h-[660px] sm:max-h-[470px] md:max-h-[600px] lg:max-h-[550px]'>
             <Slider
                 ref={sliderRef}
                 {...trendingSliderSettings}
                 className='-ml-2'
             >
-                {TRENDING_SHOP.map((product, index) => (
-                    <ProductCard key={index} {...product} />
-                ))}
+                {(trendingData?.data || [])
+                    ?.slice(0, 8)
+                    .map((product: ISingleProduct) => (
+                        <ProductCard key={product?.id} product={product} />
+                    ))}
             </Slider>
 
             <div

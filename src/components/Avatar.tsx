@@ -5,9 +5,10 @@ interface IProps {
     className?: string;
     alt?: string;
     src: string;
+    priority?: boolean;
 }
 
-const Avatar: FC<IProps> = ({ className, src, alt, ...props }) => {
+const Avatar: FC<IProps> = ({ className, src, alt, priority, ...props }) => {
     return (
         <Image
             {...props}
@@ -17,6 +18,7 @@ const Avatar: FC<IProps> = ({ className, src, alt, ...props }) => {
             alt={alt ? alt : 'Avatar'}
             className={`${className} h-full w-auto object-fill`}
             unoptimized
+            priority={priority ? priority : false}
         />
     );
 };

@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { publicTagTypes } from '@/store';
 import { publicApi } from '@/store/publicApi';
+import { ISingleProduct } from '@/types';
 
 const allProductsApi = publicApi.injectEndpoints({
     endpoints: (build) => ({
@@ -9,10 +11,32 @@ const allProductsApi = publicApi.injectEndpoints({
                 method: 'GET',
             }),
             providesTags: [publicTagTypes.products],
+            keepUnusedDataFor: 60, // optional: cache data for 60s
         }), 
+        getSinglePublicProduct: build.query<ISingleProduct, string>({
+            query: (id) => ({
+            url: `/productroute/product/${id}`,
+            method: 'GET',
+            }),
+        }),
+        getMayLikeProducts: build.query<any, string>({
+            query: (id) => ({
+            url: `/productroute/products?filtering=categoryId_${id}`,
+            method: 'GET',
+            }),
+        }),
+        getNewTrendingProducts: build.query({
+            query: () => ({
+            url: `/productroute/products?filter_createdAt_desc`,
+            method: 'GET',
+            }),
+        }),
     }),
 });
 
 export const {  
   useGetAllPublicProductQuery, 
+  useGetSinglePublicProductQuery,
+  useGetMayLikeProductsQuery,
+  useGetNewTrendingProductsQuery,
 } = allProductsApi;

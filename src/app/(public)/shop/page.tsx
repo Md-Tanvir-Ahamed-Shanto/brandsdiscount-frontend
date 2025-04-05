@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 'use client';
 import React, { useEffect, useState } from 'react';
 import { CategorySlider, SingleProductCard } from '../../components';
@@ -16,30 +17,35 @@ const ShopPage = () => {
     const [pageSize, setPageSize] = useState(5);
     const [sortValue, setSortValue] = useState('');
     const [filters, setFilters] = useState('');
-    console.log('🚀 ~ ShopPage ~ filters:', filters);
 
     // Fetch products with updated parameters
-    const [products, setProducts] = useState<IProduct[]>([]);
-    console.log('🚀 ~ ShopPage ~ products:', products);
+    // const [products, setProducts] = useState<IProduct[]>([]);
 
     const {
-        data: productData,
+        data: productData = [],
         isLoading,
+        isFetching, // useful
         isError,
         error
-    } = useGetAllPublicProductQuery({
-        page: currentPage,
-        limit: pageSize,
-        sort: sortValue,
-        filters
-    });
+    } = useGetAllPublicProductQuery(
+        {
+            page: currentPage,
+            limit: pageSize,
+            sort: sortValue,
+            filters
+        },
+        {
+            // @ts-ignore
+            keepPreviousData: true // Prevent flickering
+        }
+    );
 
     // Update state when new data arrives
-    useEffect(() => {
+    /* useEffect(() => {
         if (productData?.data) {
             setProducts(productData.data); // Assuming productData has a `data` array
         }
-    }, [productData]);
+    }, [productData]); */
 
     // Log whenever page or page size changes
     useEffect(() => {
@@ -48,7 +54,7 @@ const ShopPage = () => {
         console.log('Sort Value:', sortValue);
     }, [currentPage, pageSize, sortValue]);
 
-    if (isLoading) {
+    if (isLoading || isFetching) {
         return <LoadingPublic />;
     }
     if (error || isError) {
@@ -66,15 +72,8 @@ const ShopPage = () => {
                 />
             </div>
 
-            {/* Products Grid */}
-            {/* <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 py-12'>
-                {PRODUCTS.map((product, index) => (
-                    <ProductCard key={index} {...product} />
-                ))}
-            </div> */}
-
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 py-12'>
-                {products?.map((product: IProduct) => (
+                {productData?.data?.map((product: IProduct) => (
                     <SingleProductCard key={product?.id} product={product} />
                 ))}
             </div>
