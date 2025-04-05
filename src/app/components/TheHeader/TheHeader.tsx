@@ -5,6 +5,7 @@ import SearchComponent from './SearchComponent';
 import { MegaMenu } from './MegaMenu';
 import MobileMenu from './MegaMenuMobile';
 import { useState } from 'react';
+import ProfileDropDown from './ProfileDropDown';
 
 const TheHeader = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -16,9 +17,12 @@ const TheHeader = () => {
             <header className='hidden lg:flex container items-center justify-between py-4'>
                 <Logo />
                 <SearchComponent />
-                <LinkButton href='/'>
-                    <Icons.ShoppingBag className='text-gray-800' />
-                </LinkButton>
+                <div className='flex gap-4 min-w-[250px] justify-end items-center'>
+                    <LinkButton href='/checkout' className='-mr-6'>
+                        <Icons.ShoppingBag className='text-gray-800' />
+                    </LinkButton>
+                    <ProfileDropDown />
+                </div>
             </header>
             {/* mobile */}
             <header className='block lg:hidden !w-full mb-4'>
@@ -32,9 +36,12 @@ const TheHeader = () => {
                         </button>
                         <Logo />
                     </div>
-                    <LinkButton href='/' className='-mr-6'>
-                        <Icons.ShoppingBag className='text-gray-800' />
-                    </LinkButton>
+                    <div className='flex gap-4 min-w-[250px] justify-end items-center'>
+                        <LinkButton href='/checkout' className='-mr-6'>
+                            <Icons.ShoppingBag className='text-gray-800' />
+                        </LinkButton>
+                        <ProfileDropDown />
+                    </div>
                 </div>
                 <div className='px-4 lg:px-0'>
                     <SearchComponent />

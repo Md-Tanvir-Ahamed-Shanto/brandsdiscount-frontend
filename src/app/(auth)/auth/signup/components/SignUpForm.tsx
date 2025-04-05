@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 import type React from 'react';
@@ -11,8 +12,11 @@ import { Checkbox } from '@/components/ui/checkbox';
 import {
     ACCESS_TOKEN_EXPIRY,
     API_BASE_URL,
+    getBaseUrl,
     REFRESH_TOKEN_EXPIRY
 } from '@/config';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 const SignUpForm = () => {
     const [name, setName] = useState('');
@@ -27,34 +31,33 @@ const SignUpForm = () => {
     const [keepSignedIn, setKeepSignedIn] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
+    const router = useRouter();
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
-
-        /* try {
+        try {
             const response = await axios.post(
-                `${API_BASE_URL}/authroute/login`,
+                `${getBaseUrl()}/authroute/signup`,
                 {
-                    username: email,
-                    password
+                    username: name,
+                    password,
+                    email,
+                    role: 'PlatformUser'
                 }
             );
-            if (response.data) {
-                const { access_token, refresh_token } = response.data;
-                Cookies.set('token', access_token, {
-                    expires: new Date(Date.now() + ACCESS_TOKEN_EXPIRY),
-                    path: '/'
-                });
-                Cookies.set('rtoken', refresh_token, {
-                    expires: new Date(Date.now() + REFRESH_TOKEN_EXPIRY),
-                    path: '/'
-                });
-                window.location.href = '/checkout';
-            }
-        } catch (error) {
+
+            toast.success('Account created successfully!');
+            router.push('/auth/login');
+            setIsLoading(true);
+        } catch (error: any) {
+            toast.error(
+                error?.response?.data?.message ||
+                    'Something went wrong during signup'
+            );
         } finally {
             setIsLoading(false);
-        } */
+        }
     };
 
     return (
