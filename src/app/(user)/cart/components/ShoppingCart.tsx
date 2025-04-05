@@ -103,9 +103,11 @@ const ShoppingCart = () => {
                         %)
                     </div>
 
-                    <Button className='w-full bg-red-700 hover:bg-red-800'>
-                        Proceed To Checkout
-                    </Button>
+                    <Link href='/checkout'>
+                        <Button className='w-full bg-red-700 hover:bg-red-800'>
+                            Proceed To Checkout
+                        </Button>
+                    </Link>
 
                     <div className='flex justify-between pt-2 text-sm'>
                         <Link
