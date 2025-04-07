@@ -3,63 +3,55 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import ProductItem from './ProductItem';
-import { defaultProducts } from '@/static';
 import Link from 'next/link';
+import {
+    clearCart,
+    RootState,
+    selectCartSavings,
+    selectCartSubtotal,
+    useAppDispatch,
+    useAppSelector
+} from '@/store';
+import toast from 'react-hot-toast';
 
-interface ShoppingCartProps {
-    initialProducts?: typeof defaultProducts;
-}
-
-const ShoppingCart = ({
-    initialProducts = defaultProducts
-}: ShoppingCartProps) => {
-    const [products, setProducts] = useState(initialProducts);
+const ShoppingCart = () => {
     const [promoCode, setPromoCode] = useState('');
 
-    // Calculate subtotal
-    const subtotal = products.reduce(
-        (total, product) => total + product.price * product.quantity,
-        0
-    );
+    const dispatch = useAppDispatch();
+    const subtotal = useAppSelector(selectCartSubtotal);
+    const savings = useAppSelector(selectCartSavings);
 
-    // Calculate savings (if any)
-    const originalTotal = products.reduce((total, product) => {
-        const originalPrice = product.originalPrice || product.price;
-        return total + originalPrice * product.quantity;
-    }, 0);
-    const savings = originalTotal - subtotal;
+    const cart = useAppSelector((state: RootState) => state.cart.products);
 
     const handleApplyPromoCode = () => {
         console.log('Promo code applied:', promoCode);
-    };
-
-    const handleQuantityChange = (id: string, newQuantity: number) => {
-        setProducts(
-            products.map((product) =>
-                product.id === id
-                    ? { ...product, quantity: newQuantity }
-                    : product
-            )
-        );
     };
 
     return (
         <div className='flex flex-col lg:flex-row gap-8 relative'>
             {/* Left side - Product list (uses main scrollbar) */}
             <div className='flex-1'>
-                <h1 className='text-2xl font-bold mb-4'>Your Bag</h1>
+                <h1 className='text-2xl font-bold mb-4'>
+                    Your Bag {cart?.length} Items{' '}
+                </h1>
 
                 <div className='space-y-6 divide-y'>
-                    {products.map((product) => (
+                    {cart?.map((singleProduct) => (
                         <ProductItem
-                            key={product.id}
-                            product={product}
-                            onQuantityChange={(quantity) =>
-                                handleQuantityChange(product.id, quantity)
-                            }
+                            key={singleProduct.id}
+                            product={singleProduct}
                         />
                     ))}
                 </div>
+                <button
+                    onClick={() => {
+                        dispatch(clearCart());
+                        toast.success('All product removed successfully');
+                    }}
+                    className={`w-full mt-4 px-5 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-md transition-all duration-200 shadow-sm ${cart?.length > 0 ? 'show' : 'hidden'}`}
+                >
+                    🗑️ Remove All Items From Cart
+                </button>
             </div>
 
             {/* Right side - Order summary (fixed) */}
@@ -100,20 +92,22 @@ const ShoppingCart = ({
                     <div className='flex justify-between items-center'>
                         <h2 className='text-xl font-medium'>Subtotal</h2>
                         <span className='text-xl font-medium'>
-                            BDT {subtotal.toFixed(2)}
+                            $ {subtotal.toFixed(2)}
                         </span>
                     </div>
 
-                    {savings > 0 && (
-                        <div className='text-red-500'>
-                            You save BDT {savings.toFixed(2)} (
-                            {Math.round((savings / originalTotal) * 100)}%)
-                        </div>
-                    )}
+                    <div className='text-red-500'>
+                        You save $ {savings.toFixed(2)} (
+                        {Math.round((savings / (subtotal + savings)) * 100) ||
+                            0}
+                        %)
+                    </div>
 
-                    <Button className='w-full bg-red-700 hover:bg-red-800'>
-                        Proceed To Checkout
-                    </Button>
+                    <Link href='/checkout'>
+                        <Button className='w-full bg-red-700 hover:bg-red-800'>
+                            Proceed To Checkout
+                        </Button>
+                    </Link>
 
                     <div className='flex justify-between pt-2 text-sm'>
                         <Link

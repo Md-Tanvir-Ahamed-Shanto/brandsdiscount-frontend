@@ -13,6 +13,7 @@ import {
     API_BASE_URL,
     REFRESH_TOKEN_EXPIRY
 } from '@/config';
+import toast from 'react-hot-toast';
 
 const LoginForm = () => {
     const [email, setEmail] = useState('');
@@ -34,6 +35,7 @@ const LoginForm = () => {
                 }
             );
             if (response.data) {
+                toast.success('Login successfully!');
                 const { access_token, refresh_token } = response.data;
                 Cookies.set('token', access_token, {
                     expires: new Date(Date.now() + ACCESS_TOKEN_EXPIRY),
@@ -46,8 +48,8 @@ const LoginForm = () => {
                 window.location.href = '/checkout';
             }
         } catch (error) {
-        } finally {
             setIsLoading(false);
+            toast.error('Email or password not valid');
         }
     };
 

@@ -1,131 +1,76 @@
 'use client';
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { useEffect, useState } from 'react';
 import { getStripe } from '@/lib/stripe';
 import { createCheckoutSession } from './actions';
+import { jwtDecode } from 'jwt-decode';
+import type { MyTokenPayload } from '@/app/(profile)/profile/page';
+import { useGetSingleProfileQuery } from '@/api';
+import Cookies from 'js-cookie';
+import { useAppSelector } from '@/store';
 
-// Define our products
-const products = [
-    {
-        id: 'prod_1',
-        name: 'Premium Headphones',
-        description: 'High-quality wireless headphones with noise cancellation',
-        price: 149.99,
-        image: '/placeholder.svg?height=200&width=200'
-    },
-    {
-        id: 'prod_2',
-        name: 'Smart Watch',
-        description:
-            'Feature-rich smartwatch with health tracking and notifications',
-        price: 199.99,
-        image: '/placeholder.svg?height=200&width=200'
-    }
-];
+import { OrderItems, OrderSummary, ShippingInformation } from './components';
 
-export default function Home() {
+export default function Checkout() {
     const [isLoading, setIsLoading] = useState(false);
-    const [cart, setCart] = useState<
-        { id: string; name: string; price: number; quantity: number }[]
-    >([]);
+    const cart = useAppSelector((state) => state.cart.products);
 
-    const addToCart = (product: (typeof products)[0]) => {
-        setCart((prevCart) => {
-            const existingItem = prevCart.find(
-                (item) => item.id === product.id
-            );
-            if (existingItem) {
-                return prevCart.map((item) =>
-                    item.id === product.id
-                        ? { ...item, quantity: item.quantity + 1 }
-                        : item
-                );
-            } else {
-                return [
-                    ...prevCart,
-                    {
-                        id: product.id,
-                        name: product.name,
-                        price: product.price,
-                        quantity: 1
-                    }
-                ];
-            }
-        });
-    };
+    const [userId, setUserId] = useState<string | null>(null);
+    const { data: userData } = useGetSingleProfileQuery(userId);
+    const userDetails = userData?.userDetails;
 
     const handleCheckout = async () => {
         setIsLoading(true);
         try {
-            // Create a checkout session
-            const { sessionId } = await createCheckoutSession(cart);
+            const product = cart.map((item) => ({
+                id: item.id,
+                name: item.title,
+                price: item.salePrice,
+                quantity: item.quantity
+            }));
 
-            // Redirect to Stripe Checkout
+            const { sessionId } = await createCheckoutSession(product);
             const stripe = await getStripe();
             await stripe.redirectToCheckout({ sessionId });
         } catch (error) {
-            console.error('Error during checkout:', error);
+            console.error('Checkout error:', error);
         } finally {
             setIsLoading(false);
         }
     };
 
-    const totalPrice = cart.reduce(
-        (sum, item) => sum + item.price * item.quantity,
-        0
-    );
+    useEffect(() => {
+        const token = Cookies.get('token');
+        if (token) {
+            try {
+                const decoded = jwtDecode<MyTokenPayload>(token);
+                setUserId(decoded.id);
+            } catch (error) {
+                console.error('Error decoding token:', error);
+            }
+        }
+    }, []);
 
     return (
-        <main className='container mx-auto py-10 px-4'>
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mb-10'>
-                {products.map((product) => (
-                    <div key={product.id} className='overflow-hidden'>
-                        <div>
-                            <div>{product.name}</div>
-                            <div>{product.description}</div>
-                        </div>
-                        <div>
-                            <p className='text-2xl font-bold'>
-                                ${product.price.toFixed(2)}
-                            </p>
-                        </div>
-                        <div>
-                            <Button onClick={() => addToCart(product)}>
-                                Add to Cart
-                            </Button>
-                        </div>
-                    </div>
-                ))}
-            </div>
-
-            {cart.length > 0 && (
-                <div className='bg-muted p-6 rounded-lg mb-8'>
-                    <h2 className='text-xl font-bold mb-4'>Your Cart</h2>
-                    <div className='space-y-2 mb-4'>
-                        {cart.map((item) => (
-                            <div key={item.id} className='flex justify-between'>
-                                <span>
-                                    {item.name} x {item.quantity}
-                                </span>
-                                <span>
-                                    ${(item.price * item.quantity).toFixed(2)}
-                                </span>
-                            </div>
-                        ))}
-                        <div className='border-t pt-2 mt-2 font-bold flex justify-between'>
-                            <span>Total:</span>
-                            <span>${totalPrice.toFixed(2)}</span>
-                        </div>
-                    </div>
-                    <Button
-                        className='w-full'
-                        onClick={handleCheckout}
-                        disabled={isLoading}
-                    >
-                        {isLoading ? 'Processing...' : 'Checkout'}
-                    </Button>
+        <div className='container mx-auto py-10 px-4 md:px-6'>
+            <h1 className='text-3xl font-bold mb-8'>
+                Please Review And Confirm
+            </h1>
+            <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
+                {/* Left Column - User Details */}
+                <div className='lg:col-span-2 space-y-6'>
+                    <ShippingInformation userDetails={userDetails} />
+                    <OrderItems cart={cart} />
                 </div>
-            )}
-        </main>
+
+                {/* Right Column - Order Summary */}
+                <div>
+                    <OrderSummary
+                        isLoading={isLoading}
+                        handleCheckout={handleCheckout}
+                        userDetails={userDetails}
+                    />
+                </div>
+            </div>
+        </div>
     );
 }

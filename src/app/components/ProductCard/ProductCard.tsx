@@ -1,25 +1,31 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Star } from 'lucide-react';
 import Avatar from '@/components/Avatar';
-import { ProductCardProps } from '@/types';
 import Link from 'next/link';
-import { convertToUrl } from '@/lib';
 
-const ProductCard = ({
-    image,
-    brand,
-    name,
-    regularPrice,
-    vipPrice,
-    vipOffer,
-    discount,
-    rating,
-    reviews
-}: ProductCardProps) => {
+const ProductCard = ({ product }: any) => {
+    console.log('product', product);
+    const {
+        title,
+        brandName,
+        // sku,
+        images,
+        // itemLocation,
+        // sizeId,
+        // sizeType,
+        salePrice,
+        platFormPrice,
+        discountPercent
+        // stockQuantity,
+        // condition,
+        // description,
+        // status
+    } = product; // Destructuring inside the function
     return (
         <div className='group relative'>
             {/* Discount Badge */}
             <div className='absolute left-0 top-4 z-10 bg-red-600 text-white px-2 py-1'>
-                -{discount}%
+                -{discountPercent}%
             </div>
 
             {/* Limited Time Special Badge */}
@@ -29,34 +35,37 @@ const ProductCard = ({
 
             {/* Product Image */}
             <Link
-                href={`/shop/${convertToUrl(name)}`}
+                href={`/shop/${product?.id}`}
                 className='relative aspect-[3/4] overflow-hidden rounded-lg bg-gray-100 block mb-4'
             >
                 <Avatar
-                    src={image || '/placeholder.svg'}
-                    alt={name}
+                    src={
+                        images[0]?.url ? images[0]?.url : '/shop/no-image.jpeg'
+                    }
+                    alt={title ? title : ''}
                     className='object-cover object-center'
                 />
             </Link>
 
             {/* Product Details */}
-            <Link
-                href={`/shop/${convertToUrl(name)}`}
-                className='mt-4 space-y-2'
-            >
-                <p className='text-sm text-gray-600'>{brand}</p>
-                <h3 className='font-medium text-gray-700'>{name}</h3>
+            <Link href={`/shop/${product?.id}`} className='mt-4 space-y-2'>
+                <p className='text-sm text-gray-600'>
+                    {brandName ? brandName : ''}
+                </p>
+                <h3 className='font-medium text-gray-700'>
+                    {title ? title : ''}
+                </h3>
 
                 {/* Pricing */}
                 <div className='space-y-1'>
                     <div className='text-sm text-green-600'>
-                        NEW VIP OFFER: ${vipOffer.toFixed(2)}
+                        PLATFORM PRICE: ${platFormPrice ? platFormPrice : 0}
                     </div>
-                    <div className='text-sm'>
+                    {/* <div className='text-sm'>
                         VIP Price: ${vipPrice.toFixed(2)}
-                    </div>
+                    </div> */}
                     <div className='text-sm text-gray-500 line-through'>
-                        Reg Price: ${regularPrice.toFixed(2)}
+                        Sale Price: ${salePrice ? salePrice : ''}
                     </div>
                 </div>
 
@@ -66,13 +75,13 @@ const ProductCard = ({
                         <Star
                             key={index}
                             className={`h-4 w-4 ${
-                                index < rating
+                                index < 5
                                     ? 'fill-yellow-400 text-yellow-400'
                                     : 'fill-gray-200 text-gray-200'
                             }`}
                         />
                     ))}
-                    <span className='text-sm text-gray-600'>({reviews})</span>
+                    <span className='text-sm text-gray-600'>({5})</span>
                 </div>
             </Link>
         </div>

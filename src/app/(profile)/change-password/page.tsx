@@ -1,6 +1,6 @@
 'use client';
 import type React from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
     Card,
@@ -11,18 +11,24 @@ import {
     CardTitle
 } from '@/components/ui/card';
 import { PasswordInput } from './components';
+import { useUpdatePasswordMutation } from '@/api';
+import { jwtDecode } from 'jwt-decode';
+import { MyTokenPayload } from '@/app/(profile)/profile/page';
+import Cookies from 'js-cookie';
 
 export default function ChangePassword() {
+    const [userId, setUserId] = useState<string | null>(null);
+    const [updatePassword, { isLoading }] = useUpdatePasswordMutation();
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+
     const [errors, setErrors] = useState<{
         oldPassword?: string;
         newPassword?: string;
         confirmPassword?: string;
         form?: string;
     }>({});
-    const [isSuccess, setIsSuccess] = useState(false);
 
     const validateForm = () => {
         const newErrors: {
@@ -58,17 +64,20 @@ export default function ChangePassword() {
         return isValid;
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setIsSuccess(false);
 
         if (validateForm()) {
-            // Log passwords to console as requested
-            console.log('Old Password:', oldPassword);
-            console.log('New Password:', newPassword);
+            const formData = new FormData();
 
-            // In a real app, you would call an API here to change the password
-            setIsSuccess(true);
+            formData.append('password', JSON.stringify(newPassword));
+
+            const res = await updatePassword({ id: userId, formData });
+
+            console.log('🚀 ~ handleSubmit ~ res:', res);
+            /* if (res?.data) {
+                toast.success('Password updated successfully');
+            } */
 
             // Reset form
             setOldPassword('');
@@ -77,9 +86,21 @@ export default function ChangePassword() {
         }
     };
 
+    const token = Cookies.get('token');
+    useEffect(() => {
+        if (token) {
+            try {
+                const decoded = jwtDecode<MyTokenPayload>(token);
+                setUserId(decoded.id);
+            } catch (error) {
+                console.error('Error decoding token:', error);
+            }
+        }
+    }, [token]);
+
     return (
-        <div className='flex min-h-screen items-center justify-center bg-gray-50 p-4'>
-            <Card className='w-full max-w-md'>
+        <div className='flex items-center p-4'>
+            <Card className='w-full'>
                 <CardHeader>
                     <CardTitle className='text-2xl'>Change Password</CardTitle>
                     <CardDescription>
@@ -88,8 +109,6 @@ export default function ChangePassword() {
                 </CardHeader>
                 <form onSubmit={handleSubmit}>
                     <CardContent className='space-y-4'>
-                        {isSuccess && 'Password changed successfully!'}
-
                         <PasswordInput
                             id='old-password'
                             label='Old Password'
@@ -115,8 +134,12 @@ export default function ChangePassword() {
                         />
                     </CardContent>
                     <CardFooter>
-                        <Button type='submit' className='w-full'>
-                            Change Password
+                        <Button
+                            type='submit'
+                            className='w-full'
+                            disabled={isLoading}
+                        >
+                            {isLoading ? 'Loading' : 'Change Password'}
                         </Button>
                     </CardFooter>
                 </form>

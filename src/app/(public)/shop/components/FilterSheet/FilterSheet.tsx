@@ -38,7 +38,11 @@ function useDebounce<T>(value: T, delay: number): T {
     return debouncedValue;
 }
 
-const FilterSheet = () => {
+interface IProps {
+    setFilters: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const FilterSheet = ({ setFilters }: IProps) => {
     const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
     const [selectedDiscounts, setSelectedDiscounts] = useState<string[]>([]);
     const [brandSearch, setBrandSearch] = useState('');
@@ -75,9 +79,9 @@ const FilterSheet = () => {
         console.log('Selected discount ranges:', selectedDiscounts);
     };
 
-    const handleSizeClick = (size: string) => {
+    /* const handleSizeClick = (size: string) => {
         console.log('Selected size:', size);
-    };
+    }; */
 
     const handleClear = () => {
         setSelectedTypes([]);
@@ -118,17 +122,6 @@ const FilterSheet = () => {
 
                 <div className='mt-8'>
                     <Accordion type='single' collapsible className='w-full'>
-                        {/* Type Accordion */}
-                        <AccordionItem value='type'>
-                            <AccordionTrigger className='!text-lg !border-b-0'>
-                                Item Type
-                            </AccordionTrigger>
-                            <TypeContent
-                                selectedTypes={selectedTypes}
-                                handleTypeChange={handleTypeChange}
-                            />
-                        </AccordionItem>
-
                         {/* Discount Range Accordion */}
                         <AccordionItem value='discount'>
                             <AccordionTrigger className='!text-lg'>
@@ -137,6 +130,28 @@ const FilterSheet = () => {
                             <DiscountContent
                                 selectedDiscounts={selectedDiscounts}
                                 handleDiscountChange={handleDiscountChange}
+                            />
+                        </AccordionItem>
+
+                        {/* Size Accordion */}
+                        <AccordionItem value='size'>
+                            <AccordionTrigger className='!text-lg'>
+                                Size
+                            </AccordionTrigger>
+                            <SizeContent
+                                // handleSizeClick={handleSizeClick}
+                                setFilters={setFilters}
+                            />
+                        </AccordionItem>
+
+                        {/* Type Accordion */}
+                        <AccordionItem value='type'>
+                            <AccordionTrigger className='!text-lg !border-b-0'>
+                                Item Type
+                            </AccordionTrigger>
+                            <TypeContent
+                                selectedTypes={selectedTypes}
+                                handleTypeChange={handleTypeChange}
                             />
                         </AccordionItem>
 
@@ -150,14 +165,6 @@ const FilterSheet = () => {
                                 setBrandSearch={setBrandSearch}
                                 filteredBrands={filteredBrands}
                             />
-                        </AccordionItem>
-
-                        {/* Size Accordion */}
-                        <AccordionItem value='size'>
-                            <AccordionTrigger className='!text-lg'>
-                                Size
-                            </AccordionTrigger>
-                            <SizeContent handleSizeClick={handleSizeClick} />
                         </AccordionItem>
                     </Accordion>
                 </div>
