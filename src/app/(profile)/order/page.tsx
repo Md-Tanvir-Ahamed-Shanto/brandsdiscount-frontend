@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
-
 import { useGetAllProfileOrderQuery } from '@/api';
 import { useState } from 'react';
 import { format } from 'date-fns';
@@ -23,7 +23,6 @@ import {
 } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
-import Link from 'next/link';
 
 const OrderPage = () => {
     const { data: orderData, isLoading } = useGetAllProfileOrderQuery('');
@@ -56,10 +55,10 @@ const OrderPage = () => {
         }
     };
 
-    const filteredOrders = orderData?.filter((order) => {
+    const filteredOrders = orderData?.filter((order: any) => {
         const matchesSearch =
             order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            order.orderDetails.some((detail) =>
+            order.orderDetails.some((detail: any) =>
                 detail.productName
                     .toLowerCase()
                     .includes(searchTerm.toLowerCase())
@@ -148,7 +147,7 @@ const OrderPage = () => {
                 </div>
             ) : (
                 <div className='space-y-4'>
-                    {filteredOrders?.map((order) => (
+                    {filteredOrders?.map((order: any) => (
                         <div
                             key={order.id}
                             className='border rounded-lg overflow-hidden'
@@ -227,7 +226,7 @@ const OrderPage = () => {
                                             </thead>
                                             <tbody className='divide-y divide-gray-200'>
                                                 {order.orderDetails.map(
-                                                    (detail) => (
+                                                    (detail: any) => (
                                                         <tr key={detail.id}>
                                                             <td className='px-4 py-3 whitespace-nowrap'>
                                                                 <div className='flex items-center'>
