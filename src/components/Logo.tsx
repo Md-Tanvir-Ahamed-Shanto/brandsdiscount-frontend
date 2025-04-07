@@ -20,6 +20,7 @@ const Logo: FC<IProps> = ({ className }) => {
                 alt='site-logo'
                 className={`${className} h-[50px] w-[200px] md:h-[70px]  md:w-[300px]`}
                 unoptimized
+                priority
             />
         </Link>
     );

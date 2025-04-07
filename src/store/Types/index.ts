@@ -6,9 +6,10 @@ export enum tagTypes {
     category = 'category',
     product = 'product',
     order = 'order',
+    profile = 'profile',
 }
 
-export const tagTypesList = [tagTypes.user, tagTypes.size, tagTypes.category, tagTypes.product, tagTypes.order];
+export const tagTypesList = [tagTypes.user, tagTypes.size, tagTypes.category, tagTypes.product, tagTypes.order, tagTypes.profile];
 
 export enum publicTagTypes {
     products = 'products', 

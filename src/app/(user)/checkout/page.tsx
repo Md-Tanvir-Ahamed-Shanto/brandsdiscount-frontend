@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { getStripe } from '@/lib/stripe';
 import { createCheckoutSession } from './actions';
-import { CheckoutForm } from './components';
 
 export default function Checkout() {
     const [isLoading, setIsLoading] = useState(false);
@@ -14,7 +13,7 @@ export default function Checkout() {
             const product = [
                 {
                     id: 'prod_static',
-                    name: 'Test Product',
+                    name: 'Test Productsss',
                     price: 99.99,
                     quantity: 1
                 }
@@ -31,7 +30,6 @@ export default function Checkout() {
 
     return (
         <div className='flex justify-center items-center min-h-screen'>
-            <CheckoutForm />
             <Button onClick={handleCheckout} disabled={isLoading}>
                 {isLoading ? 'Processing...' : 'Checkout'}
             </Button>

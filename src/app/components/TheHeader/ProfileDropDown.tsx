@@ -45,7 +45,7 @@ const ProfileDropDown = () => {
                 >
                     <div className='flex gap-4 items-center p-2 rounded-md cursor-pointer'>
                         <div className='hidden xs:block'>
-                            <p className='font-medium text-sm'>
+                            <p className='font-medium text-sm truncate'>
                                 Nisharga Kabir
                             </p>
                             <p className='text-xs'>user</p>
