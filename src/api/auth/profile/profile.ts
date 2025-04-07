@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { baseApi, tagTypes } from '@/store';
 
 const userApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
-        updateUserProfile: build.mutation<any, any>({
+        /* updateUserProfile: build.mutation<any, any>({
             query: ({id, form}) => {  
                 return {
                     url: `/userroute/update/659d408f-1cc1-471e-af2e-2b4cef939847`,
@@ -11,7 +10,7 @@ const userApi = baseApi.injectEndpoints({
                     body: form,
                 };
             },
-        }),
+        }), */
         
         getSingleProfile: build.query({
             query: (id) => ({
@@ -27,11 +26,23 @@ const userApi = baseApi.injectEndpoints({
             }), 
             providesTags: [tagTypes.profile], 
         }),   
+        updatePassword: build.mutation({
+            query: ({ id, formData }) => {
+                console.log(id);
+                console.log(formData);   
+                return {
+                url: `/userroute/update/${id}`,
+                method: "PUT",
+                data: formData,
+                };
+            },
+            invalidatesTags: [tagTypes.profile],
+        }),
     })
 });
 
 export const {  
-    useUpdateUserProfileMutation,
     useGetSingleProfileQuery,
-    useGetAllProfileOrderQuery
+    useGetAllProfileOrderQuery,
+    useUpdatePasswordMutation
 } = userApi;

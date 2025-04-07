@@ -6,16 +6,40 @@ import Cookies from 'js-cookie';
 import { ChevronDown, Power, UserRound } from 'lucide-react';
 import Avatar from '@/components/Avatar';
 import toast from 'react-hot-toast';
+import { jwtDecode } from 'jwt-decode';
+import { MyTokenPayload } from '@/app/(profile)/profile/page';
+import { useGetSingleProfileQuery } from '@/api';
 
 const ProfileDropDown = () => {
+    const [userId, setUserId] = useState<string | null>(null);
+    const { data: userData } = useGetSingleProfileQuery(userId);
+
     const [isLoginIn, setIsLoginIn] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
     const router = useRouter();
 
+    const token = Cookies.get('token');
+    useEffect(() => {
+        if (token) {
+            try {
+                setIsLoginIn(true);
+                const decoded = jwtDecode<MyTokenPayload>(token);
+                setUserId(decoded.id);
+            } catch (error) {
+                console.error('Error decoding token:', error);
+            }
+        }
+    }, [token]);
+
     useEffect(() => {
         const token = Cookies.get('token');
         if (token) {
-            setIsLoginIn(true);
+            try {
+                const decoded = jwtDecode<MyTokenPayload>(token);
+                setUserId(decoded.id);
+            } catch (error) {
+                console.error('Error decoding token:', error);
+            }
         }
     }, []);
 
@@ -46,14 +70,17 @@ const ProfileDropDown = () => {
                     <div className='flex gap-4 items-center p-2 rounded-md cursor-pointer'>
                         <div className='hidden xs:block'>
                             <p className='font-medium text-sm truncate'>
-                                Nisharga Kabir
+                                {userData?.username || ''}
                             </p>
-                            <p className='text-xs'>user</p>
+                            <p className='text-xs'>{userData?.role || ''}</p>
                         </div>
-                        <div className='!w-9 !h-9 rounded-full bg-main-400'>
+                        <div className='!w-9 !h-9 !rounded-full bg-main-400'>
                             <Avatar
-                                src='/logos/male_avatar_two.png'
-                                className='w-full h-full'
+                                src={
+                                    userData?.profilePicture?.url ||
+                                    '/logos/male_avatar_two.png'
+                                }
+                                className='w-full h-full !rounded-full'
                             />
                         </div>
                         <ChevronDown className='min-w-5 min-h-5' />

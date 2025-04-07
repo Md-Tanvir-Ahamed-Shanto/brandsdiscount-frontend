@@ -3,7 +3,7 @@ import type React from 'react';
 import { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
-import { useGetSingleProfileQuery, useUpdateUserProfileMutation } from '@/api';
+import { useGetSingleProfileQuery } from '@/api';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -11,8 +11,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { X, Upload } from 'lucide-react';
 import toast from 'react-hot-toast';
 import Avatar from '@/components/Avatar';
+import { API_BASE_URL } from '@/config';
 
-interface MyTokenPayload {
+export interface MyTokenPayload {
     id: string;
 }
 
@@ -30,7 +31,7 @@ interface UserProfile {
 
 const UpdateProfile = () => {
     const [userId, setUserId] = useState<string | null>(null);
-    const [updateProfile, { isLoading }] = useUpdateUserProfileMutation();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const { data: userData } = useGetSingleProfileQuery(userId);
 
@@ -46,6 +47,8 @@ const UpdateProfile = () => {
         postalCode: '',
         country: ''
     });
+
+    const token = Cookies.get('token');
 
     useEffect(() => {
         const token = Cookies.get('token');
@@ -80,6 +83,49 @@ const UpdateProfile = () => {
         }
     }, [userData]);
 
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (!userId) {
+            toast.error('You must be logged in to update your profile');
+            return;
+        }
+
+        try {
+            const form = new FormData();
+
+            if (imageFile) {
+                form.append('file', imageFile);
+            }
+
+            form.append('userDetails', JSON.stringify(formData));
+            setIsLoading(true);
+            const res = await fetch(
+                `${API_BASE_URL}/userroute/update/${userId}`,
+                {
+                    method: 'PUT',
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    },
+                    body: form
+                }
+            );
+
+            const data = await res.json();
+
+            if (res.ok && data.success) {
+                setIsLoading(false);
+                toast.success('Your profile has been successfully updated');
+            } else {
+                toast.error(data?.message || 'Failed to update profile');
+            }
+        } catch (error) {
+            setIsLoading(false);
+            console.error('Error updating profile:', error);
+            toast.error('There was a problem updating your profile');
+        }
+    };
+
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
@@ -104,36 +150,6 @@ const UpdateProfile = () => {
             'profile-image'
         ) as HTMLInputElement;
         if (fileInput) fileInput.value = '';
-    };
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!userId) {
-            toast.error('You must be logged in to update your profile');
-            return;
-        }
-
-        try {
-            const form = new FormData();
-
-            // Append image file if selected
-            if (imageFile) {
-                form.append('file', imageFile);
-            }
-
-            Object.entries(formData).forEach(([key, value]) => {
-                form.append(key, value as string);
-            });
-
-            // Call the update API with FormData
-            const response = await updateProfile({ userId, form }).unwrap();
-            if (response.success) {
-                toast.success('Your profile has been successfully updated');
-            }
-        } catch (error) {
-            console.error('Error updating profile:', error);
-            toast.error('There was a problem updating your profile');
-        }
     };
 
     return (

@@ -48,8 +48,8 @@ const LoginForm = () => {
                 window.location.href = '/checkout';
             }
         } catch (error) {
-        } finally {
             setIsLoading(false);
+            toast.error('Email or password not valid');
         }
     };
 
