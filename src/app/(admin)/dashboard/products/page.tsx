@@ -21,7 +21,7 @@ const ProductsPage = async ({
 
     return (
         <div
-            className='bg-bgAdmin-soft p-5 rounded-lg mt-5'
+            className='bg-bgAdmin-soft p-5 rounded-lg mt-5 mx-5'
             suppressHydrationWarning
         >
             <div className='flex items-center justify-between mb-4'>

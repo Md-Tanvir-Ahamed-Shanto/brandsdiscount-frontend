@@ -1,11 +1,9 @@
 'use client';
 import { useGetMayLikeProductsQuery } from '@/api/public';
 import Avatar from '@/components/Avatar';
-import { Button } from '@/components/ui/button';
-import { addToCart, useAppDispatch } from '@/store';
 import { IProduct, ISingleProduct } from '@/types';
 import Link from 'next/link';
-import toast from 'react-hot-toast';
+import { AuthModal } from '.';
 
 interface IProps {
     product: ISingleProduct;
@@ -16,10 +14,10 @@ const ProductDetails = ({ product }: IProps) => {
         product?.categoryId || ''
     );
 
-    const dispatch = useAppDispatch();
-
     if (isLoading) return 'Loading...';
     if (isError) return 'Something went wrong';
+
+    console.log('product', product);
     return (
         <>
             <div className='max-w-7xl mx-auto px-4 py-8'>
@@ -50,7 +48,7 @@ const ProductDetails = ({ product }: IProps) => {
                             </button>
                         </div>
 
-                        <Button
+                        {/* <Button
                             className='w-full bg-red-700 hover:bg-red-800 
                             text-white py-6'
                             onClick={() => {
@@ -59,7 +57,9 @@ const ProductDetails = ({ product }: IProps) => {
                             }}
                         >
                             Add To Bag
-                        </Button>
+                        </Button> */}
+
+                        <AuthModal product={product} />
                     </div>
                 </div>
             </div>

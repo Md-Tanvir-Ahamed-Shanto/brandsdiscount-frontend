@@ -50,7 +50,7 @@ const AddUserPage = () => {
     };
 
     return (
-        <div className='bg-bgAdmin-soft p-5 rounded-lg mt-5'>
+        <div className='bg-bgAdmin-soft p-5 rounded-lg mt-5 mx-5'>
             <AddProductForm />
             <LoaderWrapper
                 isLoading={isLoading}

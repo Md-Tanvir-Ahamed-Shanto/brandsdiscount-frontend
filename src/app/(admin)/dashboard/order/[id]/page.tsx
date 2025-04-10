@@ -6,6 +6,7 @@ import { useParams, useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { LoaderWrapper } from '@/components';
 import FormLabel from '@/components/ui/FormLabel';
+import BackBtn from '@/components/shared/Back';
 
 const SingleOrderPage = () => {
     const router = useRouter();
@@ -79,7 +80,8 @@ const SingleOrderPage = () => {
     if (isError) return <p>Error loading order data.</p>;
 
     return (
-        <div className='flex gap-12 mt-5'>
+        <div className='mt-5 mx-5'>
+            <BackBtn labelFor='Order' url='/dashboard/order' className='pl-2' />
             {/* Order Edit Form */}
             <div className='flex-[6] bg-bgAdminAdmin-soft p-5 rounded-lg'>
                 <form onSubmit={handleSubmit} className='flex flex-col'>
@@ -89,7 +91,7 @@ const SingleOrderPage = () => {
                         name='status'
                         value={formData.status}
                         onChange={handleSelectChange}
-                        className='!bg-[#2e374a] p-5 border-2 border-[#2e374a] rounded-md !bg-transparent text-text mb-5'
+                        className='!bg-white text-gray-500 p-5 border-2 border-[#2e374a] rounded-md !bg-transparent text-text mb-5'
                     >
                         <option value=''>Select Status</option>
                         <option value='pending'>Pending</option>

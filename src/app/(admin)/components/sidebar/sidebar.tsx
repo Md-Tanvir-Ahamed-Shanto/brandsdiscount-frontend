@@ -4,7 +4,6 @@ import {
     MdDashboard,
     MdSupervisedUserCircle,
     MdShoppingBag,
-    MdAttachMoney,
     MdWork,
     MdAnalytics,
     MdOutlineSettings,
@@ -55,12 +54,12 @@ const menuItems: MenuCategory[] = [
                 title: 'Orders',
                 path: '/dashboard/order',
                 icon: <MdShoppingBag />
-            },
-            {
+            }
+            /* {
                 title: 'Transactions',
                 path: '/dashboard/transactions',
                 icon: <MdAttachMoney />
-            }
+            } */
         ]
     }
     /*  {
@@ -114,7 +113,7 @@ const Sidebar = () => {
             <form>
                 <button
                     className='flex items-center gap-2 py-1.5 px-4 my-1 cursor-pointer rounded-lg border-none bg-transparent text-white 
-                hover:bg-[#2e374a] !bg-red-500 ml-1'
+                hover:bg-[#2e374a] !bg-red-500 ml-1 mt-4'
                     onClick={handleLogout}
                 >
                     <MdLogout />

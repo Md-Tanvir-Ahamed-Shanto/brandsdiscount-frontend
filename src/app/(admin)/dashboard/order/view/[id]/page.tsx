@@ -7,6 +7,7 @@ import { format } from 'date-fns';
 import Link from 'next/link';
 import { ArrowLeft, Edit } from 'lucide-react';
 import { useParams } from 'next/navigation';
+import BackBtn from '@/components/shared/Back';
 
 const SingleOrderViewPage = () => {
     const { id } = useParams();
@@ -33,13 +34,7 @@ const SingleOrderViewPage = () => {
         <div className='flex flex-col gap-6 mt-5'>
             {/* Header with back button and edit button */}
             <div className='flex justify-between items-center px-4'>
-                <Link
-                    href='/dashboard/order'
-                    className='flex items-center gap-2 text-sm hover:underline'
-                >
-                    <ArrowLeft size={16} />
-                    Back to Orders
-                </Link>
+                <BackBtn labelFor='Order' url='/dashboard/order' />
                 <Link
                     href={`/order/${id}`}
                     className='flex items-center gap-2 bg-teal-500 text-white px-4 py-2 rounded-md'

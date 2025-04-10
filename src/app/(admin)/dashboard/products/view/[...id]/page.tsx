@@ -3,6 +3,7 @@
 import { useGetSingleProductQuery } from '@/api';
 import { LoaderWrapper } from '@/components';
 import Avatar from '@/components/Avatar';
+import BackBtn from '@/components/shared/Back';
 import React, { useEffect, useState } from 'react';
 
 const SingleProduct = ({ params }: { params: any }) => {
@@ -22,7 +23,7 @@ const SingleProduct = ({ params }: { params: any }) => {
     }, [productData]);
 
     return (
-        <div className='bg-bgAdmin-soft p-5 rounded-lg mt-5'>
+        <div className='bg-bgAdmin-soft p-5 rounded-lg mt-5 mx-5'>
             <LoaderWrapper
                 isLoading={isLoading}
                 isError={isError}
@@ -33,6 +34,11 @@ const SingleProduct = ({ params }: { params: any }) => {
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-5'>
                     {/* Images Section */}
                     <div className='space-y-4'>
+                        <BackBtn
+                            labelFor='Products'
+                            url='/dashboard/products'
+                            className='mb-6'
+                        />
                         <h2 className='text-xl font-semibold text-bgAdminText'>
                             Product Images
                         </h2>

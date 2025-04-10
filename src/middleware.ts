@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
  
-const protectedRoutes = ["/checkout", "/success", "/orders", 
+const protectedRoutes = ["/cart", "/checkout", "/success", "/orders", 
 ]
 
 export function middleware(request: NextRequest) {

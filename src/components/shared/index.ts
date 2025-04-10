@@ -5,3 +5,4 @@ export { default as FullLoading } from './FullLoading';
 export { default as ApiError } from './ApiError';
 export { default as LoaderWrapper } from './LoaderWrapper';
 export { default as LoadingPublic } from './LoadingPublic';
+export { default as Back } from './Back';
