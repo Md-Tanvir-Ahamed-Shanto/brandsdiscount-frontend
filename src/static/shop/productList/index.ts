@@ -50,7 +50,7 @@ export const PRODUCTS = [
     {
         image: '/shop/one.webp',
         brand: 'I.N.C. International Concepts',
-        name: "Macy's Printed Maxi Skirt Exclusive",
+        name: "Brand Discount's Printed Maxi Skirt Exclusive",
         regularPrice: 110.0,
         vipPrice: 33.49,
         vipOffer: 10.0,

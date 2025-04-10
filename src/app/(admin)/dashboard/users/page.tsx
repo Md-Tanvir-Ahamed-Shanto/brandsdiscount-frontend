@@ -19,7 +19,10 @@ const UsersPage = async ({
     const count = 4;
 
     return (
-        <div className='bg-bgAdmin-soft p-5 rounded-lg mt-5' suppressHydrationWarning >
+        <div
+            className='bg-bgAdmin-soft p-5 rounded-lg mt-5 mx-5'
+            suppressHydrationWarning
+        >
             <div className='flex items-center justify-between mb-4'>
                 <h1 className='text-lg font-light text-bgAdminText'>Users</h1>
                 <Link href='/dashboard/users/add'>
@@ -28,7 +31,7 @@ const UsersPage = async ({
                     </button>
                 </Link>
             </div>
-            <table className='w-full rounded-lg shadow-md'>
+            <table className='!w-full rounded-lg shadow-md'>
                 <thead>
                     <tr>
                         <td className='p-3'>Name</td>

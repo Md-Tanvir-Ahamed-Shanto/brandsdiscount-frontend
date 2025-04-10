@@ -12,13 +12,19 @@ const Dashboard = () => {
         },
         {
             id: 2,
-            title: 'Stock',
+            title: 'Total Product',
             number: 8.236,
             change: -2
         },
         {
             id: 3,
-            title: 'Revenue',
+            title: 'Total Order',
+            number: 6.642,
+            change: 18
+        },
+        {
+            id: 3,
+            title: 'Total Transactions',
             number: 6.642,
             change: 18
         }

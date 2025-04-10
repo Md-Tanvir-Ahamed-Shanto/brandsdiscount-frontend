@@ -1,4 +1,4 @@
-import Image from 'next/image';
+'use client';
 import MenuLink from './menuLink/menuLink';
 import {
     MdDashboard,
@@ -7,11 +7,13 @@ import {
     MdAttachMoney,
     MdWork,
     MdAnalytics,
-    MdPeople,
     MdOutlineSettings,
-    MdHelpCenter,
     MdLogout
 } from 'react-icons/md';
+import UserDetails from './UserDetails';
+import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
+import Cookies from 'js-cookie';
 
 interface MenuItem {
     title: string;
@@ -37,16 +39,21 @@ const menuItems: MenuCategory[] = [
             {
                 title: 'Size',
                 path: '/dashboard/size',
-                icon: <MdShoppingBag />
+                icon: <MdWork />
             },
             {
                 title: 'Category',
                 path: '/dashboard/category',
-                icon: <MdShoppingBag />
+                icon: <MdAnalytics />
             },
             {
                 title: 'Products',
                 path: '/dashboard/products',
+                icon: <MdOutlineSettings />
+            },
+            {
+                title: 'Orders',
+                path: '/dashboard/order',
                 icon: <MdShoppingBag />
             },
             {
@@ -55,8 +62,8 @@ const menuItems: MenuCategory[] = [
                 icon: <MdAttachMoney />
             }
         ]
-    },
-    {
+    }
+    /*  {
         title: 'Analytics',
         list: [
             { title: 'Revenue', path: '/dashboard/revenue', icon: <MdWork /> },
@@ -78,33 +85,26 @@ const menuItems: MenuCategory[] = [
             },
             { title: 'Help', path: '/dashboard/help', icon: <MdHelpCenter /> }
         ]
-    }
+    } */
 ];
 
-const Sidebar = async () => {
+const Sidebar = () => {
+    const router = useRouter();
+    const handleLogout = () => {
+        Cookies.remove('token');
+        Cookies.remove('rtoken');
+        router.push('/dashboard-login');
+        toast.success('Log out successfully');
+    };
     return (
-        <div className='position-sticky text-bgAdminText mt-5 mb-5'>
-            <div className='flex items-center gap-2 mb-5'>
-                <Image
-                    className='radius-[50%] object-cover'
-                    src='/astronaut.png'
-                    alt=''
-                    width='50'
-                    height='50'
-                />
-                <div className='flex items-center flex-col'>
-                    <span className='font-medium'>John Doe</span>
-                    <span className='text-sm text-bgAdminText-soft'>
-                        Administrator
-                    </span>
-                </div>
-            </div>
+        <div className='position-sticky text-bgAdminText mt-0 h-full p-4 rounded-r-xl'>
+            <UserDetails />
             <ul className=''>
                 {menuItems.map((cat) => (
                     <li key={cat.title}>
-                        <span className='text-bgAdminText font-bold text-lg m-3'>
+                        <div className='text-bgAdminText font-bold text-lg mx-3 mb-4'>
                             {cat.title}
-                        </span>
+                        </div>
                         {cat.list.map((item) => (
                             <MenuLink item={item} key={item.title} />
                         ))}
@@ -112,7 +112,11 @@ const Sidebar = async () => {
                 ))}
             </ul>
             <form>
-                <button className='w-full flex items-center gap-2 p-5 my-1 cursor-pointer rounded-lg border-none bg-transparent text-white hover:bg-[#2e374a]'>
+                <button
+                    className='flex items-center gap-2 py-1.5 px-4 my-1 cursor-pointer rounded-lg border-none bg-transparent text-white 
+                hover:bg-[#2e374a] !bg-red-500 ml-1'
+                    onClick={handleLogout}
+                >
                     <MdLogout />
                     Logout
                 </button>

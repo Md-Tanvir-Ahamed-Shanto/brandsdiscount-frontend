@@ -13,7 +13,7 @@ export const defaultProducts = [
     {
         id: '2',
         brand: 'Epic Threads',
-        name: "Epic Threads Girls Fairfield Wide Leg Jeans, Exclusively at Macy's",
+        name: "Epic Threads Girls Fairfield Wide Leg Jeans, Exclusively at Brand Discount's",
         price: 2759.99,
         originalPrice: 5519.9,
         discount: '50% off',
@@ -37,7 +37,7 @@ export const defaultProducts = [
     {
         id: '2',
         brand: 'TwoEpic Threads',
-        name: "Two Epic Threads Girls Fairfield Wide Leg Jeans, Exclusively at Macy's",
+        name: "Two Epic Threads Girls Fairfield Wide Leg Jeans, Exclusively at Brand Discount's",
         price: 44.99,
         originalPrice: 5519.9,
         discount: '50% off',

@@ -2,7 +2,7 @@ export const TRENDING_SHOP = [
     {
         image: '/shop/one.webp',
         brand: 'I.N.C. International Concepts',
-        name: "NEW! Women's Printed Maxi Skirt, Exclusively at Macy's",
+        name: "NEW! Women's Printed Maxi Skirt, Exclusively at Brand Discount's",
         regularPrice: 110.0,
         vipPrice: 33.49,
         vipOffer: 10.0,
@@ -14,7 +14,7 @@ export const TRENDING_SHOP = [
     {
         image: '/shop/four.webp',
         brand: 'I.N.C. International Concepts',
-        name: "NEW! Women's Printed Tie-Waist Button-Front Maxi Dress, Exclusively at Macy's",
+        name: "NEW! Women's Printed Tie-Waist Button-Front Maxi Dress, Exclusively at Brand Discount's",
         regularPrice: 120.0,
         vipPrice: 35.99,
         vipOffer: 12.0,
@@ -26,7 +26,7 @@ export const TRENDING_SHOP = [
     {
         image: '/shop/one.webp',
         brand: 'I.N.C. International Concepts',
-        name: "NEW! Women's Printed Maxi Skirt, Exclusively at Macy's",
+        name: "NEW! Women's Printed Maxi Skirt, Exclusively at Brand Discount's",
         regularPrice: 110.0,
         vipPrice: 33.49,
         vipOffer: 10.0,
@@ -38,7 +38,7 @@ export const TRENDING_SHOP = [
     {
         image: '/shop/four.webp',
         brand: 'I.N.C. International Concepts',
-        name: "NEW! Women's Printed Tie-Waist Button-Front Maxi Dress, Exclusively at Macy's",
+        name: "NEW! Women's Printed Tie-Waist Button-Front Maxi Dress, Exclusively at Brand Discount's",
         regularPrice: 120.0,
         vipPrice: 35.99,
         vipOffer: 12.0,

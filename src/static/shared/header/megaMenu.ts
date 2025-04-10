@@ -165,7 +165,7 @@ export const menuData: MenuCategory[] = [
                 ]
             },
             {
-                title: "EXCLUSIVELY AT MACY'S",
+                title: "EXCLUSIVELY AT Brand Discount'S",
                 items: [{ name: 'Wild Pair', href: '#' }]
             }
         ]

@@ -2,7 +2,7 @@ export const RECENT_VIEW = [
     {
         image: '/shop/one.webp',
         brand: 'I.N.C. International Concepts',
-        name: "NEW! Women's Printed Maxi Skirt, Exclusively at Macy's",
+        name: "NEW! Women's Printed Maxi Skirt, Exclusively at Brand Discount's",
         regularPrice: 110.0,
         vipPrice: 33.49,
         vipOffer: 10.0,
