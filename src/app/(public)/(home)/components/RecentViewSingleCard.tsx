@@ -1,4 +1,3 @@
-import { Star } from 'lucide-react';
 import Avatar from '@/components/Avatar';
 import { ProductCardProps } from '@/types';
 import Link from 'next/link';
@@ -16,8 +15,6 @@ const RecentViewSingleCard = ({
     vipPrice,
     vipOffer,
     discount,
-    rating,
-    reviews,
     isEditMode
 }: RecentViewSingleCardProps) => {
     const handleRemove = () => {
@@ -80,8 +77,7 @@ const RecentViewSingleCard = ({
                     </div>
                 </div>
 
-                {/* Rating */}
-                <div className='flex items-center gap-1'>
+                {/* <div className='flex items-center gap-1'>
                     {Array.from({ length: 5 }).map((_, index) => (
                         <Star
                             key={index}
@@ -93,7 +89,7 @@ const RecentViewSingleCard = ({
                         />
                     ))}
                     <span className='text-sm text-gray-600'>({reviews})</span>
-                </div>
+                </div> */}
             </Link>
         </div>
     );

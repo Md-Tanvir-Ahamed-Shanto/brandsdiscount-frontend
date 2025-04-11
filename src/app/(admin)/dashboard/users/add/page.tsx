@@ -2,6 +2,8 @@
 
 import { useCreateUserMutation } from '@/api';
 import { LoaderWrapper } from '@/components';
+import BackBtn from '@/components/shared/Back';
+import { Label } from '@/components/ui/label';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
@@ -48,11 +50,13 @@ const AddUserPage = () => {
     };
 
     return (
-        <div className='bg-bgAdmin-soft p-5 rounded-lg mt-5'>
+        <div className='bg-bgAdmin-soft p-5 rounded-lg mt-5 mx-5'>
+            <BackBtn labelFor='Users' url='/dashboard/users' className='mb-6' />
             <form
                 onSubmit={handleSubmit}
                 className='flex flex-wrap justify-between'
             >
+                <Label className='mb-4'>Username</Label>
                 <input
                     type='text'
                     placeholder='Username'
@@ -62,6 +66,7 @@ const AddUserPage = () => {
                     onChange={handleInputChange}
                     className='p-4 bg-bgAdmin text-text border-2 border-[#2e374a] rounded-md mb-6 w-full'
                 />
+                <Label className='mb-4'>Email</Label>
                 <input
                     type='email'
                     placeholder='Email'
@@ -71,6 +76,7 @@ const AddUserPage = () => {
                     onChange={handleInputChange}
                     className='p-4 bg-bgAdmin text-text border-2 border-[#2e374a] rounded-md mb-6 w-full'
                 />
+                <Label className='mb-4'>Password</Label>
                 <input
                     type='password'
                     placeholder='Password'
@@ -80,6 +86,7 @@ const AddUserPage = () => {
                     onChange={handleInputChange}
                     className='p-4 bg-bgAdmin text-text border-2 border-[#2e374a] rounded-md mb-6 w-full'
                 />
+                <Label className='mb-4'>Select Role</Label>
                 <select
                     name='role'
                     value={formData.role}

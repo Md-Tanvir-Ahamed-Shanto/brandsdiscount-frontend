@@ -1,6 +1,7 @@
 'use client';
 import { useCreateSizeMutation } from '@/api';
 import { LoaderWrapper } from '@/components';
+import BackBtn from '@/components/shared/Back';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
@@ -44,7 +45,8 @@ const AddUserPage = () => {
     };
 
     return (
-        <div className='bg-bgAdmin-soft p-5 rounded-lg mt-5'>
+        <div className='bg-bgAdmin-soft p-5 rounded-lg mt-5 mx-5'>
+            <BackBtn labelFor='Size' url='/dashboard/size' className='mb-6' />
             <form
                 onSubmit={handleSubmit}
                 className='flex flex-wrap justify-between'

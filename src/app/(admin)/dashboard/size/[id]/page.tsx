@@ -5,6 +5,7 @@ import { useGetSingleSizeQuery, useUpdateSingleSizeMutation } from '@/api';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { LoaderWrapper } from '@/components';
+import BackBtn from '@/components/shared/Back';
 
 const SingleSizePage = ({ params }: { params: any }) => {
     const router = useRouter();
@@ -66,35 +67,45 @@ const SingleSizePage = ({ params }: { params: any }) => {
     if (isError) return <p>Error loading user data.</p>;
 
     return (
-        <div className='flex gap-12 mt-5'>
-            {/* User Edit Form */}
-            <div className='flex-[6] bg-bgAdminAdmin-soft p-5 rounded-lg'>
-                <form onSubmit={handleSubmit} className='flex flex-col'>
-                    <label className='text-sm'>Size</label>
-                    <input
-                        type='text'
-                        name='name'
-                        placeholder='Enter Size'
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        className='p-5 border-2 border-[#2e374a] rounded-md !bg-transparent text-text mb-5'
-                    />
-
-                    {/* Submit Button */}
-                    <button
-                        type='submit'
-                        className='w-full p-5 bg-teal-500 text-text rounded-md cursor-pointer mt-5'
-                    >
-                        Update
-                    </button>
-                </form>
-                <LoaderWrapper
-                    isLoading={isLoadingUpdate}
-                    isError={isErrorUpdate}
-                    error={errorUpdate as { message: string } | undefined}
+        <>
+            <div className='mx-5 mt-5'>
+                <BackBtn
+                    labelFor='Size'
+                    url='/dashboard/size'
+                    className='mb-6'
                 />
             </div>
-        </div>
+            <div className='flex gap-12 mx-5'>
+                {/* User Edit Form */}
+
+                <div className='flex-[6] bg-bgAdminAdmin-soft p-5 rounded-lg'>
+                    <form onSubmit={handleSubmit} className='flex flex-col'>
+                        <label className='text-sm'>Size</label>
+                        <input
+                            type='text'
+                            name='name'
+                            placeholder='Enter Size'
+                            value={formData.name}
+                            onChange={handleInputChange}
+                            className='p-5 border-2 border-[#2e374a] rounded-md !bg-transparent text-text mb-5'
+                        />
+
+                        {/* Submit Button */}
+                        <button
+                            type='submit'
+                            className='w-full p-5 bg-teal-500 text-text rounded-md cursor-pointer mt-5'
+                        >
+                            Update
+                        </button>
+                    </form>
+                    <LoaderWrapper
+                        isLoading={isLoadingUpdate}
+                        isError={isErrorUpdate}
+                        error={errorUpdate as { message: string } | undefined}
+                    />
+                </div>
+            </div>
+        </>
     );
 };
 

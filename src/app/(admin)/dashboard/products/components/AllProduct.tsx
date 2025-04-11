@@ -84,7 +84,7 @@ const AllProduct = ({
                                   <Link
                                       href={`/dashboard/products/view/${product.id}`}
                                   >
-                                      <button className='py-1 px-3 bg-teal-500 text-white rounded'>
+                                      <button className='py-1 px-3 bg-green-500 text-white rounded'>
                                           View
                                       </button>
                                   </Link>

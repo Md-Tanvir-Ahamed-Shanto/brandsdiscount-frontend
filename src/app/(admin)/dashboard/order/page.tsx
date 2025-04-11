@@ -2,9 +2,9 @@
 import Link from 'next/link';
 import Pagination from '../../components/pagination/pagination';
 import withSuspense from '../../components/suspense/withSuspense';
-import AllUsers from './components/AllUsers';
+import AllOrder from './components/AllUsers';
 
-// const SuspendedPagination = withSuspense(Pagination);
+const SuspendedPagination = withSuspense(Pagination);
 
 const UsersPage = async ({
     searchParams
@@ -19,26 +19,23 @@ const UsersPage = async ({
     const count = 4;
 
     return (
-        <div className='bg-bgAdmin-soft p-5 rounded-lg mt-5 mx-5'>
+        <div className='bg-bgAdmin-soft p-5 rounded-lg mt-5 mx-6'>
             <div className='flex items-center justify-between mb-4'>
-                <h1 className='text-lg font-light text-bgAdminText'>
-                    Category
-                </h1>
-                <Link href='/dashboard/category/add'>
-                    <button className='py-2 px-4 bg-indigo-600 text-white rounded-md cursor-pointer'>
-                        Add New
-                    </button>
-                </Link>
+                <h1 className='text-lg font-light text-bgAdminText'>Order</h1>
             </div>
             <table className='w-full rounded-lg shadow-md'>
                 <thead>
                     <tr>
-                        <td className='p-3'>Name</td>
+                        <td className='p-3'>Order Id</td>
+                        <td className='p-3'>Order Status</td>
+                        <td className='p-3'>Transaction Id</td>
+                        <td className='p-3'>Amount</td>
+                        <td className='p-3'>Payment Status</td>
                         <td className='p-3'>Actions</td>
                     </tr>
                 </thead>
                 <tbody className='w-full'>
-                    <AllUsers page={page} />
+                    <AllOrder page={page} />
                 </tbody>
             </table>
         </div>

@@ -53,8 +53,8 @@ const InternationalShipping = () => {
 
                     {/* Description */}
                     <p className='text-base'>
-                        Macys ships to over 200 locations worldwide through our
-                        international service provider, Borderfree.*
+                        Brand Discount ships to over 200 locations worldwide
+                        through our international service provider, Borderfree.*
                     </p>
 
                     {/* Location Selector */}
@@ -116,8 +116,8 @@ const InternationalShipping = () => {
                         <p className='text-sm'>
                             *When you place an international order, your
                             transaction will be with Borderfree, but if you have
-                            questions please contact Macys Customer Service at
-                            1-800-289-6229.
+                            questions please contact Brand Discount Customer
+                            Service at 1-800-289-6229.
                         </p>
                         <p className='text-sm'>
                             Orders shipped to the United States must have a U.S.

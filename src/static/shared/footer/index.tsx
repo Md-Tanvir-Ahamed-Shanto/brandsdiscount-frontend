@@ -23,18 +23,18 @@ export const FOOTER_SECTIONS = [
         links: [
             { text: 'Find a Store', href: '#' },
             { text: 'Tell Us What You Think', href: '#' },
-            { text: "Macy's Backstage", href: '#' },
+            { text: "Brand Discount's Backstage", href: '#' },
             { text: 'Personal Stylist', href: '#' }
         ]
     },
     {
-        title: "Macy's Inc.",
+        title: "Brand Discount's Inc.",
         links: [
             { text: 'Corporate Sites', href: '#' },
-            { text: "About Macy's", href: '#' },
+            { text: "About Brand Discount's", href: '#' },
             { text: 'News Room', href: '#' },
             { text: 'Investors', href: '#' },
-            { text: "Macy's Gives", href: '#' }
+            { text: "Brand Discount's Gives", href: '#' }
         ]
     }
 ];

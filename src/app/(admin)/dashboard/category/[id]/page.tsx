@@ -8,6 +8,7 @@ import {
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { LoaderWrapper } from '@/components';
+import BackBtn from '@/components/shared/Back';
 
 const SingleCategoryPage = ({ params }: { params: any }) => {
     const router = useRouter();
@@ -69,11 +70,16 @@ const SingleCategoryPage = ({ params }: { params: any }) => {
     if (isError) return <p>Error loading Category data.</p>;
 
     return (
-        <div className='flex gap-12 mt-5'>
+        <div className='mt-5 mx-5'>
+            <BackBtn
+                labelFor='Category'
+                url='/dashboard/category'
+                className='mb-2 pt-2'
+            />
             {/* User Edit Form */}
             <div className='flex-[6] bg-bgAdminAdmin-soft p-5 rounded-lg'>
                 <form onSubmit={handleSubmit} className='flex flex-col'>
-                    <label className='text-sm'>Category</label>
+                    <label className='text-sm mb-4'>Category</label>
                     <input
                         type='text'
                         name='name'

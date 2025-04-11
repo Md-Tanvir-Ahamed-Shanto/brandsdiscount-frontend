@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { LoaderWrapper } from '@/components';
 import { useParams } from 'next/navigation';
+import BackBtn from '@/components/shared/Back';
 
 // Dummy user data for editing
 const dummyUser = {
@@ -100,6 +101,11 @@ const SingleUserPage = () => {
         <div className='flex gap-12 mt-5'>
             {/* User Info Section */}
             <div className='flex-[1] bg-bgAdminAdmin-soft p-5 font-bold text-soft items-center'>
+                <BackBtn
+                    labelFor='Users'
+                    url='/dashboard/users'
+                    className='mb-6'
+                />
                 <div className='relative rounded-md overflow-hidden mb-5'>
                     <Image
                         className='rounded-full object-cover'

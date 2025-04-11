@@ -37,6 +37,7 @@ const SignUpForm = () => {
         e.preventDefault();
         setIsLoading(true);
         try {
+            setIsLoading(true);
             const response = await axios.post(
                 `${getBaseUrl()}/authroute/signup`,
                 {
@@ -46,16 +47,25 @@ const SignUpForm = () => {
                     role: 'PlatformUser'
                 }
             );
-
-            toast.success('Account created successfully!');
-            router.push('/auth/login');
-            setIsLoading(true);
+            if (response.data) {
+                toast.success('Sign Up successful!');
+                const { access_token, refresh_token } = response.data;
+                Cookies.set('token', access_token, {
+                    expires: new Date(Date.now() + ACCESS_TOKEN_EXPIRY),
+                    path: '/'
+                });
+                Cookies.set('rtoken', refresh_token, {
+                    expires: new Date(Date.now() + REFRESH_TOKEN_EXPIRY),
+                    path: '/'
+                });
+                window.location.href = '/cart';
+                setIsLoading(false);
+            }
         } catch (error: any) {
             toast.error(
                 error?.response?.data?.message ||
                     'Something went wrong during signup'
             );
-        } finally {
             setIsLoading(false);
         }
     };

@@ -4,3 +4,4 @@ export * from './core';
 export * from './Avatar';
 export * from './shared';
 export { default as LinkButton } from './LinkButton';
+export * from './shared';

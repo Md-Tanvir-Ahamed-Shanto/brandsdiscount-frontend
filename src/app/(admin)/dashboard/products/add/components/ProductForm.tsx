@@ -8,6 +8,8 @@ import { CategoryDropdown } from './CategoryDropdown';
 import Avatar from '@/components/Avatar';
 import { useCreateProductMutation } from '@/api';
 import { LoaderWrapper } from '@/components';
+import { Label } from '@/components/ui/label';
+import BackBtn from '@/components/shared/Back';
 
 const AddProductForm = () => {
     const router = useRouter();
@@ -102,11 +104,17 @@ const AddProductForm = () => {
 
     return (
         <div className='bg-bgAdmin-soft p-5 rounded-lg mt-5'>
+            <BackBtn
+                labelFor='Products'
+                url='/dashboard/products'
+                className='mb-6'
+            />
             <form
                 onSubmit={handleSubmit}
                 className='flex flex-wrap justify-between'
             >
                 <div className='w-full md:w-[49%] mb-6'>
+                    <Label className='mb-4 block'>Title</Label>
                     <input
                         type='text'
                         placeholder='Title'
@@ -120,6 +128,7 @@ const AddProductForm = () => {
                 </div>
 
                 <div className='w-full md:w-[49%] mb-6'>
+                    <Label className='mb-4 block'>Brand Name</Label>
                     <input
                         type='text'
                         placeholder='Brand Name'
@@ -133,6 +142,7 @@ const AddProductForm = () => {
                 </div>
 
                 <div className='w-full md:w-[49%] mb-6'>
+                    <Label className='mb-4 block'>Color</Label>
                     <input
                         type='text'
                         placeholder='Color'
@@ -145,6 +155,7 @@ const AddProductForm = () => {
                 </div>
 
                 <div className='w-full md:w-[49%] mb-6'>
+                    <Label className='mb-4 block'>SKU</Label>
                     <input
                         type='text'
                         placeholder='SKU'
@@ -157,6 +168,7 @@ const AddProductForm = () => {
                 </div>
 
                 <div className='w-full md:w-[49%] mb-6'>
+                    <Label className='mb-4 block'>Item Location</Label>
                     <input
                         type='text'
                         placeholder='Item Location'
@@ -169,6 +181,7 @@ const AddProductForm = () => {
                 </div>
 
                 <div className='w-full md:w-[49%] mb-6'>
+                    <Label className='mb-4 block'>Size</Label>
                     <CategoryDropdown
                         name='sizeId'
                         label='Size'
@@ -178,6 +191,7 @@ const AddProductForm = () => {
                 </div>
 
                 <div className='w-full md:w-[49%] mb-6'>
+                    <Label className='mb-4 block'>Category</Label>
                     <CategoryDropdown
                         name='categoryId'
                         label='Category'
@@ -187,6 +201,7 @@ const AddProductForm = () => {
                 </div>
 
                 <div className='w-full md:w-[49%] mb-6'>
+                    <Label className='mb-4 block'>Sub Category</Label>
                     <CategoryDropdown
                         name='subCategoryId'
                         label='Sub Category'
@@ -196,6 +211,7 @@ const AddProductForm = () => {
                 </div>
 
                 <div className='w-full md:w-[49%] mb-6'>
+                    <Label className='mb-4 block'>Parent Category</Label>
                     <CategoryDropdown
                         name='parentCategoryId'
                         label='Parent Category'
@@ -205,6 +221,7 @@ const AddProductForm = () => {
                 </div>
 
                 <div className='w-full md:w-[49%] mb-6'>
+                    <Label className='mb-4 block'>Regular Price</Label>
                     <input
                         type='number'
                         placeholder='Regular Price'
@@ -217,6 +234,7 @@ const AddProductForm = () => {
                 </div>
 
                 <div className='w-full md:w-[49%] mb-6'>
+                    <Label className='mb-4 block'>Sale Price</Label>
                     <input
                         type='number'
                         placeholder='Sale Price'
@@ -229,6 +247,7 @@ const AddProductForm = () => {
                 </div>
 
                 <div className='w-full md:w-[49%] mb-6'>
+                    <Label className='mb-4 block'>Platform Price</Label>
                     <input
                         type='number'
                         placeholder='Platform Price'
@@ -241,6 +260,7 @@ const AddProductForm = () => {
                 </div>
 
                 <div className='w-full md:w-[49%] mb-6'>
+                    <Label className='mb-4 block'>Discount Percent</Label>
                     <input
                         type='number'
                         placeholder='Discount Percent'
@@ -253,6 +273,7 @@ const AddProductForm = () => {
                 </div>
 
                 <div className='w-full md:w-[49%] mb-6'>
+                    <Label className='mb-4 block'>Stock Quantity</Label>
                     <input
                         type='number'
                         placeholder='Stock Quantity'
@@ -265,6 +286,7 @@ const AddProductForm = () => {
                 </div>
 
                 <div className='w-full md:w-[49%] mb-6'>
+                    <Label className='mb-4 block'>Condition</Label>
                     <input
                         type='text'
                         placeholder='Condition'
@@ -277,6 +299,7 @@ const AddProductForm = () => {
                 </div>
 
                 <div className='w-full md:w-[49%] mb-6'>
+                    <Label className='mb-4 block'>Status</Label>
                     <select
                         name='status'
                         value={formData.status}
@@ -290,6 +313,7 @@ const AddProductForm = () => {
                 </div>
 
                 <div className='w-full md:w-[49%] mb-6'>
+                    <Label className='mb-4 block'>Updated By UserID</Label>
                     <input
                         type='text'
                         placeholder='Updated By ID'
@@ -302,6 +326,7 @@ const AddProductForm = () => {
                 </div>
 
                 <div className='w-full mb-6'>
+                    <Label className='mb-4 block'>Description</Label>
                     <textarea
                         placeholder='Description'
                         name='description'

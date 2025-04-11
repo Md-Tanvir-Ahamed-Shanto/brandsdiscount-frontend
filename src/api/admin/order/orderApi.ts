@@ -30,7 +30,7 @@ const orderApi = baseApi.injectEndpoints({
             query: ({ id, ...data }) => {  
               return {
                 url: `/order/${id}`,
-                method: "PUT",
+                method: "PATCH",
                 data: data,
               };
             },
@@ -38,7 +38,7 @@ const orderApi = baseApi.injectEndpoints({
         }),
         deleteSingleOrder: build.mutation({
         query: (id) => ({
-            url: `/productroute/order/${id}`,
+            url: `/order/${id}`,
             method: "DELETE",
         }),
         invalidatesTags: [tagTypes.order],  

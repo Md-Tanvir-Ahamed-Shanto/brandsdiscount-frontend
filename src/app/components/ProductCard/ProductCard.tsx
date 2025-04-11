@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Star } from 'lucide-react';
 import Avatar from '@/components/Avatar';
 import Link from 'next/link';
 
@@ -67,21 +66,6 @@ const ProductCard = ({ product }: any) => {
                     <div className='text-sm text-gray-500 line-through'>
                         Sale Price: ${salePrice ? salePrice : ''}
                     </div>
-                </div>
-
-                {/* Rating */}
-                <div className='flex items-center gap-1'>
-                    {Array.from({ length: 5 }).map((_, index) => (
-                        <Star
-                            key={index}
-                            className={`h-4 w-4 ${
-                                index < 5
-                                    ? 'fill-yellow-400 text-yellow-400'
-                                    : 'fill-gray-200 text-gray-200'
-                            }`}
-                        />
-                    ))}
-                    <span className='text-sm text-gray-600'>({5})</span>
                 </div>
             </Link>
         </div>

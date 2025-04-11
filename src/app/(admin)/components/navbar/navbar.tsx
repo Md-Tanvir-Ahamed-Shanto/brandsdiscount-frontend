@@ -1,7 +1,5 @@
 'use client';
-
 import { usePathname } from 'next/navigation';
-import { MdNotifications, MdOutlineChat, MdPublic } from 'react-icons/md';
 import Search from '../search/search';
 import withSuspense from '../suspense/withSuspense';
 const SuspendedSearch = withSuspense(Search);
@@ -11,7 +9,7 @@ const Navbar: React.FC = () => {
     console.log(pathname);
 
     return (
-        <div className='p-5 rounded-lg bg-bgAdmin-soft flex items-center justify-between'>
+        <div className='p-5 rounded-lg bg-bgAdmin-soft flex flex-col md:flex-row items-center justify-between overflow-hidden mx-5'>
             {/* Title */}
             {/* <div className='text-bgAdminText-soft font-bold capitalize'>
                 {isNaN(Number(pathname.split('/').pop()))
@@ -25,18 +23,18 @@ const Navbar: React.FC = () => {
             </h1>
 
             {/* Menu */}
-            <div className='flex items-center gap-5'>
+            <div className='flex items-center gap-5 pt-3 md:pt-0'>
                 {/* Search Box */}
                 <div className='flex items-center gap-2 bg-[#2e374a] p-2 rounded-lg'>
                     <SuspendedSearch placeholder='Search' />
                 </div>
 
                 {/* Icons */}
-                <div className='flex gap-5 text-white'>
+                {/* <div className='flex gap-5 text-white'>
                     <MdOutlineChat size={20} />
                     <MdNotifications size={20} />
                     <MdPublic size={20} />
-                </div>
+                </div> */}
             </div>
         </div>
     );

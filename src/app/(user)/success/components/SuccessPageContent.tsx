@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -20,59 +20,69 @@ const SuccessPageContent = () => {
     const cart = useAppSelector((state) => state.cart.products as any);
     const dispatch = useAppDispatch();
     const router = useRouter();
+
+    // Use a ref to track if order creation has been attempted
+    const orderCreationAttempted = useRef(false);
+
     useEffect(() => {
-        if (sessionId && !localStorage.getItem(`order_created_${sessionId}`)) {
+        // Only proceed if sessionId exists and order creation hasn't been attempted yet
+        if (sessionId && !orderCreationAttempted.current) {
+            // Mark that we've attempted order creation to prevent duplicates
+            orderCreationAttempted.current = true;
+
             const checkStatus = async () => {
                 try {
-                    const { status, session } =
+                    const { status: paymentStatus, session } =
                         await getSessionStatus(sessionId);
-                    setStatus(status);
+                    setStatus(paymentStatus);
 
-                    const orderDetails = cart?.map((item: any) => {
-                        console.log(item?.category);
-                        return {
-                            productId: item?.id,
-                            quantity: item?.quantity,
-                            price: item?.salePrice,
-                            total: item?.salePrice * item?.quantity,
-                            productName: item?.title,
-                            categoryName: item?.category?.name || 'undefined',
-                            sizeName: item?.size?.name || 'undefined'
+                    // Only proceed with order creation if payment was successful
+                    if (paymentStatus === 'paid') {
+                        const orderDetails = cart?.map((item: any) => {
+                            return {
+                                productId: item?.id,
+                                quantity: item?.quantity,
+                                price: item?.salePrice,
+                                total: item?.salePrice * item?.quantity,
+                                productName: item?.title,
+                                categoryName:
+                                    item?.category?.name || 'undefined',
+                                sizeName: item?.size?.name || 'undefined'
+                            };
+                        });
+
+                        const payload = {
+                            totalAmount: Number(session?.amount_total) / 100,
+                            sku: session?.id,
+                            status: 'Pending',
+                            transactionId: session?.payment_intent,
+                            claimLoyaltyOffer: false,
+                            redeemPoint: 0,
+                            orderDetails
                         };
-                    });
 
-                    const payload = {
-                        totalAmount: Number(session?.amount_total) / 100,
-                        sku: session?.id,
-                        status: 'Pending',
-                        transactionId: session?.payment_intent,
-                        claimLoyaltyOffer: false,
-                        redeemPoint: 0,
-                        orderDetails // ← your dynamic cart data goes here
-                    };
+                        // Create the order
+                        const response = await createOrder(payload).unwrap();
 
-                    const response = await createOrder(payload).unwrap();
-                    console.log('🚀 ~ checkStatus ~ payload:', response);
-
-                    if (response) {
-                        toast.success('Order created successfully');
-                        dispatch(clearCart());
-                        localStorage.setItem(
-                            `order_created_${sessionId}`,
-                            'true'
-                        );
-                        router.push('/');
+                        if (response) {
+                            dispatch(clearCart());
+                            toast.success('Order created successfully');
+                            // Delay the navigation slightly to ensure toast is visible
+                            setTimeout(() => {
+                                router.push('/');
+                            }, 1000);
+                        }
                     }
-                } catch (error) {
-                    console.error('Error checking payment status:', error);
-                } finally {
+
                     setLoading(false);
+                } catch (error) {
+                    setLoading(false);
+                    console.error('Error checking payment status:', error);
+                    toast.error('Error processing your order');
                 }
             };
 
             checkStatus();
-        } else {
-            setLoading(false);
         }
     }, [sessionId, cart, createOrder, dispatch, router]);
 
@@ -80,7 +90,8 @@ const SuccessPageContent = () => {
         return (
             <div className='container mx-auto py-20 px-4 text-center'>
                 <p className='text-xl'>
-                    Checking payment status... Wait... Don;t reload page
+                    Checking payment status... Please wait. Donot reload the
+                    page.
                 </p>
             </div>
         );

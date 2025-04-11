@@ -7,9 +7,9 @@ export default function PromoSection() {
             <div className='container mx-auto'>
                 <div className='text-center mb-24 py-8 bg-gray-100 rounded'>
                     <p className='text-gray-800'>
-                        Macys.com is a U.S. website. All offers are based on
-                        USD, U.S. times & dates. International exchange rates
-                        will be applied.
+                        Brand Discount.com is a U.S. website. All offers are
+                        based on USD, U.S. times & dates. International exchange
+                        rates will be applied.
                     </p>
                 </div>
 
