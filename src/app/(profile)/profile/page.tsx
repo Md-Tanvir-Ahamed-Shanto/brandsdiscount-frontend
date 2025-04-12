@@ -12,6 +12,8 @@ import { X, Upload } from 'lucide-react';
 import toast from 'react-hot-toast';
 import Avatar from '@/components/Avatar';
 import { API_BASE_URL } from '@/config';
+import { useSearchParams } from 'next/navigation';
+import BackBtn from '@/components/shared/Back';
 
 export interface MyTokenPayload {
     id: string;
@@ -49,6 +51,8 @@ const UpdateProfile = () => {
     });
 
     const token = Cookies.get('token');
+    const searchParams = useSearchParams();
+    const from = searchParams.get('from');
 
     useEffect(() => {
         const token = Cookies.get('token');
@@ -155,6 +159,17 @@ const UpdateProfile = () => {
     return (
         <div className='container mx-auto py-8 px-4'>
             <Card className='w-full max-w-3xl mx-auto'>
+                {from ? (
+                    <CardHeader>
+                        <BackBtn
+                            labelFor='Checkout'
+                            url='checkout'
+                            className='mb-2 pt-2'
+                        />
+                    </CardHeader>
+                ) : (
+                    ''
+                )}
                 <CardHeader>
                     <CardTitle className='text-2xl font-bold'>
                         Update Your Profile
