@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import { Search, X } from 'lucide-react';
 import { useDebounce } from '@/lib';
+import { useGetAllSearchProductQuery } from '@/api/public';
+import Link from 'next/link';
 
 const topSearches = [
     'women dresses',
@@ -23,6 +26,12 @@ const SearchComponent = () => {
 
     // Custom debounce hook
     const debouncedSearchTerm = useDebounce(searchTerm, 500);
+    const { data: searchResults } = useGetAllSearchProductQuery(
+        debouncedSearchTerm,
+        {
+            skip: !debouncedSearchTerm // prevent empty search
+        }
+    ) as any;
 
     // Log the debounced search term to console
     useEffect(() => {
@@ -94,21 +103,26 @@ const SearchComponent = () => {
                     <div className='absolute z-10 w-full mt-2 bg-white border rounded-lg shadow-lg'>
                         <div className='p-4'>
                             <h3 className='text-lg font-semibold mb-2'>
-                                Top Searches
+                                {searchResults?.length
+                                    ? 'Searches Product'
+                                    : 'No Product Found'}
                             </h3>
                             <ul className='space-y-2'>
-                                {topSearches.map((term, index) => (
-                                    <li
-                                        key={index}
-                                        className='text-gray-600 hover:text-primary cursor-pointer'
-                                        onClick={() => {
-                                            setSearchTerm(term);
-                                            console.log('Selected:', term);
-                                        }}
-                                    >
-                                        {term}
-                                    </li>
-                                ))}
+                                {searchResults
+                                    ?.slice(0, 10)
+                                    .map(({ title, id }: any) => (
+                                        <Link
+                                            href={`/shop/${id}`}
+                                            key={id}
+                                            className='text-gray-600 hover:text-primary cursor-pointer block'
+                                            onClick={() => {
+                                                setSearchTerm(title);
+                                                console.log('Selected:', title);
+                                            }}
+                                        >
+                                            {title}
+                                        </Link>
+                                    ))}
                             </ul>
                         </div>
                     </div>

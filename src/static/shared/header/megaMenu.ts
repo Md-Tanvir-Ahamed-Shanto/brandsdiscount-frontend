@@ -57,7 +57,7 @@ export const menuData: MenuCategory[] = [
             {
                 title: "MEN'S SHOES",
                 items: [
-                    { name: "All Men's Shoes", href: '#' },
+                    { name: "All Men's Shoes", href: '/shop?q=nike' },
                     { name: 'Athletic Shoes & Sneakers', href: '#' },
                     { name: 'Boots', href: '#' },
                     { name: 'Casual Shoes', href: '#' },

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import type React from 'react';
 import { useState, useRef } from 'react';
@@ -11,7 +12,7 @@ import { LoaderWrapper } from '@/components';
 import { Label } from '@/components/ui/label';
 import BackBtn from '@/components/shared/Back';
 
-const AddProductForm = () => {
+const AddProductForm = ({ userId }: { userId: any }) => {
     const router = useRouter();
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [
@@ -37,7 +38,7 @@ const AddProductForm = () => {
         condition: '',
         description: '',
         status: 'Active',
-        updatedById: ''
+        updatedById: userId
     });
 
     const [files, setFiles] = useState<File[]>([]);
@@ -190,7 +191,7 @@ const AddProductForm = () => {
                     />
                 </div>
 
-                <div className='w-full md:w-[49%] mb-6'>
+                <div className='w-full md:w-[32%] mb-6'>
                     <Label className='mb-4 block'>Category</Label>
                     <CategoryDropdown
                         name='categoryId'
@@ -200,7 +201,7 @@ const AddProductForm = () => {
                     />
                 </div>
 
-                <div className='w-full md:w-[49%] mb-6'>
+                <div className='w-full md:w-[32%] mb-6 px-[1%]'>
                     <Label className='mb-4 block'>Sub Category</Label>
                     <CategoryDropdown
                         name='subCategoryId'
@@ -210,7 +211,7 @@ const AddProductForm = () => {
                     />
                 </div>
 
-                <div className='w-full md:w-[49%] mb-6'>
+                <div className='w-full md:w-[32%] mb-6'>
                     <Label className='mb-4 block'>Parent Category</Label>
                     <CategoryDropdown
                         name='parentCategoryId'
@@ -220,7 +221,7 @@ const AddProductForm = () => {
                     />
                 </div>
 
-                <div className='w-full md:w-[49%] mb-6'>
+                <div className='w-full md:w-[32%] mb-6'>
                     <Label className='mb-4 block'>Regular Price</Label>
                     <input
                         type='number'
@@ -233,7 +234,7 @@ const AddProductForm = () => {
                     />
                 </div>
 
-                <div className='w-full md:w-[49%] mb-6'>
+                <div className='w-full md:w-[32%] mb-6 px-[1%]'>
                     <Label className='mb-4 block'>Sale Price</Label>
                     <input
                         type='number'
@@ -246,7 +247,7 @@ const AddProductForm = () => {
                     />
                 </div>
 
-                <div className='w-full md:w-[49%] mb-6'>
+                <div className='w-full md:w-[32%] mb-6'>
                     <Label className='mb-4 block'>Platform Price</Label>
                     <input
                         type='number'
@@ -310,19 +311,6 @@ const AddProductForm = () => {
                         <option value='Active'>Active</option>
                         <option value='Inactive'>Inactive</option>
                     </select>
-                </div>
-
-                <div className='w-full md:w-[49%] mb-6'>
-                    <Label className='mb-4 block'>Updated By UserID</Label>
-                    <input
-                        type='text'
-                        placeholder='Updated By ID'
-                        name='updatedById'
-                        value={formData.updatedById}
-                        onChange={handleInputChange}
-                        className='p-4 bg-bgAdmin text-text border-2 border-[#2e374a] rounded-md w-full'
-                        suppressHydrationWarning={true}
-                    />
                 </div>
 
                 <div className='w-full mb-6'>
