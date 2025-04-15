@@ -2,11 +2,10 @@
 import { Icons, LinkButton, Logo } from '@/components';
 import HeaderTop from './HeaderTop';
 import SearchComponent from './SearchComponent';
-import { MegaMenu } from './MegaMenu';
-import MobileMenu from './MegaMenuMobile';
 import { useState } from 'react';
 import ProfileDropDown from './ProfileDropDown';
 import { RootState, useAppSelector } from '@/store';
+import CategorySlider from '../CategorySlider';
 
 const TheHeader = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -52,8 +51,8 @@ const TheHeader = () => {
                 </div>
             </header>
 
-            <MegaMenu />
-            <MobileMenu isOpen={isOpen} setIsOpen={setIsOpen} />
+            <CategorySlider />
+            {/* <MobileMenu isOpen={isOpen} setIsOpen={setIsOpen} /> */}
         </>
     );
 };

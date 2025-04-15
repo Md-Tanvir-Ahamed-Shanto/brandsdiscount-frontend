@@ -14,6 +14,7 @@ export const tagTypesList = [tagTypes.user, tagTypes.size, tagTypes.category, ta
 export enum publicTagTypes {
     products = 'products', 
     size = 'size', 
+    category = 'category', 
 }
 
-export const publicTagTypesList = [publicTagTypes.products, publicTagTypes.size];
+export const publicTagTypesList = [publicTagTypes.products, publicTagTypes.size, publicTagTypes.category];

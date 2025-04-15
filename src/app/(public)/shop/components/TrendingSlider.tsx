@@ -18,8 +18,6 @@ const TrendingSlider = () => {
         error
     } = useGetNewTrendingProductsQuery('');
 
-    console.log('trendingData', trendingData?.data); //
-
     const sliderRef = useRef<Slider | null>(null);
 
     const nextSlide = () => {

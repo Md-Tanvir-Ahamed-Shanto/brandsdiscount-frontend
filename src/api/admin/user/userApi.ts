@@ -4,7 +4,7 @@ const userApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
         getAllUsers: build.query({
             query: (page) => ({
-                url: `/userroute/users?page=${page}&limit=6`,
+                url: `/userroute/users?page=${page}&limit=10`,
                 method: 'GET'
             }),
             providesTags: [tagTypes.user]

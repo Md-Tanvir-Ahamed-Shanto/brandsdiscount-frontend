@@ -15,7 +15,6 @@ import NavLink from './NavLink';
 const Sidebar = () => {
     const [userId, setUserId] = useState<string | null>(null);
     const { data: userData } = useGetSingleProfileQuery(userId);
-    console.log('🚀 ~ Sidebar ~ userData:', userData?.role); //Admin, OfficeEmpolyee, WareHouse, PlatformUser, Cashier
 
     const router = useRouter();
     const handleLogout = () => {

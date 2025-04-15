@@ -4,7 +4,7 @@ const sizeApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
         getAllSizes: build.query({
             query: (page) => ({
-                url: `/sizeroute/sizes?page=${page}&limit=6`,
+                url: `/sizeroute/sizes?page=${page}&limit=10`,
                 method: 'GET'
             }),
             providesTags: [tagTypes.size]

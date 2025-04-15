@@ -25,8 +25,8 @@ const SignUpForm = () => {
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
 
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    // const [confirmPassword, setConfirmPassword] = useState('');
+    // const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const [keepSignedIn, setKeepSignedIn] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -112,7 +112,7 @@ const SignUpForm = () => {
                 </button>
             </div>
 
-            <div className='space-y-1 relative'>
+            {/* <div className='space-y-1 relative'>
                 <Input
                     type={showConfirmPassword ? 'text' : 'password'}
                     placeholder='Confirm Password'
@@ -128,7 +128,7 @@ const SignUpForm = () => {
                 >
                     {showConfirmPassword ? 'Hide' : 'Show'}
                 </button>
-            </div>
+            </div> */}
 
             <div className='flex items-start'>
                 <div className='flex items-center h-5'>

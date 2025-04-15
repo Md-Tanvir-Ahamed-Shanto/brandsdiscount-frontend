@@ -3,7 +3,6 @@ import Avatar from '@/components/Avatar';
 import Link from 'next/link';
 
 const ProductCard = ({ product }: any) => {
-    console.log('product', product);
     const {
         title,
         brandName,
