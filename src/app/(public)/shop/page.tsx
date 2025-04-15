@@ -1,4 +1,5 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import React, { useEffect, useState } from 'react';
 import { CategorySlider, SingleProductCard } from '../../components';
@@ -10,23 +11,28 @@ import {
 } from './components';
 import { LoadingPublic } from '@/components';
 import { IProduct } from '@/types';
-import { useGetAllPublicProductQuery } from '@/api/public';
+import {
+    useGetAllPublicProductQuery,
+    useGetAllSearchProductQuery
+} from '@/api/public';
+import { useSearchParams } from 'next/navigation';
 
 const ShopPage = () => {
+    const searchParams = useSearchParams();
+    const searchTerm = searchParams.get('q') || '';
+
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(5);
     const [sortValue, setSortValue] = useState('');
     const [filters, setFilters] = useState('');
 
-    // Fetch products with updated parameters
-    // const [products, setProducts] = useState<IProduct[]>([]);
-
+    // Default product fetch
     const {
         data: productData = [],
-        isLoading,
-        isFetching, // useful
-        isError,
-        error
+        isLoading: isDefaultLoading,
+        isFetching: isDefaultFetching,
+        isError: isDefaultError,
+        error: defaultError
     } = useGetAllPublicProductQuery(
         {
             page: currentPage,
@@ -35,58 +41,90 @@ const ShopPage = () => {
             filters
         },
         {
-            // @ts-ignore
-            keepPreviousData: true // Prevent flickering
+            skip: !!searchTerm // skip default fetch if search exists
         }
-    );
+    ) as any;
 
-    // Update state when new data arrives
-    /* useEffect(() => {
-        if (productData?.data) {
-            setProducts(productData.data); // Assuming productData has a `data` array
-        }
-    }, [productData]); */
+    // Search fetch
+    const {
+        data: searchData = [],
+        isLoading: isSearchLoading,
+        isFetching: isSearchFetching,
+        isError: isSearchError,
+        error: searchError
+    } = useGetAllSearchProductQuery(searchTerm, {
+        skip: !searchTerm
+    }) as any;
 
-    // Log whenever page or page size changes
-    useEffect(() => {
-        console.log('Current Page:', currentPage);
-        console.log('Page Size:', pageSize);
-        console.log('Sort Value:', sortValue);
-    }, [currentPage, pageSize, sortValue]);
+    console.log('searchData', searchData);
+
+    const isLoading = searchTerm ? isSearchLoading : isDefaultLoading;
+    const isFetching = searchTerm ? isSearchFetching : isDefaultFetching;
+    const isError = searchTerm ? isSearchError : isDefaultError;
+    const error = searchTerm ? searchError : defaultError;
 
     if (isLoading || isFetching) {
         return <LoadingPublic />;
     }
+
     if (error || isError) {
         return 'Something went wrong';
     }
+
     return (
         <div className='container py-6 !overflow-hidden'>
-            <h3 className='font-bold text-2xl mb-4'>Girls Cloths (740)</h3>
-            <CategorySlider />
-            <div className='flex items-center justify-between'>
-                <FilterSheet setFilters={setFilters} />
-                <SortDropdown
-                    sortValue={sortValue}
-                    onSortChange={setSortValue}
-                />
-            </div>
+            {!searchTerm && (
+                <div className='flex items-center justify-between'>
+                    {/* <FilterSheet setFilters={setFilters} /> */}
+                    <div className=''>
+                        <h3 className='font-bold text-2xl mb-4'>
+                            {searchTerm
+                                ? `Results for "${searchTerm}"`
+                                : 'All Shop Product'}
+                        </h3>
+                    </div>
+                    <SortDropdown
+                        sortValue={sortValue}
+                        onSortChange={setSortValue}
+                    />
+                </div>
+            )}
 
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 py-12'>
-                {productData?.data?.map((product: IProduct) => (
-                    <SingleProductCard key={product?.id} product={product} />
-                ))}
+                {!searchData?.length
+                    ? productData?.data?.map((product: IProduct) => (
+                          <SingleProductCard
+                              key={product?.id}
+                              product={product}
+                          />
+                      ))
+                    : searchData?.map((product: any) => (
+                          <SingleProductCard
+                              key={product?.id}
+                              product={product}
+                          />
+                      ))}
             </div>
 
-            <div className='mb-12'>
-                <Pagination
-                    totalPages={5}
-                    defaultPage={currentPage}
-                    defaultPageSize={pageSize}
-                    onPageChange={setCurrentPage}
-                    onPageSizeChange={setPageSize}
-                />
-            </div>
+            {searchTerm && !searchData?.length ? (
+                <div className='pt-24 pb-48 flex items-center justify-center'>
+                    <p className='font-bold text-2xl'>No Product Found!!</p>
+                </div>
+            ) : (
+                ''
+            )}
+
+            {!searchTerm && (
+                <div className='mb-12'>
+                    <Pagination
+                        totalPages={5}
+                        defaultPage={currentPage}
+                        defaultPageSize={pageSize}
+                        onPageChange={setCurrentPage}
+                        onPageSizeChange={setPageSize}
+                    />
+                </div>
+            )}
 
             <h3 className='font-bold text-2xl mb-8'>Trending Near You</h3>
             <div className='mb-12'>

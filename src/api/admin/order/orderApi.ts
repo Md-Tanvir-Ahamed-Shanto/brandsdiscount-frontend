@@ -4,7 +4,7 @@ const orderApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
         getAllOrder: build.query({
             query: (page) => ({
-                url: `/order?page=${page | 1}&limit=2`,
+                url: `/order?page=${page | 1}&limit=10`,
                 method: 'GET'
             }),
             providesTags: [tagTypes.order]

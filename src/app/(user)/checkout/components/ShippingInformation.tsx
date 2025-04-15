@@ -9,8 +9,10 @@ import {
     CardTitle
 } from '@/components/ui/card';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const ShippingInformation = ({ userDetails }: any) => {
+    const router = useRouter();
     return (
         <Card>
             <CardHeader>
@@ -104,13 +106,15 @@ const ShippingInformation = ({ userDetails }: any) => {
                         </div>
 
                         <div className='pt-2'>
-                            <Link
-                                href='/profile'
+                            <button
+                                onClick={() =>
+                                    router.push('/profile?from=checkout')
+                                }
                                 className='text-sm flex items-center text-primary hover:underline'
                             >
                                 <Edit className='h-4 w-4 mr-1' />
                                 Change shipping information
-                            </Link>
+                            </button>
                         </div>
                     </div>
                 )}

@@ -4,3 +4,4 @@ export * from './hooks';
 export * from './Types';
 export * from './rootReducer';
 export * from './store';
+export * from './order';

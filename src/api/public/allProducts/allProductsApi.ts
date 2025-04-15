@@ -30,6 +30,12 @@ const allProductsApi = publicApi.injectEndpoints({
             url: `/productroute/products?filter_createdAt_desc`,
             method: 'GET',
             }),
+        }), 
+        getAllSearchProduct: build.query<ISingleProduct, string>({
+            query: (searchTerm) => ({
+            url: `/productroute/search?q=${searchTerm}`,
+            method: 'GET',
+            }),
         }),
     }),
 });
@@ -39,4 +45,5 @@ export const {
   useGetSinglePublicProductQuery,
   useGetMayLikeProductsQuery,
   useGetNewTrendingProductsQuery,
+  useGetAllSearchProductQuery
 } = allProductsApi;

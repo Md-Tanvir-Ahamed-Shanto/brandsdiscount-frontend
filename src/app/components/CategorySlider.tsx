@@ -1,9 +1,8 @@
 'use client';
-import { Icons } from '@/components';
-import Avatar from '@/components/Avatar';
+import { useGetAllCategoryApiQuery } from '@/api/public';
+import { LoadingSpinner } from '@/components';
 import { categorySliderSettings } from '@/config';
 // import { categorySliderSettings } from '@/config';
-import { CATEGORY_ITEMS } from '@/static';
 import Link from 'next/link';
 import React from 'react';
 import { useRef } from 'react';
@@ -12,9 +11,11 @@ import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 
 const CategorySlider = () => {
+    const { data: categoryData = [], isLoading } =
+        useGetAllCategoryApiQuery('');
     const sliderRef = useRef<Slider | null>(null); // type: Slider | null
 
-    const nextSlide = () => {
+    /*   const nextSlide = () => {
         if (sliderRef.current) {
             sliderRef.current.slickNext();
         }
@@ -24,31 +25,34 @@ const CategorySlider = () => {
         if (sliderRef.current) {
             sliderRef.current.slickPrev();
         }
-    };
+    }; */
+
+    if (isLoading) {
+        return <LoadingSpinner />;
+    }
+
     return (
-        <div className='categorySlider overflow-hidden relative'>
+        <div className='categorySlider overflow-hidden relative mb-6'>
             <Slider
                 ref={sliderRef}
                 {...categorySliderSettings}
                 className='-ml-2'
             >
-                {CATEGORY_ITEMS?.map(({ id, avatar, title, url }) => (
-                    <Link
-                        href={url}
-                        key={id}
-                        className='relative text-gray-800 hover:text-black group !flex items-center justify-between gap-2
-                    bg-main-400 hover:bg-main-500 p-1 mx-2 rounded-[100] px-3'
-                    >
-                        <Avatar
-                            src={avatar}
-                            className='!max-h-12 w-auto rounded-md'
-                        />
-                        <span className='mr-2'>{title}</span>
-                    </Link>
-                ))}
+                {(categoryData ?? [])?.data?.map(
+                    ({ id, name }: { id: string; name: string }) => (
+                        <Link
+                            href={`/shop?q=${name}`}
+                            key={id}
+                            className='relative hover:text-black group gap-2
+             hover:bg-main-500/60 py-2.5 px-4 rounded bg-main-500 text-black text-center'
+                        >
+                            {name}
+                        </Link>
+                    )
+                )}
             </Slider>
 
-            <div
+            {/* <div
                 className='flex items-center justify-center w-10 h-10 bg-black/40 backdrop-blur-md rounded-full cursor-pointer absolute left-2 top-2'
                 onClick={prevSlide}
             >
@@ -59,7 +63,7 @@ const CategorySlider = () => {
                 onClick={nextSlide}
             >
                 <Icons.ChevronRight className='text-white' />
-            </div>
+            </div> */}
         </div>
     );
 };

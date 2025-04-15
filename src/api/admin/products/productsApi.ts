@@ -4,7 +4,7 @@ const productsApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
         getAllProducts: build.query({
             query: (page) => ({
-                url: `/productroute/products?page=${page}&limit=6`,
+                url: `/productroute/products?page=${page}&limit=10`,
                 method: 'GET'
             }),
             providesTags: [tagTypes.product]

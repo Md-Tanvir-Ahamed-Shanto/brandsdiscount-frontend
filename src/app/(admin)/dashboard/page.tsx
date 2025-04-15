@@ -1,48 +1,56 @@
-import Card from '../components/card/card';
-import Chart from '../components/chart/chart';
-import Transactions from '../components/transactions/transactions';
+'use client';
+import { useState } from 'react';
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem
+} from '@/components/ui/accordion';
+import { Button } from '@/components/ui/button';
+import { AdminPanel, ChangePasswordAccordion, UserProfile } from './components';
 
-const Dashboard = () => {
-    const cards = [
-        {
-            id: 1,
-            title: 'Total Users',
-            number: 10.928,
-            change: 12
-        },
-        {
-            id: 2,
-            title: 'Total Product',
-            number: 8.236,
-            change: -2
-        },
-        {
-            id: 3,
-            title: 'Total Order',
-            number: 6.642,
-            change: 18
-        },
-        {
-            id: 3,
-            title: 'Total Transactions',
-            number: 6.642,
-            change: 18
-        }
-    ];
+export default function Dashboard() {
+    const [openAccordion, setOpenAccordion] = useState<string | undefined>(
+        undefined
+    );
+
+    const handlePasswordButtonClick = () => {
+        setOpenAccordion((prev) =>
+            prev === 'password' ? undefined : 'password'
+        );
+    };
+
     return (
-        <div className='flex gap-5 m-5'>
-            {/* Main Content */}
-            <div className='flex-3 flex flex-col gap-5'>
-                <div className='flex gap-5 justify-between'>
-                    {cards.map((item) => (
-                        <Card item={item} key={item.id} />
-                    ))}
-                </div>
-                <Transactions />
-                <Chart />
+        <div className='container mx-auto py-6 space-y-8'>
+            <AdminPanel />
+
+            <UserProfile />
+
+            <div className='w-full mx-auto'>
+                <Button
+                    onClick={handlePasswordButtonClick}
+                    className='w-full mb-2 !bg-[#192133] text-white hover:text-white'
+                    variant='outline'
+                >
+                    Wanna Change Password?
+                </Button>
+
+                <Accordion
+                    type='single'
+                    collapsible
+                    value={openAccordion}
+                    onValueChange={setOpenAccordion}
+                    className='!bg-[#192133] text-white'
+                >
+                    <AccordionItem
+                        value='password'
+                        className='border rounded-lg'
+                    >
+                        <AccordionContent className='pt-2'>
+                            <ChangePasswordAccordion />
+                        </AccordionContent>
+                    </AccordionItem>
+                </Accordion>
             </div>
         </div>
     );
-};
-
-export default Dashboard;
+}

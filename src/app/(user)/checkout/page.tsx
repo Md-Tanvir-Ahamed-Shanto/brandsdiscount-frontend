@@ -6,9 +6,9 @@ import { jwtDecode } from 'jwt-decode';
 import type { MyTokenPayload } from '@/app/(profile)/profile/page';
 import { useGetSingleProfileQuery } from '@/api';
 import Cookies from 'js-cookie';
-import { useAppSelector } from '@/store';
 
 import { OrderItems, OrderSummary, ShippingInformation } from './components';
+import { useAppSelector } from '@/store';
 
 export default function Checkout() {
     const [isLoading, setIsLoading] = useState(false);
@@ -18,17 +18,15 @@ export default function Checkout() {
     const { data: userData } = useGetSingleProfileQuery(userId);
     const userDetails = userData?.userDetails;
 
+    const finalAmount = useAppSelector((state) => state.order.finalAmount);
+
+    const usedRedeemPoint = useAppSelector((state) => state.cart.appliedPoints);
+    console.log('usedRedeemPoint we see from parent page', usedRedeemPoint); // 2000
+
     const handleCheckout = async () => {
         setIsLoading(true);
         try {
-            const product = cart.map((item) => ({
-                id: item.id,
-                name: item.title,
-                price: item.salePrice,
-                quantity: item.quantity
-            }));
-
-            const { sessionId } = await createCheckoutSession(product);
+            const { sessionId } = await createCheckoutSession(finalAmount);
             const stripe = await getStripe();
             await stripe.redirectToCheckout({ sessionId });
         } catch (error) {

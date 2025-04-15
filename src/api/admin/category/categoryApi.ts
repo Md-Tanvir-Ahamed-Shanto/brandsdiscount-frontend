@@ -4,7 +4,7 @@ const categoryApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
         getAllCategory: build.query({
             query: (page) => ({
-                url: `/categoryroute/categories?page=${page}&limit=6`,
+                url: `/categoryroute/categories?page=${page}&limit=10`,
                 method: 'GET'
             }),
             providesTags: [tagTypes.category]

@@ -24,6 +24,7 @@ const Featured = () => {
                                     <Avatar
                                         src={image}
                                         className='w-full h-auto transition-transform duration-300 ease-in-out group-hover:scale-105 rounded-[10px]'
+                                        priority={true}
                                     />
                                     {/* Overlay */}
                                     <div className='absolute inset-0 bg-black/20 rounded-[10px]'></div>

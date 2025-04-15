@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
-
 import { useEffect, useState, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -18,6 +17,9 @@ const SuccessPageContent = () => {
     const [status, setStatus] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
     const cart = useAppSelector((state) => state.cart.products as any);
+    const usedRedeemPoint = useAppSelector((state) => state.cart.appliedPoints);
+    console.log('usedRedeemPoint we see from successPage', usedRedeemPoint); // 0
+
     const dispatch = useAppDispatch();
     const router = useRouter();
 
@@ -57,7 +59,7 @@ const SuccessPageContent = () => {
                             status: 'Pending',
                             transactionId: session?.payment_intent,
                             claimLoyaltyOffer: false,
-                            redeemPoint: 0,
+                            redeemPoint: usedRedeemPoint ? usedRedeemPoint : 0,
                             orderDetails
                         };
 
@@ -84,7 +86,7 @@ const SuccessPageContent = () => {
 
             checkStatus();
         }
-    }, [sessionId, cart, createOrder, dispatch, router]);
+    }, [sessionId, cart, createOrder, dispatch, router, usedRedeemPoint]);
 
     if (loading || isLoading) {
         return (

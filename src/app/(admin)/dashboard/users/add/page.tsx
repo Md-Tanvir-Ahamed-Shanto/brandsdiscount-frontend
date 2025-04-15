@@ -94,9 +94,10 @@ const AddUserPage = () => {
                     className='p-4 bg-bgAdmin text-text border-2 border-[#2e374a] rounded-md mb-6 w-full'
                 >
                     <option value='Admin'>Admin</option>
-                    <option value='OfficeEmployee'>Office Employee</option>
+                    <option value='OfficeEmpolyee'>Office Employee</option>
                     <option value='WareHouse'>Warehouse</option>
                     <option value='PlatformUser'>Platform User</option>
+                    <option value='Cashier'>Cashier</option>
                 </select>
                 <button
                     type='submit'

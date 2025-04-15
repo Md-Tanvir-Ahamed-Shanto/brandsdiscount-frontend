@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     AlertDialog,
     AlertDialogContent,
@@ -14,6 +14,9 @@ import { ISingleProduct } from '@/types';
 import Avatar from '@/components/Avatar';
 import { SignUpForm } from '@/app/(auth)/auth/signup/components';
 import { LoginForm } from '@/app/(auth)/auth/login/components';
+import Link from 'next/link';
+import Cookies from 'js-cookie';
+import { ForgotPasswordForm } from '@/app/(auth)/auth/forgot-password/components';
 
 interface IProps {
     product: ISingleProduct;
@@ -24,6 +27,17 @@ const SignInModal = ({ product }: IProps) => {
     const [open, setOpen] = useState(false);
     const [step, setStep] = useState(1);
     const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        const token = Cookies.get('token');
+        if (token) {
+            try {
+                setStep(3);
+            } catch (error) {
+                console.error('Error decoding token:', error);
+            }
+        }
+    }, []);
     return (
         <div className=''>
             <AlertDialog open={open} onOpenChange={setOpen}>
@@ -103,6 +117,45 @@ const SignInModal = ({ product }: IProps) => {
                         ) : step === 2 ? (
                             <>
                                 <LoginForm />
+                                <div className='font-light gap-2'>
+                                    <div className='flex items-center justify-center gap-2'>
+                                        <p>Forgot Your Password?</p>
+                                        <button
+                                            className='underline text-red-500'
+                                            onClick={() => setStep(4)}
+                                        >
+                                            Forgot Password?
+                                        </button>
+                                    </div>
+                                    <div className='flex items-center justify-center gap-2'>
+                                        <p>Don&apos;t Have An Account?</p>
+                                        <button
+                                            className='underline text-red-500'
+                                            onClick={() => setStep(1)}
+                                        >
+                                            Sign Up
+                                        </button>
+                                    </div>
+                                </div>
+                            </>
+                        ) : step === 3 ? (
+                            <>
+                                <Link
+                                    href='/cart'
+                                    className='bg-gray-500 text-white p-2 rounded text-center'
+                                >
+                                    Visit Cart Page
+                                </Link>
+                                <Link
+                                    href='/shop'
+                                    className='bg-gray-500 text-white p-2 rounded text-center'
+                                >
+                                    Add More Product
+                                </Link>
+                            </>
+                        ) : step === 4 ? (
+                            <>
+                                <ForgotPasswordForm />
                                 <div className='font-light flex items-center justify-center gap-2'>
                                     <p>Don&apos;t Have An Account?</p>
                                     <button

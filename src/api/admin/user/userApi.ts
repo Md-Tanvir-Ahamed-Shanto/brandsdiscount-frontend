@@ -4,7 +4,7 @@ const userApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
         getAllUsers: build.query({
             query: (page) => ({
-                url: `/userroute/users?page=${page}&limit=6`,
+                url: `/userroute/users?page=${page}&limit=10`,
                 method: 'GET'
             }),
             providesTags: [tagTypes.user]
@@ -26,9 +26,8 @@ const userApi = baseApi.injectEndpoints({
             },
             invalidatesTags: [tagTypes.user]
         }),
-        updateSingleUser: build.mutation({
-            query: ({ id, ...data }) => {
-                console.log('rtk query  id');
+       /*  updateSingleUser: build.mutation({
+            query: ({ id, ...data }) => { 
                 console.log(id);
                 console.log(data);
                 return {
@@ -38,14 +37,22 @@ const userApi = baseApi.injectEndpoints({
                 };
             },
             invalidatesTags: [tagTypes.user]
-        }),
+        }), */
         deleteSingleUser: build.mutation({
             query: (id) => ({
                 url: `/userroute/delete/${id}`,
                 method: 'DELETE'
             }),
             invalidatesTags: [tagTypes.user]
-        })
+        }),
+        updateSingleUser: build.mutation({
+            query: ({ id, formData }) => ({
+              url: `/userroute/update/${id}`,
+              method: 'PUT',
+              body: formData,
+            }),
+            invalidatesTags: [tagTypes.user],
+          }),
     })
 });
 
