@@ -7,10 +7,15 @@ interface ICartProduct extends ISingleProduct {
 
 interface ICart {
   products: ICartProduct[];
+  discountedTotal: number;
+  appliedPoints: number; 
+
 }
 
 const initialState: ICart = {
-  products: []
+  products: [],
+  discountedTotal: 0,
+  appliedPoints: 0, 
 };
 
 export const cartSlice = createSlice({
@@ -30,6 +35,7 @@ export const cartSlice = createSlice({
 
     clearCart: (state) => {
       state.products = [];
+      state.discountedTotal = 0;
     },
 
     incrementQuantity: (state, action: PayloadAction<string>) => {
@@ -45,6 +51,15 @@ export const cartSlice = createSlice({
         product.quantity -= 1;
       }
     },
+
+    setAppliedPointsFromStore: (state, action: PayloadAction<number>) => {
+      state.appliedPoints = action.payload;
+    },
+    
+    setDiscountedTotal: (state, action: PayloadAction<number>) => {
+      state.discountedTotal = action.payload;
+    },
+ 
   }
 });
 
@@ -53,7 +68,9 @@ export const {
   removeFromCart,
   clearCart,
   incrementQuantity,
-  decrementQuantity
+  decrementQuantity,
+  setDiscountedTotal, 
+  setAppliedPointsFromStore, 
 } = cartSlice.actions;
 
 export default cartSlice.reducer;
@@ -72,3 +89,12 @@ export const selectCartSavings = (state: { cart: ICart }) =>
   state.cart.products.reduce((total, product) => {
     return total + (product.regularPrice - product.salePrice) * product.quantity;
   }, 0);
+
+export const selectDiscountedTotal = (state: { cart: ICart }) => state.cart.discountedTotal;
+
+export const getDiscountedSubtotal = (subtotal: number, discountAmount: number): number => {
+  const discounted = subtotal - discountAmount;
+  return discounted >= 0 ? discounted : 0;
+};
+
+export const selectAppliedPoints = (state: { cart: ICart }) => state.cart.appliedPoints;

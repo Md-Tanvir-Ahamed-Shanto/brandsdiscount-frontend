@@ -1,5 +1,4 @@
 import { PROMO_ITEMS } from '@/static';
-import Link from 'next/link';
 
 export default function PromoSection() {
     return (
@@ -39,12 +38,12 @@ export default function PromoSection() {
                                         {item.description}
                                     </p>
                                 </div>
-                                <Link
+                                {/* <Link
                                     href={item.linkHref}
                                     className='text-gray-900 font-medium underline'
                                 >
                                     {item.linkText}
-                                </Link>
+                                </Link> */}
                             </div>
                         );
                     })}

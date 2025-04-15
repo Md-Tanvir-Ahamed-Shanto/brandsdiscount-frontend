@@ -1,36 +1,33 @@
 'use server';
 import { stripe } from '@/lib/stripe';
 
-type CartItem = {
-    id: string;
-    name: string;
-    price: number;
-    quantity: number;
-};
+// type CartItem = {
+//     id: string;
+//     name: string;
+//     price: number;
+//     quantity: number;
+// };
 
-export async function createCheckoutSession(items: CartItem[]) {
-    // Create line items for Stripe
-    const lineItems = items.map((item) => ({
-        price_data: {
-            currency: 'usd',
-            product_data: {
-                name: item.name
-            },
-            unit_amount: item.price * 100 
-        },
-        quantity: item.quantity
-    }));
-
-    // Create a checkout session
+export async function createCheckoutSession(finalAmount: number) {
     const session = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],
-        line_items: lineItems,
+        line_items: [
+            {
+                price_data: {
+                    currency: 'usd',
+                    product_data: {
+                        name: 'Order Payment'
+                    },
+                    unit_amount: Math.round(finalAmount * 100) // in cents
+                },
+                quantity: 1
+            }
+        ],
         mode: 'payment',
         success_url: `${process.env.NEXT_PUBLIC_LIVE_SITE_URL || 'http://localhost:3000'}/success?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${process.env.NEXT_PUBLIC_LIVE_SITE_URL || 'http://localhost:3000'}`
     });
 
-    // Return the session ID
     return { sessionId: session.id };
 }
 

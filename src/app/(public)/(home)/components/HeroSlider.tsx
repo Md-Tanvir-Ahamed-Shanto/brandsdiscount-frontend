@@ -29,33 +29,34 @@ const HeroSlider = () => {
             <Slider ref={sliderRef} {...heroSliderSettings} className='-ml-2'>
                 {HERO?.map(({ id, image, brand }) => (
                     <div key={id} className='relative max-h-[580px]'>
-                    {/* Image */}
-                    <Avatar
-                        src={image}
-                        className='w-full h-full object-cover'
-                    />
+                        {/* Image */}
+                        <Avatar
+                            src={image}
+                            className='w-full h-full object-cover'
+                            priority={true}
+                        />
 
-                    {/* Dark Overlay - Updated to use inset-0 and h-full instead of fixed height */}
-                    <div className='absolute inset-0 bg-gradient-to-t from-black/60 to-black/30 h-full lg:h-[115%]'></div>
+                        {/* Dark Overlay - Updated to use inset-0 and h-full instead of fixed height */}
+                        <div className='absolute inset-0 bg-gradient-to-t from-black/60 to-black/30 h-full lg:h-[115%]'></div>
 
-                    {/* Content - Add your text and button here */}
-                    <div className='absolute inset-0 flex flex-col items-center justify-center text-white text-center p-4'>
-                        {/* Your text content */}
-                        <h2 className='text-2xl lg:text-4xl font-bold mb-2 lg:mb-4'>
-                        {brand}
-                        </h2>
-                        <p className='text-lg lg:text-xl mb-4 lg:mb-8'>
-                        Discover the latest arrivals
-                        </p>
+                        {/* Content - Add your text and button here */}
+                        <div className='absolute inset-0 flex flex-col items-center justify-center text-white text-center p-4'>
+                            {/* Your text content */}
+                            <h2 className='text-2xl lg:text-4xl font-bold mb-2 lg:mb-4'>
+                                {brand}
+                            </h2>
+                            <p className='text-lg lg:text-xl mb-4 lg:mb-8'>
+                                Discover the latest arrivals
+                            </p>
 
-                        {/* Button */}
-                        <Link
-                        href='/shop'
-                        className='bg-white text-black px-4 lg:px-8 py-1.5 lg:py-3 rounded-full hover:bg-gray-100 transition'
-                        >
-                        Shop Now
-                        </Link>
-                    </div>
+                            {/* Button */}
+                            <Link
+                                href='/shop'
+                                className='bg-white text-black px-4 lg:px-8 py-1.5 lg:py-3 rounded-full hover:bg-gray-100 transition'
+                            >
+                                Shop Now
+                            </Link>
+                        </div>
                     </div>
                 ))}
             </Slider>

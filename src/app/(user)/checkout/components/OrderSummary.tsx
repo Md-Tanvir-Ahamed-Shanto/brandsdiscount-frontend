@@ -11,6 +11,7 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { selectCartSubtotal, useAppSelector } from '@/store';
+import RedeemPoint from './RedeemPoint';
 
 const OrderSummary = ({ isLoading, handleCheckout, userDetails }: any) => {
     const subtotal = useAppSelector(selectCartSubtotal);
@@ -28,17 +29,14 @@ const OrderSummary = ({ isLoading, handleCheckout, userDetails }: any) => {
                     </div>
                     <div className='flex justify-between'>
                         <span className='text-muted-foreground'>Shipping</span>
-                        <span>Calculated at next step</span>
+                        <span>0</span>
                     </div>
                     <div className='flex justify-between'>
                         <span className='text-muted-foreground'>Tax</span>
-                        <span>Calculated at next step</span>
+                        <span>0</span>
                     </div>
                     <Separator />
-                    <div className='flex justify-between font-medium text-lg'>
-                        <span>Total</span>
-                        <span>${subtotal.toFixed(2)}</span>
-                    </div>
+                    <RedeemPoint />
                 </div>
             </CardContent>
             <CardFooter>
