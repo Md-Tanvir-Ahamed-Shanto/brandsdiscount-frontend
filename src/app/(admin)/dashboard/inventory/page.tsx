@@ -1,13 +1,19 @@
 import React from 'react';
-import BarCode from './components/BarCode';
 import Link from 'next/link';
+import BarcodeScanner from './components/BarcodeScanner';
 
 const page = () => {
     return (
-        <div>
+        <div className='container py-4'>
+            <Link
+                href='/dashboard/inventory/zero'
+                className='bg-red-500 p-2 text-white'
+            >
+                Visit One Bar Code Tester
+            </Link>
             <Link
                 href='/dashboard/inventory/one'
-                className='bg-red-500 p-2 text-white'
+                className='bg-red-500 p-2 text-white mx-4'
             >
                 Visit Second Bar Code Tester
             </Link>
@@ -17,7 +23,11 @@ const page = () => {
             >
                 Visit Third Bar Code Tester
             </Link>
-            <BarCode />
+
+            <hr className='mt-6' />
+
+            <h3 className='text-3xl mb-4 py-4'>Scandit Barcode Scanner SDK</h3>
+            <BarcodeScanner />
         </div>
     );
 };

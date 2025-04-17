@@ -12,3 +12,6 @@ export const ACCESS_TOKEN_EXPIRY =
     Number(process.env.NEXT_PUBLIC_ACCESS_TOKEN_EXPIRY) * 10000000;
 export const REFRESH_TOKEN_EXPIRY =
     Number(process.env.NEXT_PUBLIC_REFRESH_TOKEN_EXPIRY) * 1000000;
+
+export const SCANDIT_KEY =
+    process.env.NEXT_PUBLIC_SCANDIT_KEY || '';
