@@ -65,8 +65,6 @@ export async function middleware(request: NextRequest) {
   const userResult = await getUserDetails(token);
   const role = userResult?.userData?.role;
 
-  console.log("User Roleeeeeeeee:", role,);
-
   const allowedRoutes = roleBasedRoutes[role] || [];
   const isAuthorized = allowedRoutes.some((route) =>
     pathname.startsWith(route)

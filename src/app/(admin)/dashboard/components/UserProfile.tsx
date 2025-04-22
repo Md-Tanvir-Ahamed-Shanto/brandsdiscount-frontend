@@ -74,7 +74,7 @@ export default function UserProfile() {
                 </CardTitle>
             </CardHeader>
 
-            <CardContent className='p-6'>
+            <CardContent className='px-6'>
                 <div className='flex flex-col md:flex-row gap-6'>
                     {/* User Profile Section */}
                     <div className='flex-1'>

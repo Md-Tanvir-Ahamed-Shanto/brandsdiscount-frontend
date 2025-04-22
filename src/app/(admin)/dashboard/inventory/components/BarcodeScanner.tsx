@@ -1,71 +1,77 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 'use client';
-
 import { SCANDIT_KEY } from '@/config';
-import React, { useEffect, useRef, useState } from 'react';
-import {
-    BarcodePicker,
-    ScanResult,
-    configure,
-    ScanSettings
-} from 'scandit-sdk';
+import React, { useEffect, useState } from 'react';
+import { configure } from 'scandit-sdk';
+import ProductList from './ProductList';
 
 const BarcodeScanner = () => {
-    const scannerRef = useRef<HTMLDivElement>(null);
-    const [barcodeData, setBarcodeData] = useState<string | null>(null);
+    const [scannedCode, setScannedCode] = useState<string | null>(null);
+    const [buffer, setBuffer] = useState('');
+    const [lastKeyTime, setLastKeyTime] = useState(Date.now());
+    const [scannedSkus, setScannedSkus] = useState<string[]>([]); //'ST2-005501', 'ST1-003943' Manage scanned SKUs dynamically
 
+    // Initialize Scandit SDK (but don’t open camera)
     useEffect(() => {
-        const startScanner = async () => {
+        const setupScandit = async () => {
             try {
                 await configure(SCANDIT_KEY, {
                     engineLocation:
                         'https://cdn.jsdelivr.net/npm/scandit-sdk/build/'
                 });
-
-                const scanSettings = new ScanSettings({
-                    // @ts-ignore: Unreachable code error
-                    enabledSymbologies: ['code128', 'ean13', 'qr'],
-                    codeDuplicateFilter: 1000
-                });
-
-                const picker = await BarcodePicker.create(scannerRef.current!, {
-                    scanSettings,
-                    playSoundOnScan: true,
-                    vibrateOnScan: true
-                });
-                // @ts-ignore: Unreachable code error
-                picker.onScan((result: ScanResult) => {
-                    const scanned = result.barcodes[0];
-                    if (scanned) {
-                        setBarcodeData(scanned.data);
-                    }
-                });
-
-                return () => {
-                    picker.destroy();
-                };
-            } catch (err) {
-                console.error('Failed to set up barcode picker:', err);
+                console.log('Scandit SDK loaded (camera not used)');
+            } catch (error) {
+                console.error('Scandit setup failed:', error);
             }
         };
 
-        startScanner();
-
-        return () => {
-            // Clean up when component unmounts
-        };
+        setupScandit();
     }, []);
 
+    // Listen for keyboard-based scanning (hardware scanner)
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            const now = Date.now();
+
+            // Reset buffer if delay is long
+            if (now - lastKeyTime > 100) setBuffer('');
+
+            if (e.key === 'Enter') {
+                if (buffer) {
+                    setScannedCode(buffer); // Set the scanned code
+                    setScannedSkus((prev) => [...prev, buffer]); // Add the scanned SKU to the list
+                }
+                setBuffer(''); // Reset the buffer after each scan
+            } else {
+                setBuffer((prev) => prev + e.key); // Append the key to the buffer
+            }
+
+            setLastKeyTime(now);
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [buffer, lastKeyTime]);
+
     return (
-        <div>
-            <div ref={scannerRef} style={{ width: '100%', height: '400px' }} />
-            {barcodeData && (
-                <p className='mt-4 text-lg font-medium'>
-                    📦 Scanned: <strong>{barcodeData}</strong>
+        <>
+            <h3 className='text-3xl text-center mb-4'>
+                Scandit Barcode Scanner SDK
+            </h3>
+            <div className='flex flex-col items-center'>
+                <div className='text-xl font-semibold'>
+                    {scannedCode
+                        ? `✅ Scanned SKU: ${scannedCode}`
+                        : '🔍 Waiting for scan...'}
+                </div>
+
+                <p className='mt-2 text-sm text-gray-500'>
+                    Scanner ready. Just scan any code.
                 </p>
-            )}
-            <p>just conenct your device</p>
-        </div>
+            </div>
+            <hr className='mt-6 rounded' />
+            <ProductList initialScannedSkus={scannedSkus} />{' '}
+            {/* Pass dynamic scannedSkus */}
+        </>
     );
 };
 
