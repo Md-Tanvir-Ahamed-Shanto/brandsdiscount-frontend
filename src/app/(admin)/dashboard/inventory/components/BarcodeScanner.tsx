@@ -37,12 +37,13 @@ const BarcodeScanner = () => {
 
             if (e.key === 'Enter') {
                 if (buffer) {
-                    setScannedCode(buffer); // Set the scanned code
-                    setScannedSkus((prev) => [...prev, buffer]); // Add the scanned SKU to the list
+                    setScannedCode(buffer);
+                    setScannedSkus((prev) => [...prev, buffer]);
                 }
-                setBuffer(''); // Reset the buffer after each scan
-            } else {
-                setBuffer((prev) => prev + e.key); // Append the key to the buffer
+                setBuffer('');
+            } else if (e.key.length === 1) {
+                // Only add printable characters (length === 1 filters out keys like "Shift")
+                setBuffer((prev) => prev + e.key);
             }
 
             setLastKeyTime(now);
@@ -55,7 +56,7 @@ const BarcodeScanner = () => {
     return (
         <>
             <h3 className='text-3xl text-center mb-4'>
-                Scandit Barcode Scanner SDK
+                Scandit Barcode Scanner SDK(Update)
             </h3>
             <div className='flex flex-col items-center'>
                 <div className='text-xl font-semibold'>

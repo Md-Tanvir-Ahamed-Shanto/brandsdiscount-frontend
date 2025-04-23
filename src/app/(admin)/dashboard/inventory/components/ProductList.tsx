@@ -121,6 +121,7 @@ const ProductList = ({
 
                 // ✅ Optionally clear scanned products
                 setScannedProducts([]);
+                window.location.reload();
             }
         } catch (err: unknown) {
             const errorMessage =
