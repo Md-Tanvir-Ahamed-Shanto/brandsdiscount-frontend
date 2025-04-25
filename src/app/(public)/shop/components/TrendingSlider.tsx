@@ -34,7 +34,7 @@ const TrendingSlider = () => {
     if (isLoading) return 'loading';
     if (isError || error) return 'something went wrong';
     return (
-        <div className=' relative trendingSlider max-h-[660px] sm:max-h-[470px] md:max-h-[600px] lg:max-h-[550px]'>
+        <div className='relative trendingSlider max-h-[660px] sm:max-h-[470px] md:max-h-[600px] lg:max-h-[550px]'>
             <Slider
                 ref={sliderRef}
                 {...trendingSliderSettings}
@@ -48,13 +48,13 @@ const TrendingSlider = () => {
             </Slider>
 
             <div
-                className='flex items-center justify-center w-10 h-10 bg-black/40 backdrop-blur-md rounded-full cursor-pointer absolute left-2 top-48'
+                className='flex items-center justify-center w-10 h-10 bg-black/40 backdrop-blur-md rounded-full cursor-pointer absolute left-2 top-40'
                 onClick={prevSlide}
             >
                 <Icons.ChevronRight className='rotate-180 text-white' />
             </div>
             <div
-                className='flex items-center justify-center w-10 h-10 bg-black/40 backdrop-blur-md rounded-full cursor-pointer absolute right-2 top-48'
+                className='flex items-center justify-center w-10 h-10 bg-black/40 backdrop-blur-md rounded-full cursor-pointer absolute right-2 top-40'
                 onClick={nextSlide}
             >
                 <Icons.ChevronRight className='text-white' />
