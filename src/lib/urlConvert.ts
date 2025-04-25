@@ -10,3 +10,12 @@ export function convertFromUrl(url: string): string {
         ?.replace(/-/g, ' ') // Convert all hyphens to spaces
         .replace(/\b\w/g, (char) => char?.toUpperCase()); // Capitalize words
 }
+
+
+export const slugify = (input: string): string => {
+    return input
+        .toLowerCase()
+        .replace(/[^a-z0-9\s]/g, '') // Remove all special characters
+        .trim()
+        .replace(/\s+/g, '-') // Replace spaces with hyphen
+};

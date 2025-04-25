@@ -8,7 +8,9 @@ const BarcodeScanner = () => {
     const [scannedCode, setScannedCode] = useState<string | null>(null);
     const [buffer, setBuffer] = useState('');
     const [lastKeyTime, setLastKeyTime] = useState(Date.now());
-    const [scannedSkus, setScannedSkus] = useState<string[]>([]); //'ST2-005501', 'ST1-003943' Manage scanned SKUs dynamically
+    const [scannedSkus, setScannedSkus] = useState<string[]>([]);
+    //'ST2-005501', 'ST1-003943' Manage scanned SKUs dynamically
+    // '12112', '9099', '129022', 'ST2-005509'
 
     // Initialize Scandit SDK (but don’t open camera)
     useEffect(() => {
@@ -56,7 +58,7 @@ const BarcodeScanner = () => {
     return (
         <>
             <h3 className='text-3xl text-center mb-4'>
-                Scandit Barcode Scanner SDK(Update)
+                Scandit Barcode Scanner SDK
             </h3>
             <div className='flex flex-col items-center'>
                 <div className='text-xl font-semibold'>

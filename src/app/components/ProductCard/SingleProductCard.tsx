@@ -1,5 +1,6 @@
 'use client';
 import Avatar from '@/components/Avatar';
+import { slugify } from '@/lib';
 import { IProduct } from '@/types';
 import Link from 'next/link';
 // import { convertToUrl } from '@/lib';
@@ -36,7 +37,7 @@ const SingleProductCard = ({ product }: { product: IProduct }) => {
 
             {/* Product Image */}
             <Link
-                href={`/shop/${product?.id}`}
+                href={`/shop/product/${slugify(title)}/?id=${product?.id}`}
                 // href={`/shop`}
                 className='relative aspect-[3/4] overflow-hidden rounded-lg bg-gray-100 block mb-4'
             >
@@ -51,7 +52,10 @@ const SingleProductCard = ({ product }: { product: IProduct }) => {
             </Link>
 
             {/* Product Details */}
-            <Link href={`/shop/${product?.id}`} className='mt-4 space-y-2'>
+            <Link
+                href={`/shop/product/${slugify(title)}/?id=${product?.id}`}
+                className='mt-4 space-y-2'
+            >
                 <p className='text-sm text-gray-600'>
                     {brandName ? brandName : ''}
                 </p>

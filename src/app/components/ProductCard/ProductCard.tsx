@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Avatar from '@/components/Avatar';
+import { slugify } from '@/lib';
 import Link from 'next/link';
 
 const ProductCard = ({ product }: any) => {
@@ -23,7 +24,7 @@ const ProductCard = ({ product }: any) => {
         <div className='group relative'>
             {/* Product Image */}
             <Link
-                href={`/shop/${product?.id}`}
+                href={`/shop/product/${slugify(title)}/?id=${product?.id}`}
                 className='relative aspect-[3/4] overflow-hidden rounded-lg bg-red-500 block mb-4 h-[275px] w-full'
             >
                 <Avatar
@@ -49,7 +50,10 @@ const ProductCard = ({ product }: any) => {
             </div> */}
 
             {/* Product Details */}
-            <Link href={`/shop/${product?.id}`} className='mt-4 space-y-2'>
+            <Link
+                href={`/shop/product/${slugify(title)}/?id=${product?.id}`}
+                className='mt-4 space-y-2'
+            >
                 <p className='text-sm text-gray-600'>
                     {brandName ? brandName : ''}
                 </p>

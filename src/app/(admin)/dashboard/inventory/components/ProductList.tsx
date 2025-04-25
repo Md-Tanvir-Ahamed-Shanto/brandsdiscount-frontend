@@ -11,8 +11,8 @@ import {
     TableHeader,
     TableRow
 } from '@/components/ui/table';
-import { useGetSkuProductQuery } from '@/api';
 import { useBulkUpdateMutation } from '@/api/admin/barCode/bulkUpdate';
+import { useMultipleProductData } from './useMultipleProductData';
 
 const ProductList = ({
     initialScannedSkus
@@ -39,18 +39,8 @@ const ProductList = ({
 
     const [updateBulk, { isLoading }] = useBulkUpdateMutation();
 
-    // Get the first product data
-    const { data: firstProductData } = useGetSkuProductQuery(
-        scannedProducts.length > 0 ? scannedProducts[0] : null
-    );
-
-    // Get the second product data
-    const { data: secondProductData } = useGetSkuProductQuery(
-        scannedProducts.length > 1 ? scannedProducts[1] : null
-    );
-
     // Combine all product data
-    const allProducts = [firstProductData, secondProductData].filter(Boolean);
+    const allProducts = useMultipleProductData(initialScannedSkus);
 
     useEffect(() => {
         // Run only if initialScannedSkus is non-empty
@@ -107,7 +97,9 @@ const ProductList = ({
 
             if (response?.success) {
                 // Show success toast
-                toast.success(`Added ${productsData.length} products to cart`);
+                toast.success(
+                    `${productsData.length} products checkout successfully!!`
+                );
                 playCheckSound();
 
                 // ✅ Reset quantities to 0 for only scanned products
@@ -154,9 +146,7 @@ const ProductList = ({
 
             {allProducts.length === 0 ? (
                 <div className='text-center p-8 border rounded-md bg-gray-50'>
-                    <p className='text-gray-500'>
-                        Waiting for products to be scanned...
-                    </p>
+                    <p className='text-gray-500'>Waiting for products...</p>
                 </div>
             ) : (
                 <Table>
