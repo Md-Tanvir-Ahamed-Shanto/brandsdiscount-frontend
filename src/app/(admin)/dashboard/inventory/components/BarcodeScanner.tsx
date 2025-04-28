@@ -58,7 +58,7 @@ const BarcodeScanner = () => {
     return (
         <>
             <h3 className='text-3xl text-center mb-4'>
-                Scandit Barcode Scanner SDK
+                Scandit Barcode Scanner SDK - new update
             </h3>
             <div className='flex flex-col items-center'>
                 <div className='text-xl font-semibold'>
