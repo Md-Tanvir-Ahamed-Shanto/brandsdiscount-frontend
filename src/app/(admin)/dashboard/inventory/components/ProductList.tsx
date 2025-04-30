@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import { Button } from '@/components/ui/button';
-import { Plus, Minus, ShoppingCart } from 'lucide-react';
+import { Plus, Minus, ShoppingCart, CircleMinus } from 'lucide-react';
 import {
     Table,
     TableBody,
@@ -24,6 +24,13 @@ const ProductList = ({
 
     // State for quantities, using SKU as key
     const [quantities, setQuantities] = useState<Record<string, number>>({});
+
+    // State for quantities, using SKU as key
+    const [deletedSkus, setDeletedSkus] = useState<Set<string>>(new Set());
+
+    const handleDelete = (sku: string) => {
+        setDeletedSkus((prev) => new Set(prev).add(sku));
+    };
 
     // Audio ref for check sound
     const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -80,10 +87,12 @@ const ProductList = ({
         if (allProducts.length === 0) return;
 
         // Create the product objects array
-        const productsData = allProducts.map((product) => ({
-            sku: product.sku,
-            quantity: quantities[product.sku] || 1
-        }));
+        const productsData = allProducts
+            ?.filter((product) => !deletedSkus.has(product.sku))
+            ?.map((product) => ({
+                sku: product.sku,
+                quantity: quantities[product.sku] || 1
+            }));
 
         // Log the data format
         console.log({
@@ -136,7 +145,7 @@ const ProductList = ({
                 <h1 className='text-2xl font-bold'>Product Scanner</h1>
                 <Button
                     onClick={confirmAllProducts}
-                    disabled={allProducts.length === 0}
+                    disabled={allProducts?.length === 0}
                     className='ml-auto'
                 >
                     <ShoppingCart className='mr-2 h-4 w-4' /> Confirm All
@@ -153,58 +162,89 @@ const ProductList = ({
                     <TableHeader>
                         <TableRow className='bg-gray-500'>
                             <TableHead className='!text-white'>SKU</TableHead>
-                            <TableHead className='!text-white'>Title</TableHead>
+                            <TableHead className='!text-white'>
+                                Product Name
+                            </TableHead>
+                            <TableHead className='!text-white'>
+                                Location
+                            </TableHead>
                             <TableHead className='!text-white'>Brand</TableHead>
                             <TableHead className='!text-white'>Price</TableHead>
                             <TableHead className='!text-white'>Stock</TableHead>
-                            <TableHead className='!text-white'>
+                            <TableHead className='!text-white text-center'>
                                 Quantity
+                            </TableHead>
+                            <TableHead className='!text-white text-center'>
+                                Actions
                             </TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {allProducts.map((product) => (
-                            <TableRow key={product.sku}>
-                                <TableCell className='font-medium'>
-                                    {product.sku}
-                                </TableCell>
-                                <TableCell>{product.title}</TableCell>
-                                <TableCell>{product.brandName}</TableCell>
-                                <TableCell>
-                                    ${product.salePrice.toFixed(2)}
-                                </TableCell>
-                                <TableCell>{product.stockQuantity}</TableCell>
-                                <TableCell>
-                                    <div className='flex items-center gap-2'>
-                                        <Button
-                                            variant='outline'
-                                            size='icon'
+                        {allProducts
+                            ?.filter(
+                                (product) => !deletedSkus.has(product?.sku)
+                            )
+                            .map((product) => (
+                                <TableRow key={product?.sku}>
+                                    <TableCell className='font-medium'>
+                                        {product?.sku}
+                                    </TableCell>
+                                    <TableCell>{product?.title}</TableCell>
+                                    <TableCell>
+                                        {product?.itemLocation}
+                                    </TableCell>
+                                    <TableCell>{product?.brandName}</TableCell>
+                                    <TableCell>
+                                        ${product?.salePrice?.toFixed(2)}
+                                    </TableCell>
+                                    <TableCell>
+                                        {product?.stockQuantity}
+                                    </TableCell>
+                                    <TableCell>
+                                        <div className='flex items-center gap-2'>
+                                            <Button
+                                                variant='outline'
+                                                size='icon'
+                                                onClick={() =>
+                                                    decreaseQuantity(
+                                                        product?.sku
+                                                    )
+                                                }
+                                                disabled={
+                                                    (quantities[product?.sku] ||
+                                                        1) <= 1
+                                                }
+                                            >
+                                                <Minus className='h-4 w-4 text-black' />
+                                            </Button>
+                                            <span className='w-8 text-center'>
+                                                {quantities[product?.sku] || 1}
+                                            </span>
+                                            <Button
+                                                variant='outline'
+                                                size='icon'
+                                                onClick={() =>
+                                                    increaseQuantity(
+                                                        product?.sku
+                                                    )
+                                                }
+                                            >
+                                                <Plus className='h-4 w-4 text-black' />
+                                            </Button>
+                                        </div>
+                                    </TableCell>
+                                    <TableCell className='flex items-center justify-center'>
+                                        <button
+                                            className='mt-2'
                                             onClick={() =>
-                                                decreaseQuantity(product.sku)
-                                            }
-                                            disabled={
-                                                (quantities[product.sku] ||
-                                                    1) <= 1
+                                                handleDelete(product?.sku)
                                             }
                                         >
-                                            <Minus className='h-4 w-4 text-black' />
-                                        </Button>
-                                        <span className='w-8 text-center'>
-                                            {quantities[product.sku] || 1}
-                                        </span>
-                                        <Button
-                                            variant='outline'
-                                            size='icon'
-                                            onClick={() =>
-                                                increaseQuantity(product.sku)
-                                            }
-                                        >
-                                            <Plus className='h-4 w-4 text-black' />
-                                        </Button>
-                                    </div>
-                                </TableCell>
-                            </TableRow>
-                        ))}
+                                            <CircleMinus className='hover:text-red-500' />
+                                        </button>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
                     </TableBody>
                 </Table>
             )}
