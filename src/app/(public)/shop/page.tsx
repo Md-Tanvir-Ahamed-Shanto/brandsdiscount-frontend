@@ -1,15 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
-import React, { useEffect, useState } from 'react';
-import { CategorySlider, SingleProductCard } from '../../components';
+import React, { useState } from 'react';
+import { SingleProductCard } from '../../components';
 import {
-    FilterSheet,
     Pagination,
+    ProductSkeleton,
     SortDropdown,
     TrendingSlider
 } from './components';
-import { LoadingPublic } from '@/components';
 import { IProduct } from '@/types';
 import {
     useGetAllPublicProductQuery,
@@ -36,7 +35,7 @@ const ShopPage = () => {
     } = useGetAllPublicProductQuery(
         {
             page: currentPage,
-            limit: pageSize,
+            limit: 100,
             sort: sortValue,
             filters
         },
@@ -63,10 +62,6 @@ const ShopPage = () => {
     const isError = searchTerm ? isSearchError : isDefaultError;
     const error = searchTerm ? searchError : defaultError;
 
-    if (isLoading || isFetching) {
-        return <LoadingPublic />;
-    }
-
     if (error || isError) {
         return 'Something went wrong';
     }
@@ -90,6 +85,7 @@ const ShopPage = () => {
                 </div>
             )}
 
+            {isLoading && <ProductSkeleton />}
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 py-12'>
                 {!searchData?.length
                     ? productData?.data?.map((product: IProduct) => (
@@ -117,7 +113,7 @@ const ShopPage = () => {
             {!searchTerm && (
                 <div className='mb-12'>
                     <Pagination
-                        totalPages={5}
+                        totalPages={100}
                         defaultPage={currentPage}
                         defaultPageSize={pageSize}
                         onPageChange={setCurrentPage}

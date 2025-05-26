@@ -24,10 +24,10 @@ const SingleProductCard = ({ product }: { product: IProduct }) => {
     } = product; // Destructuring inside the function
 
     return (
-        <div className='group relative'>
+        <div className='group relative !bg-gray-500/80 rounded'>
             {/* Discount Badge */}
             <div className='absolute left-0 top-4 z-10 bg-red-600 text-white px-2 py-1'>
-                -{discountPercent ? discountPercent : 0}%
+                -{discountPercent ? discountPercent : 15}%
             </div>
 
             {/* Limited Time Special Badge */}
@@ -39,14 +39,14 @@ const SingleProductCard = ({ product }: { product: IProduct }) => {
             <Link
                 href={`/shop/product/${slugify(title)}/?id=${product?.id}`}
                 // href={`/shop`}
-                className='relative aspect-[3/4] overflow-hidden rounded-lg bg-gray-100 block mb-4'
+                className='relative overflow-hidden rounded-lg bg-gray-200 block mb-4'
             >
                 <Avatar
                     src={
                         images[0]?.url ? images[0]?.url : '/shop/no-image.jpeg'
                     }
                     alt={title ? title : ''}
-                    className='object-cover object-center'
+                    className='!object-contain rounded'
                     priority={true}
                 />
             </Link>
