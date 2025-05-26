@@ -1,69 +1,69 @@
 'use client';
-import { useGetAllCategoryApiQuery } from '@/api/public';
-import { LoadingSpinner } from '@/components';
-import { categorySliderSettings } from '@/config';
-// import { categorySliderSettings } from '@/config';
+import { MENU } from '@/static';
 import Link from 'next/link';
 import React from 'react';
-import { useRef } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 
+// Slider settings
+const settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 5,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    pauseOnHover: true,
+    draggable: true, // Enable drag with mouse
+    swipe: true, // Enable swipe gesture
+    touchMove: true, // Allow movement on touch devices
+    responsive: [
+        {
+            breakpoint: 1360,
+            settings: {
+                slidesToShow: 4
+            }
+        },
+        {
+            breakpoint: 1024,
+            settings: {
+                slidesToShow: 3
+            }
+        },
+        {
+            breakpoint: 768,
+            settings: {
+                slidesToShow: 3
+            }
+        },
+        {
+            breakpoint: 480,
+            settings: {
+                slidesToShow: 2
+            }
+        }
+    ]
+};
+
 const CategorySlider = () => {
-    const { data: categoryData = [], isLoading } =
-        useGetAllCategoryApiQuery('');
-    const sliderRef = useRef<Slider | null>(null); // type: Slider | null
-
-    /*   const nextSlide = () => {
-        if (sliderRef.current) {
-            sliderRef.current.slickNext();
-        }
-    };
-
-    const prevSlide = () => {
-        if (sliderRef.current) {
-            sliderRef.current.slickPrev();
-        }
-    }; */
-
-    if (isLoading) {
-        return <LoadingSpinner />;
-    }
-
     return (
-        <div className='categorySlider overflow-hidden relative mb-6'>
-            <Slider
-                ref={sliderRef}
-                {...categorySliderSettings}
-                className='-ml-2'
-            >
-                {(categoryData ?? [])?.data?.map(
-                    ({ id, name }: { id: string; name: string }) => (
-                        <Link
-                            href={`/shop?q=${name}`}
-                            key={id}
-                            className='relative hover:text-black group gap-2
-             hover:bg-main-500/60 py-2.5 px-4 rounded bg-main-500 text-black text-center'
-                        >
-                            {name}
-                        </Link>
-                    )
-                )}
-            </Slider>
-
-            {/* <div
-                className='flex items-center justify-center w-10 h-10 bg-black/40 backdrop-blur-md rounded-full cursor-pointer absolute left-2 top-2'
-                onClick={prevSlide}
-            >
-                <Icons.ChevronRight className='rotate-180 text-white' />
+        <div className='items-center justify-center hidden lg:flex'>
+            <div className='w-5/6 xl:w-4/6 px-4'>
+                <Slider {...settings}>
+                    {(MENU ?? []).map(({ label, link, id }) => (
+                        <div key={id} className='px-2'>
+                            <Link
+                                href={link}
+                                className='block text-center py-3 px-6 bg-main-500 text-black rounded hover:bg-main-500/60 hover:text-black transition-all duration-300'
+                            >
+                                {label}
+                            </Link>
+                        </div>
+                    ))}
+                </Slider>
             </div>
-            <div
-                className='flex items-center justify-center w-10 h-10 bg-black/40 backdrop-blur-md rounded-full cursor-pointer absolute right-2 top-2'
-                onClick={nextSlide}
-            >
-                <Icons.ChevronRight className='text-white' />
-            </div> */}
         </div>
     );
 };

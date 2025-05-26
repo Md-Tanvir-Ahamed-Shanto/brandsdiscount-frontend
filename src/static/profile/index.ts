@@ -10,6 +10,11 @@ export const SIDEBAR_MENUS = [
         route: '/order',
     },
     {
+        id: 3,
+        label: 'Loyalty Points',
+        route: '/loyalty-points',
+    },
+    {
         id: 4,
         label: 'Change Password',
         route: '/change-password',

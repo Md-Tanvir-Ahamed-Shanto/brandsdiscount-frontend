@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getUserDetails } from "./lib";
 
-const protectedRoutes = ["/cart", "/checkout", "/success", "/orders"];
+const protectedRoutes = ["/cart", "/checkout", "/success", "/orders", "/loyalty-points"];
 
 const roleBasedRoutes: Record<string, string[]> = {
   PlatformUser: ["/cart", "/checkout", "/success", "/orders"],
