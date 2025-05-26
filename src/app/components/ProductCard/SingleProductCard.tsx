@@ -31,7 +31,7 @@ const SingleProductCard = ({ product }: { product: IProduct }) => {
             </div>
 
             {/* Limited Time Special Badge */}
-            <div className='absolute left-4 bottom-[40%] z-10 bg-amber-500 text-white px-2 py-1 text-sm'>
+            <div className='absolute left-0 bottom-[40%] z-10 bg-amber-500 text-white px-2 py-1 text-sm'>
                 Limited-Time Special
             </div>
 

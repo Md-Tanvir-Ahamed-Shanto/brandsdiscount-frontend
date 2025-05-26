@@ -25,14 +25,14 @@ const ProductCard = ({ product }: any) => {
             {/* Product Image */}
             <Link
                 href={`/shop/product/${slugify(title)}/?id=${product?.id}`}
-                className='relative aspect-[3/4] overflow-hidden rounded-lg bg-red-500 block mb-4 h-[275px] w-full'
+                className='relative aspect-[3/4] overflow-hidden rounded-lg bg-main-500 block mb-4 h-[275px] w-full'
             >
                 <Avatar
                     src={
                         images[0]?.url ? images[0]?.url : '/shop/no-image.jpeg'
                     }
                     alt={title ? title : ''}
-                    className='h-full w-full object-cover'
+                    className='h-full w-full !object-contain'
                 />
             </Link>
 

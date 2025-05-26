@@ -2,17 +2,16 @@ import { PROMO_ITEMS } from '@/static';
 
 export default function PromoSection() {
     return (
-        <section className='py-10'>
+        <section className=''>
             <div className='container mx-auto'>
-                <div className='text-center mb-24 py-8 bg-gray-100 rounded'>
-                    <p className='text-gray-800'>
-                        Brand Discount.com is a U.S. website. All offers are
-                        based on USD, U.S. times & dates. International exchange
-                        rates will be applied.
+                <div className='text-center mb-12 py-8 bg-gray-100 rounded'>
+                    <p className='text-gray-800 font-medium'>
+                        Join the Style Rewards Club: Unlock more with every
+                        purchase—no hoops, just perks.
                     </p>
                 </div>
 
-                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-12 mb-16'>
+                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-12 pb-4'>
                     {PROMO_ITEMS.map((item, index) => {
                         const Icon = item.icon;
                         return (
@@ -38,12 +37,6 @@ export default function PromoSection() {
                                         {item.description}
                                     </p>
                                 </div>
-                                {/* <Link
-                                    href={item.linkHref}
-                                    className='text-gray-900 font-medium underline'
-                                >
-                                    {item.linkText}
-                                </Link> */}
                             </div>
                         );
                     })}
