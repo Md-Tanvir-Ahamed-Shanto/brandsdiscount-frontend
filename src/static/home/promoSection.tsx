@@ -1,35 +1,32 @@
-import { Mail, Truck, Globe, Store } from 'lucide-react';
+import { Gem, Gift, Hourglass, Rocket } from 'lucide-react';
 
 // Define the promo items as an array for mapping
 export const PROMO_ITEMS = [
     {
-        icon: Mail,
-        title: 'Sign up for emails & get an extra 25% off',
-        description:
-            'Save on your next purchase & discover our latest offers. Exclusions apply. Valid for international customers only.',
+        icon: Rocket,
+        title: '$10 Welcome Pick',
+        description: 'Spend $60, choose any one item for just $10',
         linkText: 'Sign Up',
         linkHref: '/shop'
     },
     {
-        icon: Truck,
-        title: 'We now ship to over 200 locations worldwide',
-        description:
-            'Shop your favorite brands & send to friends & family around the globe.',
+        icon: Gem,
+        title: 'Point-for-Dollar',
+        description: 'Earn 1 pt for every $1 spent (100 pts = $1 off)',
         linkText: 'Select Your Location',
         linkHref: '/shop'
     },
     {
-        icon: Globe,
-        title: 'Check out our international shipping FAQs',
-        description:
-            'Find the answers to some of our most commonly asked questions.',
+        icon: Gift,
+        title: 'Member Exclusives',
+        description: 'Birthday treats, early-access drops, double-point days',
         linkText: 'Get The Details',
         linkHref: '/shop'
     },
     {
-        icon: Store,
-        title: 'Visit the U.S. and come shop in store',
-        description: 'Get style inspo, gift ideas, great deals & more.',
+        icon: Hourglass,
+        title: 'Flash-Deal Fun',
+        description: 'Hourly progress bar reveals surprise rewards',
         linkText: 'Find A Store',
         linkHref: '/shop'
     }

@@ -5,23 +5,29 @@ import {
     ProductDetails,
     ProductImage
 } from './components';
-import { TrendingSlider } from '../components';
-import { useParams } from 'next/navigation';
+import { TrendingSlider } from '../../components';
+import { useSearchParams } from 'next/navigation';
 import { useGetSinglePublicProductQuery } from '@/api/public';
 import { LoadingPublic } from '@/components';
 // import { convertFromUrl } from '@/lib';
 // import { PRODUCTS } from '@/static';
 
 const SingleProductPage = () => {
-    const params = useParams();
-    const id = params?.title?.[0] as string; // Assuming [...title] contains [id]
+    const searchParams = useSearchParams();
+    const id = searchParams.get('id') as string; // ✅ Get ID from URL query
+    console.log(id);
 
     const { data, isLoading, isError } = useGetSinglePublicProductQuery(id);
 
     console.log('🔍 Single Product Data:', data);
 
     if (isLoading) return <LoadingPublic />;
-    if (isError || !data) return <p>Product not found.</p>;
+    if (isError || !data)
+        return (
+            <p className='text-center py-48 font-bold text-3xl'>
+                Product not found.
+            </p>
+        );
 
     /* const product = PRODUCTS?.find(
         (p) => p.name.toLowerCase() === productName?.toLowerCase()

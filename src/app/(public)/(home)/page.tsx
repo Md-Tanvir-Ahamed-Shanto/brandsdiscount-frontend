@@ -1,12 +1,12 @@
 import { TrendingSlider } from '../shop/components';
-import { Featured, HeroSlider, PromoSection } from './components';
+import { Featured, HeroImage } from './components';
 
 const Home = () => {
     return (
         <>
-            <HeroSlider />
+            {/* <HeroSlider /> */}
+            <HeroImage />
             <Featured />
-            <PromoSection />
             {/* <RecentlyView /> */}
             <div className='container'>
                 <h3 className='font-bold text-2xl mb-8'>Trending Products</h3>

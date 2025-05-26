@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Avatar from '@/components/Avatar';
+import { slugify } from '@/lib';
 import Link from 'next/link';
 
 const ProductCard = ({ product }: any) => {
@@ -21,32 +22,38 @@ const ProductCard = ({ product }: any) => {
     } = product; // Destructuring inside the function
     return (
         <div className='group relative'>
-            {/* Discount Badge */}
-            <div className='absolute left-0 top-4 z-10 bg-red-600 text-white px-2 py-1'>
-                -{discountPercent}%
-            </div>
-
-            {/* Limited Time Special Badge */}
-            <div className='absolute left-4 bottom-[40%] z-10 bg-amber-500 text-white px-2 py-1 text-sm'>
-                Limited-Time Special
-            </div>
-
             {/* Product Image */}
             <Link
-                href={`/shop/${product?.id}`}
-                className='relative aspect-[3/4] overflow-hidden rounded-lg bg-gray-100 block mb-4'
+                href={`/shop/product/${slugify(title)}/?id=${product?.id}`}
+                className='relative aspect-[3/4] overflow-hidden rounded-lg bg-main-500 block mb-4 h-[275px] w-full'
             >
                 <Avatar
                     src={
                         images[0]?.url ? images[0]?.url : '/shop/no-image.jpeg'
                     }
                     alt={title ? title : ''}
-                    className='object-cover object-center'
+                    className='h-full w-full !object-contain'
                 />
             </Link>
 
+            {/* Discount Badge */}
+            <div className='absolute left-0 top-4 z-10 bg-red-600 text-white px-2 py-1'>
+                -{discountPercent}%
+            </div>
+            <div className='absolute left-0 top-48 z-10 bg-amber-500 text-white px-2 py-1 text-sm'>
+                Limited-Time Special
+            </div>
+
+            {/* Limited Time Special Badge */}
+            {/* <div className='absolute left-4 bottom-[40%] z-10 bg-amber-500 text-white px-2 py-1 text-sm'>
+                Limited-Time Special
+            </div> */}
+
             {/* Product Details */}
-            <Link href={`/shop/${product?.id}`} className='mt-4 space-y-2'>
+            <Link
+                href={`/shop/product/${slugify(title)}/?id=${product?.id}`}
+                className='mt-4 space-y-2'
+            >
                 <p className='text-sm text-gray-600'>
                     {brandName ? brandName : ''}
                 </p>

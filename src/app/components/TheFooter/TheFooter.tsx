@@ -1,11 +1,13 @@
 import { FOOTER_SECTIONS, LEGAL_LINKS, SOCIAL_LINKS } from '@/static';
 import SubscriptionForm from './SubscriptionForm';
+import { PromoSection } from '@/app/(public)/(home)/components';
 
 const TheFooter = () => {
     return (
         <main>
-            {/* Main content would go here */}
-
+            {/* PromoSection */}
+            <PromoSection />
+            {/* PromoSection */}
             {/* Footer */}
             <footer className='bg-black text-white'>
                 <div className='container mx-auto py-10'>

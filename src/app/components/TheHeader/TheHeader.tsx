@@ -6,6 +6,7 @@ import { useState } from 'react';
 import ProfileDropDown from './ProfileDropDown';
 import { RootState, useAppSelector } from '@/store';
 import CategorySlider from '../CategorySlider';
+import MobileMenu from './MegaMenuMobile';
 
 const TheHeader = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -30,7 +31,7 @@ const TheHeader = () => {
             {/* mobile */}
             <header className='block lg:hidden !w-full mb-4'>
                 <div className='flex container items-center justify-between py-4'>
-                    <div className='flex gap-2'>
+                    <div className='flex gap-2  min-w-[100px]'>
                         <button
                             onClick={() => setIsOpen(!isOpen)}
                             className='-ml-4'
@@ -39,7 +40,7 @@ const TheHeader = () => {
                         </button>
                         <Logo />
                     </div>
-                    <div className='flex gap-4 min-w-[250px] justify-end items-center'>
+                    <div className='flex gap-4 min-w-[150px] !justify-end !items-center'>
                         <LinkButton href='/checkout' className='-mr-6'>
                             <Icons.ShoppingBag className='text-gray-800' />
                         </LinkButton>
@@ -52,7 +53,7 @@ const TheHeader = () => {
             </header>
 
             <CategorySlider />
-            {/* <MobileMenu isOpen={isOpen} setIsOpen={setIsOpen} /> */}
+            <MobileMenu isOpen={isOpen} setIsOpen={setIsOpen} />
         </>
     );
 };

@@ -1,5 +1,6 @@
 'use client';
 import Avatar from '@/components/Avatar';
+import { slugify } from '@/lib';
 import { IProduct } from '@/types';
 import Link from 'next/link';
 // import { convertToUrl } from '@/lib';
@@ -23,35 +24,38 @@ const SingleProductCard = ({ product }: { product: IProduct }) => {
     } = product; // Destructuring inside the function
 
     return (
-        <div className='group relative'>
+        <div className='group relative !bg-gray-500/80 rounded'>
             {/* Discount Badge */}
             <div className='absolute left-0 top-4 z-10 bg-red-600 text-white px-2 py-1'>
-                -{discountPercent ? discountPercent : 0}%
+                -{discountPercent ? discountPercent : 15}%
             </div>
 
             {/* Limited Time Special Badge */}
-            <div className='absolute left-4 bottom-[40%] z-10 bg-amber-500 text-white px-2 py-1 text-sm'>
+            <div className='absolute left-0 bottom-[40%] z-10 bg-amber-500 text-white px-2 py-1 text-sm'>
                 Limited-Time Special
             </div>
 
             {/* Product Image */}
             <Link
-                href={`/shop/${product?.id}`}
+                href={`/shop/product/${slugify(title)}/?id=${product?.id}`}
                 // href={`/shop`}
-                className='relative aspect-[3/4] overflow-hidden rounded-lg bg-gray-100 block mb-4'
+                className='relative overflow-hidden rounded-lg bg-gray-200 block mb-4'
             >
                 <Avatar
                     src={
                         images[0]?.url ? images[0]?.url : '/shop/no-image.jpeg'
                     }
                     alt={title ? title : ''}
-                    className='object-cover object-center'
+                    className='!object-contain rounded'
                     priority={true}
                 />
             </Link>
 
             {/* Product Details */}
-            <Link href={`/shop/${product?.id}`} className='mt-4 space-y-2'>
+            <Link
+                href={`/shop/product/${slugify(title)}/?id=${product?.id}`}
+                className='mt-4 space-y-2'
+            >
                 <p className='text-sm text-gray-600'>
                     {brandName ? brandName : ''}
                 </p>

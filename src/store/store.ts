@@ -16,9 +16,7 @@ const persistConfig = {
   // Combine all reducers (including API and publicApi reducers)
 const rootReducer = combineReducers({
     ...reducer,
-    [baseApi.reducerPath]: baseApi.reducer,
-    [publicApi.reducerPath]: publicApi.reducer,
-  });
+});
   
   // Wrap with persistReducer
   const persistedReducer = persistReducer(persistConfig, rootReducer);

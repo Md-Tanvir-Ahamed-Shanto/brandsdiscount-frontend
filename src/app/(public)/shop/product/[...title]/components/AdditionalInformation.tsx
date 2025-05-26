@@ -6,22 +6,15 @@ interface IProps {
 }
 
 const AdditionalInformation = ({ product }: IProps) => {
-    console.log('🚀 ~ AdditionalInformation ~ product:', product);
     const {
         title,
         brandName,
         color,
         sku,
-        itemLocation,
         sizeType,
         regularPrice,
         salePrice,
-        platFormPrice,
-        discountPercent,
-        stockQuantity,
-        condition,
-        status,
-        updatedById
+        condition
     } = product;
     return (
         <div>
@@ -38,31 +31,16 @@ const AdditionalInformation = ({ product }: IProps) => {
                 </h3>
                 <div className='!w-full'>
                     <BoxData title='Product Name' content={title} />
-                    <BoxData title='Stock Quantity' content={stockQuantity} />
                     <BoxData title='Color' content={color} />
                     <BoxData title='Brand' content={brandName} />
                     <BoxData title='Size Type' content={sizeType || 'N/A'} />
                     <BoxData title='SKU' content={sku} />
                     <BoxData title='Condition' content={condition} />
                     <BoxData
-                        title='Platform Price'
-                        content={platFormPrice || 'N/A'}
-                    />
-                    <BoxData
                         title='Regular Price'
                         content={`$${regularPrice}`}
                     />
                     <BoxData title='Sale Price' content={`$${salePrice}`} />
-                    <BoxData
-                        title='Discount Percent'
-                        content={`${discountPercent}%`}
-                    />
-                    <BoxData title='Status' content={status} />
-                    <BoxData title='Location' content={itemLocation} />
-                    <BoxData
-                        title='Updated By'
-                        content={updatedById || 'N/A'}
-                    />
                 </div>
             </div>
             <div className='w-full h-[1px] bg-gray-800 mb-8 rounded'></div>

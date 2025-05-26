@@ -2,7 +2,7 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import { Search, X } from 'lucide-react';
-import { useDebounce } from '@/lib';
+import { slugify, useDebounce } from '@/lib';
 import { useGetAllSearchProductQuery } from '@/api/public';
 import Link from 'next/link';
 
@@ -100,7 +100,7 @@ const SearchComponent = () => {
                 </div>
 
                 {showSuggestions && (
-                    <div className='absolute z-10 w-full mt-2 bg-white border rounded-lg shadow-lg'>
+                    <div className='absolute z-50 w-full mt-2 bg-white border rounded-lg shadow-lg'>
                         <div className='p-4'>
                             <h3 className='text-lg font-semibold mb-2'>
                                 {searchResults?.length
@@ -112,7 +112,8 @@ const SearchComponent = () => {
                                     ?.slice(0, 10)
                                     .map(({ title, id }: any) => (
                                         <Link
-                                            href={`/shop/${id}`}
+                                            // href={`/shop/${id}`}
+                                            href={`/shop/product/${slugify(title)}/?id=${id}`}
                                             key={id}
                                             className='text-gray-600 hover:text-primary cursor-pointer block'
                                             onClick={() => {

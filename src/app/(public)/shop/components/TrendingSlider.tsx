@@ -1,7 +1,6 @@
 'use client';
 import { useGetNewTrendingProductsQuery } from '@/api/public';
-import { ProductCard } from '@/app/components';
-import { Icons } from '@/components';
+import { ProductCard, ProductSkeleton } from '@/app/components';
 import { trendingSliderSettings } from '@/config';
 import { ISingleProduct } from '@/types';
 import React from 'react';
@@ -20,45 +19,17 @@ const TrendingSlider = () => {
 
     const sliderRef = useRef<Slider | null>(null);
 
-    const nextSlide = () => {
-        if (sliderRef.current) {
-            sliderRef.current.slickNext();
-        }
-    };
-
-    const prevSlide = () => {
-        if (sliderRef.current) {
-            sliderRef.current.slickPrev();
-        }
-    };
-    if (isLoading) return 'loading';
+    if (isLoading) return <ProductSkeleton />;
     if (isError || error) return 'something went wrong';
     return (
-        <div className=' relative trendingSlider max-h-[660px] sm:max-h-[470px] md:max-h-[600px] lg:max-h-[550px]'>
-            <Slider
-                ref={sliderRef}
-                {...trendingSliderSettings}
-                className='-ml-2'
-            >
+        <div className='  '>
+            <Slider ref={sliderRef} {...trendingSliderSettings}>
                 {(trendingData?.data || [])
                     ?.slice(0, 8)
                     .map((product: ISingleProduct) => (
                         <ProductCard key={product?.id} product={product} />
                     ))}
             </Slider>
-
-            <div
-                className='flex items-center justify-center w-10 h-10 bg-black/40 backdrop-blur-md rounded-full cursor-pointer absolute left-2 top-48'
-                onClick={prevSlide}
-            >
-                <Icons.ChevronRight className='rotate-180 text-white' />
-            </div>
-            <div
-                className='flex items-center justify-center w-10 h-10 bg-black/40 backdrop-blur-md rounded-full cursor-pointer absolute right-2 top-48'
-                onClick={nextSlide}
-            >
-                <Icons.ChevronRight className='text-white' />
-            </div>
         </div>
     );
 };
