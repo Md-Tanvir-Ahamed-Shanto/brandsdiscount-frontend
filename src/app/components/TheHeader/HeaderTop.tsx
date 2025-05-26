@@ -1,52 +1,58 @@
-import Link from 'next/link';
-import { Globe } from 'lucide-react';
-import { EXCLUSIVE, EXCLUSIVE_LINKS } from '@/static';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import InternationalShipping from './InternationalShipping';
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger
+} from '@/components/ui/accordion';
 
 const HeaderTop = () => {
     return (
         <header className='w-full bg-white'>
             <div className='container mx-auto px-4'>
-                <div className='flex flex-col sm:flex-row justify-between items-center py-2 text-sm'>
-                    <div className='text-gray-800 mb-2 sm:mb-0 flex lg:justify-start justify-center items-center gap-1'>
-                        <span className='inline-block'>{EXCLUSIVE.title}</span>
-                        <Link
-                            href={EXCLUSIVE.link.url}
-                            className='font-medium underline'
-                        >
-                            {EXCLUSIVE.link.label}
-                        </Link>
-                    </div>
-                    <nav className='hidden lg:flex items-center space-x-6 relative'>
-                        {EXCLUSIVE_LINKS?.map(({ id, label, url }) => (
-                            <Link
-                                href={url}
-                                key={id}
-                                className='relative text-gray-800 hover:text-black group'
+                <div className='flex justify-center items-center'>
+                    <div className=''>
+                        <Accordion type='single' collapsible>
+                            <AccordionItem
+                                value='item-1'
+                                className='!border-b-0'
                             >
-                                {label}
-                                <span className='text-gray-300 ml-3'>|</span>
-                                <div
-                                    className={`absolute -bottom-[9px] ${id === 2 ? 'right-3' : 'right-8'} w-12 h-[2px] bg-gray-800 opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
-                                ></div>
-                            </Link>
-                        ))}
-
-                        <div className='flex items-center text-gray-800'>
-                            <Sheet>
-                                <SheetTrigger className='flex gap-1'>
-                                    <span className='mr-1'>Shipping To</span>
-                                    <div className='w-5 h-5 rounded-full bg-teal-700 flex items-center justify-center'>
-                                        <Globe className='w-3 h-3 text-white' />
+                                <AccordionTrigger className='!w-full min-w-[300px] sm:min-w-[440px] flex items-center justify-center font-medium !text-xs py-1 relative'>
+                                    <div className='relative '>
+                                        <span className='pr-1'>
+                                            Free US shipping{' '}
+                                            <span className='font-bold'>
+                                                +$10 first item on $60+
+                                            </span>{' '}
+                                            & 1 pt/$1
+                                        </span>{' '}
+                                        |{' '}
+                                        <span className='underline'>
+                                            See more
+                                        </span>
                                     </div>
-                                </SheetTrigger>
-                                <SheetContent className='w-[500px]'>
-                                    <InternationalShipping />
-                                </SheetContent>
-                            </Sheet>
-                        </div>
-                    </nav>
+                                </AccordionTrigger>
+
+                                <AccordionContent className='bg-[#f9f9f9] p-2 border border-[#888888] rounded text-sm text-center my-2'>
+                                    <p>👋 Welcome to Style Rewards!</p>
+                                    <p>
+                                        🚚{' '}
+                                        <strong>Free domestic shipping</strong>{' '}
+                                        on all US orders—no minimum spend!
+                                    </p>
+                                    <p>
+                                        🎉 New here? Spend $60 and pick{' '}
+                                        <strong>
+                                            any eligible item for just $10
+                                        </strong>
+                                    </p>
+                                    <p>
+                                        ⭐ Earn 1 point for every $1 you spend
+                                        (100 pts = $1 off)
+                                    </p>
+                                </AccordionContent>
+                            </AccordionItem>
+                        </Accordion>
+                    </div>
                 </div>
             </div>
             <div className='border-b border-gray-200 w-full'></div>
