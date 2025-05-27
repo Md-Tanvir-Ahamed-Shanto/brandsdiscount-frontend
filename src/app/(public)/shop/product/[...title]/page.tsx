@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     AdditionalInformation,
     ProductDetails,
@@ -14,12 +14,24 @@ import { LoadingPublic } from '@/components';
 
 const SingleProductPage = () => {
     const searchParams = useSearchParams();
-    const id = searchParams.get('id') as string; // ✅ Get ID from URL query
-    console.log(id);
+    const id = searchParams.get('id') as string;
 
     const { data, isLoading, isError } = useGetSinglePublicProductQuery(id);
-
-    console.log('🔍 Single Product Data:', data);
+    useEffect(() => {
+        if (data) {
+            const existingProducts = JSON.parse(
+                localStorage.getItem('recentlyViewed') || '[]'
+            );
+            const filteredProducts = existingProducts.filter(
+                (product: any) => product.id !== data.id
+            );
+            const updatedProducts = [data, ...filteredProducts].slice(0, 10);
+            localStorage.setItem(
+                'recentlyViewed',
+                JSON.stringify(updatedProducts)
+            );
+        }
+    }, [data]);
 
     if (isLoading) return <LoadingPublic />;
     if (isError || !data)
