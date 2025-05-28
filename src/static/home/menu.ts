@@ -7,7 +7,7 @@ export const MENU = [
     {
         id: 2,
         label: 'Women',
-        link: '/shop?q=woman'
+        link: '/shop/women'
     },
     {
         id: 3,
@@ -23,6 +23,5 @@ export const MENU = [
         id: 5,
         label: 'Rewards',
         link: '/loyalty-points'
-    },
-]
- 
+    }
+];

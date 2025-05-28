@@ -1,11 +1,12 @@
-import { RecentlyViewedSlider } from '../shop/components';
+import { RecentlyViewedSlider, TrendingSlider } from '../shop/components';
 import { Featured, HeroImage } from './components';
+import Categories from './components/Categories';
 
 const Home = () => {
     return (
         <>
             <HeroImage />
-            <Featured />
+            <Categories />
             <RecentlyViewedSlider />
         </>
     );

@@ -19,11 +19,12 @@ import { useSearchParams } from 'next/navigation';
 const ShopPage = () => {
     const searchParams = useSearchParams();
     const searchTerm = searchParams.get('q') || '';
+    const filters = searchParams.get('filter') || '';
 
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(5);
     const [sortValue, setSortValue] = useState('');
-    const [filters, setFilters] = useState('');
+    // const [filters, setFilters] = useState('');
 
     // Default product fetch
     const {
@@ -37,7 +38,7 @@ const ShopPage = () => {
             page: currentPage,
             limit: 100,
             sort: sortValue,
-            filters
+            filters: `filtering=${filters}`
         },
         {
             skip: !!searchTerm // skip default fetch if search exists
