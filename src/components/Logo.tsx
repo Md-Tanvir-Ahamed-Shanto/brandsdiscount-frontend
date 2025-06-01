@@ -18,7 +18,7 @@ const Logo: FC<IProps> = ({ className }) => {
                 width={100}
                 src={theme === 'dark' ? '/logo.png' : '/logo.png'}
                 alt='site-logo'
-                className={`${className} h-[50px] w-[200px] md:h-[70px]  md:w-[300px]`}
+                className={`${className} !w-full h-[30px] lg:h-[50px] object-contain`}
                 unoptimized
                 priority
             />
