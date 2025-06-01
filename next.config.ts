@@ -8,12 +8,17 @@ const nextConfig: NextConfig = {
             {
                 protocol: 'https',
                 hostname: 'imagedelivery.net',
-                port: '', // Optional, only if needed
+                port: '',
                 pathname: '/**'
             },
             {
                 protocol: 'https',
                 hostname: 'cdn.brandsdiscounts.com',
+                pathname: '/**'
+            },
+            {
+                protocol: 'https',
+                hostname: 'res.cloudinary.com',
                 pathname: '/**'
             }
         ]
