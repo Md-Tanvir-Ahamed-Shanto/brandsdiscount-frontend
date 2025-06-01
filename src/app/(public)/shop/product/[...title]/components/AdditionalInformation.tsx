@@ -14,7 +14,8 @@ const AdditionalInformation = ({ product }: IProps) => {
         sizeType,
         regularPrice,
         salePrice,
-        condition
+        condition,
+        size
     } = product;
     const categoryName = product.parentCategory
         ? product.parentCategory.name + ' > ' + product.category?.name
@@ -38,6 +39,7 @@ const AdditionalInformation = ({ product }: IProps) => {
                     <BoxData title='Color' content={color} />
                     <BoxData title='Brand' content={brandName} />
                     <BoxData title='Size Type' content={sizeType || 'N/A'} />
+                    <BoxData title='Size' content={size?.name || 'N/A'} />
                     <BoxData title='SKU' content={sku} />
                     <BoxData title='Condition' content={condition} />
                     <BoxData
