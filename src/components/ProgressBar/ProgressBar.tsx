@@ -1,13 +1,8 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import clsx from 'clsx';
-import { RootState, selectCartSubtotal, useAppSelector } from '@/store';
-import { jwtDecode } from 'jwt-decode';
-import { MyTokenPayload } from '@/app/(profile)/profile/page';
-import { useGetAllProfileOrderQuery, useGetSingleProfileQuery } from '@/api';
-import Cookies from 'js-cookie';
-import { Skeleton } from '../ui/skeleton';
+import { selectCartSubtotal, useAppSelector } from '@/store';
 
 interface ProgressBarProps {
     targetSpend: number;
