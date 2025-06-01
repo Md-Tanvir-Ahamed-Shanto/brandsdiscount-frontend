@@ -20,9 +20,10 @@ import { ForgotPasswordForm } from '@/app/(auth)/auth/forgot-password/components
 
 interface IProps {
     product: ISingleProduct;
+    quantity?: number;
 }
 
-const SignInModal = ({ product }: IProps) => {
+const SignInModal = ({ product, quantity = 1 }: IProps) => {
     const { brandName, title, platFormPrice, salePrice } = product;
     const [open, setOpen] = useState(false);
     const [step, setStep] = useState(1);
@@ -46,7 +47,7 @@ const SignInModal = ({ product }: IProps) => {
                         className='w-full bg-red-700 hover:bg-red-800 
                                                 text-white py-6'
                         onClick={() => {
-                            dispatch(addToCart(product));
+                            dispatch(addToCart({ ...product, quantity }));
                         }}
                     >
                         Add To Bag

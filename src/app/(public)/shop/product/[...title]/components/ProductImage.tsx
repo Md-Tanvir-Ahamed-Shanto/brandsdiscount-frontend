@@ -14,12 +14,12 @@ const ProductImage = ({ image }: IProps) => {
 
     const handleZoom = () => {
         if (imageRef.current) {
-            imageRef.current.click(); // Simulates a click to trigger zoom
+            imageRef.current.click();
         }
     };
 
     return (
-        <div className='flex flex-col items-center gap-4 relative rounded'>
+        <div className='flex  flex-col items-center gap-4 relative max-h-[568px] overflow-hidden shadow-lg'>
             <Zoom>
                 <Image
                     width={132}
@@ -27,7 +27,7 @@ const ProductImage = ({ image }: IProps) => {
                     alt={'title'}
                     unoptimized
                     ref={imageRef}
-                    className='w-full h-auto cursor-pointer object-fill rounded lg:min-h-[800px]'
+                    className='rounded-lg shadow-lg w-full h-full object-cover"'
                     src={image[0]?.url || '/single-product/single.webp'}
                 />
             </Zoom>

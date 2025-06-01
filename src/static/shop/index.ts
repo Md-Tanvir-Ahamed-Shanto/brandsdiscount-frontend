@@ -3,3 +3,4 @@ export * from './sortDropdown';
 export * from './filterSheet';
 export * from './productList';
 export * from './trending';
+export * from './sizeChartMap';
