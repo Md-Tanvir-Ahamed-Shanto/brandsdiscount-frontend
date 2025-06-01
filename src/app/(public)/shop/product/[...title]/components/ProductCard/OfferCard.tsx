@@ -1,5 +1,3 @@
-import { selectCartSavings } from '@/store/cart';
-import { useAppSelector } from '@/store';
 import { ISingleProduct } from '@/types';
 
 const OfferCard = ({
@@ -9,8 +7,6 @@ const OfferCard = ({
     product: ISingleProduct;
     isAllowedForFirstItemDiscount?: boolean;
 }) => {
-    const savings = useAppSelector(selectCartSavings);
-
     return (
         <>
             {isAllowedForFirstItemDiscount && (

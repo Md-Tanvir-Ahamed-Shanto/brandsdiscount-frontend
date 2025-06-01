@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { useState } from 'react';
@@ -27,7 +26,9 @@ const WomenProducts = () => {
         <div className='container py-6 !overflow-hidden'>
             <div className='flex items-center justify-between'>
                 <div className=''>
-                    <h3 className='font-bold text-2xl mb-4'>Women's Product</h3>
+                    <h3 className='font-bold text-2xl mb-4'>
+                        Women&apos;s Product
+                    </h3>
                 </div>
                 <SortDropdown
                     sortValue={sortValue}

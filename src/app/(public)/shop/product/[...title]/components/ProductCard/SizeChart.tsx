@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Modal } from '@/components/core';
+import Image from 'next/image';
 
 const SizeChart = ({ chartImage }: { chartImage: string | undefined }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -19,7 +20,9 @@ const SizeChart = ({ chartImage }: { chartImage: string | undefined }) => {
                 bodyClass='max-w-2xl'
             >
                 <div className='w-full max-h-[80vh] overflow-y-auto'>
-                    <img
+                    <Image
+                        width={1000}
+                        height={1000}
                         src={chartImage}
                         alt='Size Chart'
                         className='w-full h-auto object-contain'

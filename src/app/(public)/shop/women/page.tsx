@@ -13,7 +13,7 @@ const WomenCollection = () => {
         <div className='py-8'>
             <div className='container max-w-7xl mx-auto px-4'>
                 <h3 className='font-bold text-xl lg:text-2xl mb-8 text-center'>
-                    Women's Collection
+                    Women&apos;s Collection
                 </h3>
 
                 <div className='flex justify-center'>
