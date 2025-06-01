@@ -30,7 +30,7 @@ const Categories = () => {
                 <h2 className='text-4xl font-bold text-center mb-12'>
                     Our Categories
                 </h2>
-                <div className='grid grid-cols-4 gap-8'>
+                <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8'>
                     {categories.map((category) => (
                         <div
                             key={category.id}
@@ -38,29 +38,29 @@ const Categories = () => {
                         >
                             <Link
                                 href={category.link}
-                                className='group relative block bg-white'
+                                className='group relative block bg-white w-full'
                             >
-                                <div className='h-72 w-72 relative p-4 border-4 border-black transition-all duration-300 group-hover:ring-2 group-hover:ring-black/20 group-hover:shadow-md'>
+                                <div className='aspect-square relative p-2 sm:p-3 md:p-4 border-2 sm:border-3 md:border-4 border-black transition-all duration-300 group-hover:ring-2 group-hover:ring-black/20 group-hover:shadow-md'>
                                     <Image
                                         src={category.image!}
                                         alt={category.title}
                                         fill
-                                        className='object-cover p-2'
+                                        className='object-cover p-1 sm:p-2'
                                     />
                                 </div>
                             </Link>
-                            <h3 className='text-xl font-medium mt-4 text-center'>
+                            <h3 className='text-base sm:text-lg md:text-xl font-medium mt-2 sm:mt-3 md:mt-4 text-center'>
                                 {category.title}
                             </h3>
                         </div>
                     ))}
 
-                    <div className='flex flex-col items-start justify-center'>
+                    <div className='flex flex-col items-center justify-center'>
                         <Link
                             href='/shop'
-                            className='bg-black rounded-full h-48 w-48 flex items-center justify-center ring-2 ring-black/20 shadow-md transition-all duration-300 hover:ring-4 hover:ring-black/30 hover:shadow-lg'
+                            className='bg-black rounded-full aspect-square w-full max-w-[12rem] sm:max-w-[14rem] md:max-w-[16rem] flex items-center justify-center ring-2 ring-black/20 shadow-md transition-all duration-300 hover:ring-4 hover:ring-black/30 hover:shadow-lg'
                         >
-                            <span className='text-white text-3xl'>
+                            <span className='text-white text-xl sm:text-2xl md:text-3xl'>
                                 View All
                             </span>
                         </Link>
