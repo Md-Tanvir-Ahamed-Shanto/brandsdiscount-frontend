@@ -1,8 +1,9 @@
-export interface ISingleProductImage { 
-  id: string; 
-  url: string 
-}
+import { ICategory, ISize } from './user';
 
+export interface ISingleProductImage {
+    id: string;
+    url: string;
+}
 export interface ISingleProduct {
     id: string;
     title: string;
@@ -27,5 +28,7 @@ export interface ISingleProduct {
     createdAt: string;
     updatedAt: string;
     updatedById: string;
+    size: ISize;
+    category: ICategory;
+    parentCategory: ICategory | null;
 }
-  

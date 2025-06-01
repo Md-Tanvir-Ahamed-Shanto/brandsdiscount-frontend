@@ -10,6 +10,11 @@ const nextConfig: NextConfig = {
                 hostname: 'imagedelivery.net',
                 port: '', // Optional, only if needed
                 pathname: '/**'
+            },
+            {
+                protocol: 'https',
+                hostname: 'cdn.brandsdiscounts.com',
+                pathname: '/**'
             }
         ]
     }

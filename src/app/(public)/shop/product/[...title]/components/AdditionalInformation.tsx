@@ -16,6 +16,9 @@ const AdditionalInformation = ({ product }: IProps) => {
         salePrice,
         condition
     } = product;
+    const categoryName = product.parentCategory
+        ? product.parentCategory.name + ' > ' + product.category?.name
+        : product.category?.name || '';
     return (
         <div>
             <div className='w-full h-[1px] bg-gray-800 mb-8 rounded'></div>
@@ -31,6 +34,7 @@ const AdditionalInformation = ({ product }: IProps) => {
                 </h3>
                 <div className='!w-full'>
                     <BoxData title='Product Name' content={title} />
+                    <BoxData title='Category' content={categoryName} />
                     <BoxData title='Color' content={color} />
                     <BoxData title='Brand' content={brandName} />
                     <BoxData title='Size Type' content={sizeType || 'N/A'} />
