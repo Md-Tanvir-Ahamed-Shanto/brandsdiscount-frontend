@@ -44,7 +44,7 @@ const SingleProductPage = () => {
         if (!userId) return true;
         if (!orderData) return true;
         return orderData?.length === 0;
-    }, [isOrderLoading, orderData]);
+    }, [orderData]);
 
     if (isLoading || isOrderLoading) return <LoadingPublic />;
     if (isError || !data)
