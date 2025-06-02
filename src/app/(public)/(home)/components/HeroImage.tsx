@@ -6,7 +6,7 @@ const HeroImage = () => {
     return (
         <div className='md:container mb-8'>
             {/* Desktop Image */}
-            <Link href='/shop' className='hidden md:block'>
+            <Link href='/shop/women' className='hidden md:block'>
                 <Image
                     src='/hero/bannar_full.png'
                     alt='Hero Banner Full'
@@ -18,7 +18,7 @@ const HeroImage = () => {
             </Link>
 
             {/* Mobile Image */}
-            <Link href='/shop' className='block md:hidden'>
+            <Link href='/shop/women' className='block md:hidden'>
                 <Image
                     src='/hero/bannar_mobile.png'
                     alt='Hero Banner Mobile'

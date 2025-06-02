@@ -98,7 +98,7 @@ const LoginForm = () => {
                 <div className='ml-2'>
                     <label htmlFor='keep-signed' className='text-sm'>
                         Keep me signed in.{' '}
-                        <Link href='/details' className='underline'>
+                        <Link href='/privacy-policy' className='underline'>
                             Details
                         </Link>
                     </label>

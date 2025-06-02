@@ -68,10 +68,10 @@ const YouMayAlsoLikeSection = ({ product }: any) => {
                             </p>
                             <div className='space-y-1'>
                                 <p className='font-medium text-green-700'>
-                                    BDT {product?.platFormPrice}
+                                    USD {product?.platFormPrice}
                                 </p>
                                 <p className='text-sm text-red-600'>
-                                    With offer BDT {product?.salePrice}
+                                    With offer USD {product?.salePrice}
                                 </p>
                             </div>
                         </div>

@@ -38,17 +38,6 @@ const ProductDetails = ({ product }: IProps) => {
                             </button>
                         </div>
 
-                        {/* <Button
-                            className='w-full bg-red-700 hover:bg-red-800 
-                            text-white py-6'
-                            onClick={() => {
-                                dispatch(addToCart(product));
-                                toast.success('Product added successfully');
-                            }}
-                        >
-                            Add To Bag
-                        </Button> */}
-
                         <AuthModal product={product} />
                     </div>
                 </div>
