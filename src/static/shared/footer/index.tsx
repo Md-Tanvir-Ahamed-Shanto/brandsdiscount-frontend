@@ -52,7 +52,6 @@ export const LEGAL_LINKS = [
     { text: 'PRIVACY POLICY', href: '/privacy-policy' },
     { text: 'TERMS OF SERVICE', href: '/terms-of-service' },
     { text: 'ABOUT US', href: '/about' },
-    { text: 'BLOG', href: '/blog' },
     { text: 'FAQ', href: '/faq' },
     { text: 'SHIPPING', href: '/shipping' },
     { text: 'PAYMENT POLICY', href: '/payment-policy' }
