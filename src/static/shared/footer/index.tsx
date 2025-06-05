@@ -47,15 +47,13 @@ export const SOCIAL_LINKS = [
 ];
 
 export const LEGAL_LINKS = [
-    { text: 'Privacy Notice', href: '#' },
-    { text: 'Cookie Preference', href: '#' },
-    { text: 'Interest Based Ads', href: '#' },
-    { text: 'CA Privacy Rights', href: '#' },
-    { text: 'Do Not Sell or Share My Personal Information', href: '#' },
-    { text: 'Legal Notice', href: '#' },
-    { text: 'Customer Bill of Rights', href: '#' },
-    { text: 'CA Transparency in Supply Chains', href: '#' },
-    { text: 'Product Recalls', href: '#' },
-    { text: 'Pricing policy', href: '#' },
-    { text: 'Accessibility', href: '#' }
+    { text: 'CONTACT', href: '/contact' },
+    { text: 'RETURNS POLICY', href: '/refund-returns' },
+    { text: 'PRIVACY POLICY', href: '/privacy-policy' },
+    { text: 'TERMS OF SERVICE', href: '/terms-of-service' },
+    { text: 'ABOUT US', href: '/about' },
+    { text: 'BLOG', href: '/blog' },
+    { text: 'FAQ', href: '/faq' },
+    { text: 'SHIPPING', href: '/shipping' },
+    { text: 'PAYMENT POLICY', href: '/payment-policy' }
 ];
