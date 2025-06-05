@@ -15,6 +15,7 @@ import {
     useGetAllSearchProductQuery
 } from '@/api/public';
 import { useSearchParams } from 'next/navigation';
+import SizeFilterSheet from './components/SizeFilter';
 
 const ShopPage = () => {
     const searchParams = useSearchParams();
@@ -69,9 +70,9 @@ const ShopPage = () => {
 
     return (
         <div className='container py-6 !overflow-hidden'>
+            <SizeFilterSheet />
             {!searchTerm && (
                 <div className='flex items-center justify-between'>
-                    {/* <FilterSheet setFilters={setFilters} /> */}
                     <div className=''>
                         <h3 className='font-bold text-2xl mb-4'>
                             {searchTerm

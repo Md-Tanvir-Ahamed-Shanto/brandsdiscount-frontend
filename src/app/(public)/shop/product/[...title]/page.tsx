@@ -8,9 +8,10 @@ import { useGetAllProfileOrderQuery } from '@/api';
 import { MyTokenPayload } from '@/app/(profile)/profile/page';
 import { jwtDecode } from 'jwt-decode';
 import Cookies from 'js-cookie';
-import { TrendingSlider } from '../../components';
+import { RecentlyViewedSlider } from '../../components';
 import { ProductCard } from './components/ProductCard';
 import { ISingleProduct } from '@/types';
+import { YouMayAlsoLikeSection } from './components';
 // import { convertFromUrl } from '@/lib';
 // import { PRODUCTS } from '@/static';
 
@@ -71,10 +72,10 @@ const SingleProductPage = () => {
                 isAllowedForFirstItemDiscount={isAllowedForFirstItemDiscount}
             />
             <div className='container mx-auto'>
-                <h3 className='font-bold text-2xl mb-8'>Trending Near You</h3>
-                <div className='mb-12'>
-                    <TrendingSlider />
-                </div>
+                <YouMayAlsoLikeSection product={data} />
+            </div>
+            <div className='mt-16'>
+                <RecentlyViewedSlider />
             </div>
         </div>
     );
