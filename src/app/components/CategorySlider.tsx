@@ -13,7 +13,7 @@ const settings = {
     speed: 500,
     slidesToShow: 5,
     slidesToScroll: 1,
-    autoplay: true,
+    autoplay: false,
     autoplaySpeed: 3000,
     pauseOnHover: true,
     draggable: true, // Enable drag with mouse
