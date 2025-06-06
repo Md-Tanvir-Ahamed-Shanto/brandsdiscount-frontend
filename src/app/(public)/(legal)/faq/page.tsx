@@ -49,7 +49,7 @@ const Faq = () => {
                 </h2>
                 <p className='mb-4'>
                     We offer both Domestic and International shipping options to
-                    cater to our customers' diverse needs:
+                    cater to our customers&apos; diverse needs:
                 </p>
 
                 <div className='mb-6'>

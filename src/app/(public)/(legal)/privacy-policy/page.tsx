@@ -7,10 +7,11 @@ const PrivacyPolicy = () => {
 
             <div className='mb-8'>
                 <p className='text-lg mb-4'>
-                    Welcome to Brands Discounts ("Site", "we", "us", or "our").
-                    This Privacy Policy outlines how we collect, use, and
-                    disclose your personal information when you visit or make a
-                    purchase from our website.
+                    Welcome to Brands Discounts (&quot;Site&quot;,
+                    &quot;we&quot;, &quot;us&quot;, or &quot;our&quot;). This
+                    Privacy Policy outlines how we collect, use, and disclose
+                    your personal information when you visit or make a purchase
+                    from our website.
                 </p>
             </div>
 

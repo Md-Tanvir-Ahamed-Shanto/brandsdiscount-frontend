@@ -7,14 +7,14 @@ const About = () => {
 
             <div className='mb-8'>
                 <p className='text-lg mb-4'>
-                    At Brands Discounts, a Proud Women-Owned Business, we're
-                    committed to offering you the finest in designer fashion at
-                    prices you'll adore. As a family-run online store, our focus
-                    is on curating high-quality clothing and accessories for
-                    women, alongside selected items for men and kids. Every
-                    product we offer is sourced directly from authorized
-                    distributors, guaranteeing that you receive only authentic,
-                    brand-name items with each purchase.
+                    At Brands Discounts, a Proud Women-Owned Business,
+                    we&apos;re committed to offering you the finest in designer
+                    fashion at prices you&apos;ll adore. As a family-run online
+                    store, our focus is on curating high-quality clothing and
+                    accessories for women, alongside selected items for men and
+                    kids. Every product we offer is sourced directly from
+                    authorized distributors, guaranteeing that you receive only
+                    authentic, brand-name items with each purchase.
                 </p>
             </div>
 
@@ -40,9 +40,9 @@ const About = () => {
                     wear should showcase your unique style without sacrificing
                     quality. We meticulously select each item to ensure it meets
                     our high standards for authenticity and design. Whether
-                    you're updating your wardrobe with timeless essentials or
-                    adding a bold statement piece, our diverse range of options
-                    allows you to look stunning without overspending.
+                    you&apos;re updating your wardrobe with timeless essentials
+                    or adding a bold statement piece, our diverse range of
+                    options allows you to look stunning without overspending.
                 </p>
             </section>
 
@@ -65,8 +65,8 @@ const About = () => {
                 <p className='mb-4'>
                     Subscribe to our newsletter to receive exclusive offers, new
                     arrivals, and styling tips crafted especially for you. By
-                    joining the Brands Discounts community, you'll always be
-                    first to know about the latest deals and inspirations,
+                    joining the Brands Discounts community, you&apos;ll always
+                    be first to know about the latest deals and inspirations,
                     helping you shop smart and live stylishly.
                 </p>
             </section>

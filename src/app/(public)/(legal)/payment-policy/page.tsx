@@ -25,7 +25,7 @@ const PaymentPolicy = () => {
                         </li>
                         <li>
                             <strong>Stripe:</strong> Process payments securely
-                            via Stripe's trusted platform.
+                            via Stripe&apos;s trusted platform.
                         </li>
                     </ul>
                 </div>
@@ -52,8 +52,8 @@ const PaymentPolicy = () => {
                 <p className='mb-4'>
                     If you encounter any problems with your payment, please
                     contact our customer support team with your order id for
-                    assistance via the Contact page. We're here to help resolve
-                    any issues promptly.
+                    assistance via the Contact page. We&apos;re here to help
+                    resolve any issues promptly.
                 </p>
                 <p className='mb-4'>
                     For details on refunds and cancellations, please refer to
@@ -91,8 +91,8 @@ const PaymentPolicy = () => {
                     <p className='mb-4'>
                         Our customer service team is available to assist you
                         with any payment-related questions or concerns. Please
-                        don't hesitate to reach out to us through any of the
-                        contact methods listed above.
+                        don&apos;t hesitate to reach out to us through any of
+                        the contact methods listed above.
                     </p>
                 </div>
             </section>
