@@ -13,8 +13,8 @@ const RefundReturnPolicy = () => {
             <div className='mb-8'>
                 <p className='text-lg mb-4'>
                     At Brands Discounts, your satisfaction is our top priority.
-                    If you're not completely satisfied with your purchase, we're
-                    here to help.
+                    If you&apos;re not completely satisfied with your purchase,
+                    we&apos;re here to help.
                 </p>
             </div>
 
@@ -101,8 +101,8 @@ const RefundReturnPolicy = () => {
             <section className='mb-8'>
                 <h2 className='text-2xl font-semibold mb-4'>Refunds</h2>
                 <p className='mb-4'>
-                    Once we receive and inspect your returned item, we'll notify
-                    you via email about the approval or rejection of your
+                    Once we receive and inspect your returned item, we&apos;ll
+                    notify you via email about the approval or rejection of your
                     refund:
                 </p>
                 <ul className='list-disc pl-6 mb-4'>
@@ -125,7 +125,7 @@ const RefundReturnPolicy = () => {
                     Late or Missing Refunds
                 </h2>
                 <p className='mb-4'>
-                    If you haven't received a refund after 7 business days:
+                    If you haven&apos;t received a refund after 7 business days:
                 </p>
                 <ul className='list-disc pl-6 mb-4'>
                     <li>
@@ -139,8 +139,8 @@ const RefundReturnPolicy = () => {
                     <li>Contact Your Bank: Processing times can vary.</li>
                 </ul>
                 <p>
-                    If you've done all of this and still have not received your
-                    refund, please contact us for further assistance.
+                    If you&apos;ve done all of this and still have not received
+                    your refund, please contact us for further assistance.
                 </p>
             </section>
 
@@ -158,7 +158,7 @@ const RefundReturnPolicy = () => {
                     <li>Email: info@brandsdiscounts.com</li>
                     <li>Phone: +1 (347) 618-2707</li>
                 </ul>
-                <p>We'll guide you through the exchange process.</p>
+                <p>We&apos;ll guide you through the exchange process.</p>
             </section>
 
             <section className='mb-8'>
@@ -186,8 +186,8 @@ const RefundReturnPolicy = () => {
                         processed within 5 business days of receiving your item.
                     </li>
                     <li>
-                        <strong>Notification:</strong> You'll receive an email
-                        confirming the status of your refund or exchange.
+                        <strong>Notification:</strong> You&apos;ll receive an
+                        email confirming the status of your refund or exchange.
                     </li>
                 </ul>
             </section>

@@ -115,7 +115,7 @@ const Shipping = () => {
                         <strong>International Buyers – Please Note:</strong>{' '}
                         Import duties, taxes, and additional charges are not
                         included in the item price or shipping cost. These fees
-                        are the buyer's responsibility.
+                        are the buyer&apos;s responsibility.
                     </p>
                 </div>
 
@@ -166,8 +166,8 @@ const Shipping = () => {
                     </h3>
                     <p className='mb-4'>
                         Government regulations prohibit marking merchandise
-                        below value or as "gifts". Please ensure compliance with
-                        your country's import regulations.
+                        below value or as &quot;gifts&quot;. Please ensure
+                        compliance with your country&apos;s import regulations.
                     </p>
                 </div>
 
