@@ -45,7 +45,7 @@ const LoginForm = () => {
                     expires: new Date(Date.now() + REFRESH_TOKEN_EXPIRY),
                     path: '/'
                 });
-                window.location.href = '/cart';
+                window.location.href = '/';
             }
         } catch (error) {
             setIsLoading(false);

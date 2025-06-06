@@ -25,7 +25,7 @@ const categories = [
 
 const Categories = () => {
     return (
-        <div className='bg-gray-100 py-16'>
+        <div className='bg-gray-100 py-16 mb-8'>
             <div className='container'>
                 <h2 className='text-4xl font-bold text-center mb-12'>
                     Our Categories

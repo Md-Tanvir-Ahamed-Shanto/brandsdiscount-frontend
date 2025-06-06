@@ -56,7 +56,7 @@ const CategorySlider = () => {
                         <div key={id} className='px-2'>
                             <Link
                                 href={link}
-                                className='block text-center py-3 px-6 bg-main-500 text-black rounded hover:bg-main-500/60 hover:text-black transition-all duration-300'
+                                className='block text-center py-3 px-6 text-black rounded hover:bg-main-500/60 hover:text-black transition-all duration-300'
                             >
                                 {label}
                             </Link>

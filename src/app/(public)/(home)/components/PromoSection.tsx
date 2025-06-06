@@ -2,7 +2,7 @@ import { PROMO_ITEMS } from '@/static';
 
 export default function PromoSection() {
     return (
-        <section className=''>
+        <section>
             <div className='container mx-auto'>
                 <div className='text-center mb-12 py-8 bg-gray-100 rounded'>
                     <p className='text-gray-800 font-medium'>

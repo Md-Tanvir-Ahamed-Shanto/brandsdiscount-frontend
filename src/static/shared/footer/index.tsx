@@ -47,7 +47,7 @@ export const SOCIAL_LINKS = [
 ];
 
 export const LEGAL_LINKS = [
-    { text: 'CONTACT', href: '/contact' },
+    { text: 'CONTACT', href: '/contact-us' },
     { text: 'RETURNS POLICY', href: '/refund-returns' },
     { text: 'PRIVACY POLICY', href: '/privacy-policy' },
     { text: 'TERMS OF SERVICE', href: '/terms-of-service' },
