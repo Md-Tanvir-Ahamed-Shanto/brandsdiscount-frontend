@@ -37,9 +37,9 @@ const SingleProductCard = ({ product }: { product: IProduct }) => {
 
             {/* Product Image */}
             <Link
-                href={`/shop/product/${slugify(title)}/?id=${product?.id} bg-orange-600`}
+                href={`/shop/product/${slugify(title)}/?id=${product?.id} `}
                 // href={`/shop`}
-                className='relative overflow-hidden rounded-lg block mb-4'
+                className='relative overflow-hidden rounded-lg block mb-4 bg-orange-600'
             >
                 <Avatar
                     src={
