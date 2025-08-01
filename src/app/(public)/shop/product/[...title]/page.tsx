@@ -22,6 +22,7 @@ const SingleProductPage = () => {
     const { data: orderData, isLoading: isOrderLoading } =
         useGetAllProfileOrderQuery('');
     const { data, isLoading, isError } = useGetSinglePublicProductQuery(id);
+    console.log("data ",data)
     useEffect(() => {
         if (data) {
             const existingProducts = JSON.parse(

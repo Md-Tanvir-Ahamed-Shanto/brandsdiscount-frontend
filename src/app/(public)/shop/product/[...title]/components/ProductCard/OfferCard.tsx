@@ -30,11 +30,11 @@ const OfferCard = ({
                     <p className='text-md text-gray-600 mr-2'>
                         Regular Price:{' '}
                         <span className='price-strike'>
-                            ${product.regularPrice.toFixed(2)}
+                            ${(product.regularPrice || 0).toFixed(2)}
                         </span>
                     </p>
                 </div>
-                {product.salePrice && (
+                {product.salePrice !== null && product.salePrice !== undefined && (
                     <p className='text-xl font-semibold text-[#e01922] mb-1'>
                         Sale Price: ${product.salePrice.toFixed(2)}
                     </p>
@@ -51,10 +51,12 @@ const OfferCard = ({
                             </p>
                         </>
                     )}
-                    <p className='text-[#28a745] font-semibold text-sm mt-1'>
-                        You Save ${product.regularPrice - product.salePrice} on
-                        this item!
-                    </p>
+                    {product.salePrice !== null && product.salePrice !== undefined && (
+                        <p className='text-[#28a745] font-semibold text-sm mt-1'>
+                            You Save ${(product.regularPrice - product.salePrice).toFixed(2)} on
+                            this item!
+                        </p>
+                    )}
                 </div>
                 {isAllowedForFirstItemDiscount && (
                     <p className='text-xs text-gray-500 mt-2'>

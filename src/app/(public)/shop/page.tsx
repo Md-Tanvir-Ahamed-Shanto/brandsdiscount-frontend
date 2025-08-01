@@ -45,7 +45,7 @@ const ShopPage = () => {
             skip: !!searchTerm // skip default fetch if search exists
         }
     ) as any;
-
+console.log("response data ",productData)
     // Search fetch
     const {
         data: searchData = [],
@@ -90,7 +90,7 @@ const ShopPage = () => {
             {isLoading && <ProductSkeleton />}
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 py-12'>
                 {!searchData?.length
-                    ? productData?.data?.map((product: IProduct) => (
+                    ? productData?.products?.map((product: IProduct) => (
                           <SingleProductCard
                               key={product?.id}
                               product={product}

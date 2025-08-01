@@ -39,7 +39,7 @@ const SearchComponent = () => {
             console.log('Search term:', debouncedSearchTerm);
         }
     }, [debouncedSearchTerm]);
-
+console.log("search result",searchResults)
     // Handle click outside to close suggestions
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -103,13 +103,12 @@ const SearchComponent = () => {
                     <div className='absolute z-50 w-full mt-2 bg-white border rounded-lg shadow-lg'>
                         <div className='p-4'>
                             <h3 className='text-lg font-semibold mb-2'>
-                                {searchResults?.length
+                                {searchResults?.products?.length
                                     ? 'Searches Product'
                                     : 'No Product Found'}
                             </h3>
                             <ul className='space-y-2'>
-                                {searchResults
-                                    ?.slice(0, 10)
+                                {searchResults?.products?.slice(0, 10)
                                     .map(({ title, id }: any) => (
                                         <Link
                                             // href={`/shop/${id}`}

@@ -7,7 +7,7 @@ const allProductsApi = publicApi.injectEndpoints({
     endpoints: (build) => ({
         getAllPublicProduct: build.query({
             query: ({ page = 1, limit = 100, sort = 'createdAt_desc', filters = '' }) => ({
-                url: `/productroute/products?page=${page}&limit=${limit}&sort=${sort}${filters ? `&${filters}` : ''}`,
+                url: `/api/products?page=${page}&limit=${limit}&sort=${sort}${filters ? `&${filters}` : ''}`,
                 method: 'GET',
             }),
             providesTags: [publicTagTypes.products],
@@ -15,25 +15,25 @@ const allProductsApi = publicApi.injectEndpoints({
         }), 
         getSinglePublicProduct: build.query<ISingleProduct, string>({
             query: (id) => ({
-            url: `/productroute/product/${id}`,
+            url: `/api/products/${id}`,
             method: 'GET',
             }),
         }),
         getMayLikeProducts: build.query<any, string>({
             query: (id) => ({
-            url: `/productroute/products?filtering=categoryId_${id}`,
+            url: `/api/products?filtering=categoryId_${id}`,
             method: 'GET',
             }),
         }),
         getNewTrendingProducts: build.query({
             query: () => ({
-            url: `/productroute/products?filter_createdAt_desc`,
+            url: `/api/products?filter_createdAt_desc`,
             method: 'GET',
             }),
         }), 
         getAllSearchProduct: build.query<ISingleProduct, string>({
             query: (searchTerm) => ({
-            url: `/productroute/search?q=${searchTerm}`,
+            url: `/api/products?searchTerm=${searchTerm}`,
             method: 'GET',
             }),
         }),

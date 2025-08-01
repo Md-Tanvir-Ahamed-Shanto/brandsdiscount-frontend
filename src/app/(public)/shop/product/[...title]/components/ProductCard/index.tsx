@@ -19,6 +19,7 @@ const ProductCard = ({
     setQuantity: (quantity: number) => void;
     isAllowedForFirstItemDiscount?: boolean;
 }) => {
+    console.log("product", product)
     const sizeChartImage = product.categoryId
         ? sizeChartMap[product.categoryId as keyof typeof sizeChartMap]
         : undefined;
