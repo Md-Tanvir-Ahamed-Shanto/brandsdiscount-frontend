@@ -71,32 +71,30 @@ console.log("response data ",productData)
     return (
         <div className='container py-6 !overflow-hidden'>
             <SizeFilterSheet />
-            {!searchTerm && (
-                <div className='flex items-center justify-between'>
-                    <div className=''>
-                        <h3 className='font-bold text-2xl mb-4'>
-                            {searchTerm
-                                ? `Results for "${searchTerm}"`
-                                : 'All Shop Product'}
-                        </h3>
-                    </div>
-                    <SortDropdown
-                        sortValue={sortValue}
-                        onSortChange={setSortValue}
-                    />
+            <div className='flex items-center justify-between'>
+                <div className=''>
+                    <h3 className='font-bold text-2xl mb-4'>
+                        {searchTerm
+                            ? `Results for "${searchTerm}"`
+                            : 'All Shop Products'}
+                    </h3>
                 </div>
-            )}
+                <SortDropdown
+                    sortValue={sortValue}
+                    onSortChange={setSortValue}
+                />
+            </div>
 
             {isLoading && <ProductSkeleton />}
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 py-12'>
-                {!searchData?.length
-                    ? productData?.products?.map((product: IProduct) => (
+                {searchTerm
+                    ? (searchData?.products || []).map((product: IProduct) => (
                           <SingleProductCard
                               key={product?.id}
                               product={product}
                           />
                       ))
-                    : searchData?.map((product: any) => (
+                    : (productData?.products || []).map((product: IProduct) => (
                           <SingleProductCard
                               key={product?.id}
                               product={product}

@@ -2,44 +2,45 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import { Search, X } from 'lucide-react';
-import { slugify, useDebounce } from '@/lib';
-import { useGetAllSearchProductQuery } from '@/api/public';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-const topSearches = [
-    'women dresses',
-    'polo ralph lauren men',
-    'women perfume',
-    'women shoes',
-    'coach handbags',
-    'prom dresses',
-    'men cologne',
-    'luggage sets'
-];
+const MAX_RECENT_SEARCHES = 5;
+
 
 const SearchComponent = () => {
-    const [isHovering, setIsHovering] = useState(false);
-    const [isFocused, setIsFocused] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
+    const [isFocused, setIsFocused] = useState(false);
+    const [isHovering, setIsHovering] = useState(false);
+    const [recentSearches, setRecentSearches] = useState<string[]>([]);
+
+    useEffect(() => {
+        const stored = localStorage.getItem('recentSearches');
+        if (stored) {
+            setRecentSearches(JSON.parse(stored));
+        }
+    }, []);
     const inputRef = useRef<HTMLInputElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
 
-    // Custom debounce hook
-    const debouncedSearchTerm = useDebounce(searchTerm, 500);
-    const { data: searchResults } = useGetAllSearchProductQuery(
-        debouncedSearchTerm,
-        {
-            skip: !debouncedSearchTerm // prevent empty search
-        }
-    ) as any;
+    const router = useRouter();
 
-    // Log the debounced search term to console
-    useEffect(() => {
-        if (debouncedSearchTerm) {
-            console.log('Search term:', debouncedSearchTerm);
+    const handleSearch = async (e: React.FormEvent) => {
+        e.preventDefault();
+        const trimmedSearch = searchTerm.trim();
+        if (trimmedSearch) {
+            // Add to recent searches
+            const newRecentSearches = [trimmedSearch, ...recentSearches.filter(s => s !== trimmedSearch)]
+                .slice(0, MAX_RECENT_SEARCHES);
+            setRecentSearches(newRecentSearches);
+            localStorage.setItem('recentSearches', JSON.stringify(newRecentSearches));
+
+            // Navigate to shop page with search query
+            await router.push(`/shop?q=${encodeURIComponent(trimmedSearch)}`);
+            setSearchTerm('');
+            setIsFocused(false);
         }
-    }, [debouncedSearchTerm]);
-console.log("search result",searchResults)
+    };
     // Handle click outside to close suggestions
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -65,7 +66,7 @@ console.log("search result",searchResults)
         }
     };
 
-    const showSuggestions = (isHovering || isFocused) && topSearches.length > 0;
+    const showSuggestions = (isHovering || isFocused) && recentSearches.length > 0;
 
     return (
         <div className='flex justify-center items-start w-full h-full lg:h-[70%]'>
@@ -75,7 +76,7 @@ console.log("search result",searchResults)
                 onMouseEnter={() => setIsHovering(true)}
                 onMouseLeave={() => setIsHovering(false)}
             >
-                <div className='relative flex items-center'>
+                <form onSubmit={handleSearch} className='relative flex items-center'>
                     <div className='absolute left-3 text-gray-500'>
                         <Search size={20} />
                     </div>
@@ -86,49 +87,55 @@ console.log("search result",searchResults)
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         onFocus={() => setIsFocused(true)}
-                        className='w-full py-2 pl-10 pr-10 border rounded-full focus:outline-none focus:ring-2 focus:ring-primary'
+                        className='w-full py-2 pl-10 pr-20 border rounded-full focus:outline-none focus:ring-2 focus:ring-primary'
                     />
-                    {searchTerm && (
+                    <div className='absolute right-3 flex items-center gap-2'>
+                        {searchTerm && (
+                            <button
+                                type='button'
+                                onClick={handleClear}
+                                className='text-gray-500 hover:text-gray-700'
+                                aria-label='Clear search'
+                            >
+                                <X size={20} />
+                            </button>
+                        )}
                         <button
-                            onClick={handleClear}
-                            className='absolute right-3 text-gray-500 hover:text-gray-700'
-                            aria-label='Clear search'
+                            type='submit'
+                            className='text-gray-500 hover:text-gray-700'
+                            aria-label='Search'
                         >
-                            <X size={20} />
+                            <Search size={20} />
                         </button>
-                    )}
-                </div>
+                    </div>
+                </form>
 
                 {showSuggestions && (
                     <div className='absolute z-50 w-full mt-2 bg-white border rounded-lg shadow-lg'>
                         <div className='p-4'>
-                            <h3 className='text-lg font-semibold mb-2'>
-                                {searchResults?.products?.length
-                                    ? 'Searches Product'
-                                    : 'No Product Found'}
-                            </h3>
+                            <h3 className='text-lg font-semibold mb-2'>Recent Searches</h3>
                             <ul className='space-y-2'>
-                                {searchResults?.products?.slice(0, 10)
-                                    .map(({ title, id }: any) => (
-                                        <Link
-                                            // href={`/shop/${id}`}
-                                            href={`/shop/product/${slugify(title)}/?id=${id}`}
-                                            key={id}
-                                            className='text-gray-600 hover:text-primary cursor-pointer block'
-                                            onClick={() => {
-                                                setSearchTerm(title);
-                                                console.log('Selected:', title);
-                                            }}
-                                        >
-                                            {title}
-                                        </Link>
-                                    ))}
+                                {recentSearches.map((search) => (
+                                    <div
+                                        key={search}
+                                        className='text-gray-600 hover:text-primary cursor-pointer block'
+                                        onClick={() => {
+                                            setSearchTerm(search);
+                                            setIsFocused(false);
+                                            router.push(`/shop?q=${encodeURIComponent(search)}`);
+                                        }}
+                                    >
+                                        {search}
+                                    </div>
+                                ))}
                             </ul>
                         </div>
                     </div>
                 )}
+                
             </div>
         </div>
+
     );
 };
 
