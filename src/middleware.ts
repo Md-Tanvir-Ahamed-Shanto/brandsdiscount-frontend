@@ -5,7 +5,7 @@ import { getUserDetails } from "./lib";
 const protectedRoutes = ["/cart", "/checkout", "/success", "/orders", "/loyalty-points"];
 
 const roleBasedRoutes: Record<string, string[]> = {
-  PlatformUser: ["/cart", "/checkout", "/success", "/orders"],
+  PlatformUser: ["/cart", "/checkout", "/success", "/orders", "/loyalty-points"],
   WareHouse: [
     "/dashboard/products",
     "/dashboard/products/add",
