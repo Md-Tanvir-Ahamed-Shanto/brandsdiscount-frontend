@@ -12,7 +12,7 @@ const ProductStock = ({ product }: { product: ISingleProduct }) => {
                     : 'text-[#e01922]'
             )}
         >
-            {product.status === 'instock' ? (
+            {product.stockQuantity > 0 ? (
                 <svg
                     xmlns='http://www.w3.org/2000/svg'
                     className='h-5 w-5 inline-block mr-1'
@@ -28,7 +28,7 @@ const ProductStock = ({ product }: { product: ISingleProduct }) => {
             ) : (
                 <MdClose className='h-5 w-5 inline-block mr-1' />
             )}
-            {product.status === 'instock' ? 'In Stock' : 'Out of Stock'}
+            {product.stockQuantity > 0 ? 'In Stock' : 'Out of Stock'}
         </p>
     );
 };
