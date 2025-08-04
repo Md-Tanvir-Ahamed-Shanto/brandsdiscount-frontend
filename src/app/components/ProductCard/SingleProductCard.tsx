@@ -9,20 +9,15 @@ const SingleProductCard = ({ product }: { product: IProduct }) => {
     const {
         title,
         brandName,
-        // sku,
         images,
-        // itemLocation,
-        // sizeId,
-        // sizeType,
         salePrice,
-        platFormPrice,
-        discountPercent
-        // stockQuantity,
-        // condition,
-        // description,
-        // status
-    } = product; // Destructuring inside the function
-    console.log("product", product)
+        regularPrice,
+        toggleFirstDeal
+    } = product;
+
+    const discountPercent = regularPrice && salePrice
+        ? Math.round(((regularPrice - salePrice) / regularPrice) * 100)
+        : toggleFirstDeal ? 10 : 0;
 
     return (
         <div className='group relative rounded '>
@@ -67,14 +62,13 @@ const SingleProductCard = ({ product }: { product: IProduct }) => {
                 {/* Pricing */}
                 <div className='space-y-1'>
                     <div className='text-sm text-green-600'>
-                        PLATFORM PRICE: ${platFormPrice ? platFormPrice : 0}
+                        Sale Price: ${salePrice ? salePrice.toFixed(2) : 0}
                     </div>
-                    {/* <div className='text-sm'>
-                        VIP Price: ${vipPrice.toFixed(2)}
-                    </div> */}
-                    <div className='text-sm text-gray-500 line-through'>
-                        Sale Price: ${salePrice ? salePrice : ''}
-                    </div>
+                    {regularPrice && regularPrice > (salePrice || 0) && (
+                        <div className='text-sm text-gray-500 line-through'>
+                            Regular Price: ${regularPrice.toFixed(2)}
+                        </div>
+                    )}
                 </div>
             </Link>
         </div>

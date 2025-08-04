@@ -36,12 +36,24 @@ const ShoppingCart = () => {
                 </h1>
 
                 <div className='space-y-6 divide-y'>
-                    {cart?.map((singleProduct) => (
-                        <ProductItem
-                            key={singleProduct.id}
-                            product={singleProduct}
-                        />
-                    ))}
+                    {cart?.map((singleProduct) => {
+                        const variant = singleProduct.variants?.find(v => 
+                            v.color === singleProduct.color && 
+                            (v.sizeType === singleProduct.sizeType || v.customSize === singleProduct.sizeType)
+                        );
+                        
+                        return (
+                            <ProductItem
+                                key={singleProduct.id}
+                                product={{
+                                    ...singleProduct,
+                                    regularPrice: variant?.regularPrice || singleProduct.regularPrice,
+                                    salePrice: variant?.salePrice || singleProduct.salePrice,
+                                    stockQuantity: variant?.quantity || singleProduct.stockQuantity
+                                }}
+                            />
+                        );
+                    })}
                 </div>
                 <button
                     onClick={() => {

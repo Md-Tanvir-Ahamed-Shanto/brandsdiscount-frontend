@@ -67,20 +67,23 @@ const ProductCard = ({
                             {(product.color || (product.variants && product.variants.length > 0)) && (
                                 <div className='mt-1'>
                                     <p className='text-sm font-medium text-gray-700 mb-1'>Color Options:</p>
-                                    <div className='flex gap-2'>
-                                        <span 
-                                            className={`px-3 py-1 text-sm border rounded-md cursor-pointer ${selectedColor === product.color ? 'border-primary bg-primary/10' : 'hover:border-primary'}`}
-                                            onClick={resetVariantSelection}
-                                        >
-                                            {product.color}
-                                        </span>
+                                    <div className='flex flex-wrap gap-2'>
+                                        {product.color && (
+                                            <span 
+                                                className={`px-3 py-1 text-sm border rounded-md cursor-pointer ${selectedColor === product.color ? 'border-primary bg-primary/10' : 'hover:border-primary'}`}
+                                                onClick={resetVariantSelection}
+                                            >
+                                                {product.color}
+                                            </span>
+                                        )}
                                         {product.variants?.map((variant) => (
                                             <span 
                                                 key={variant.id}
-                                                className={`px-3 py-1 text-sm border rounded-md cursor-pointer ${selectedColor === variant.color ? 'border-primary bg-primary/10' : 'hover:border-primary'}`}
-                                                onClick={() => handleVariantSelection(variant)}
+                                                className={`px-3 py-1 text-sm border rounded-md cursor-pointer ${selectedColor === variant.color ? 'border-primary bg-primary/10' : 'hover:border-primary'} ${variant.quantity === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                                onClick={() => variant.quantity > 0 && handleVariantSelection(variant)}
                                             >
                                                 {variant.color}
+                                                {variant.quantity === 0 && ' (Out of Stock)'}
                                             </span>
                                         ))}
                                     </div>
@@ -89,20 +92,23 @@ const ProductCard = ({
                             {(product.sizeType || (product.variants && product.variants.some(v => v.sizeType || v.customSize))) && (
                                 <div className='mt-3'>
                                     <p className='text-sm font-medium text-gray-700 mb-1'>Size Options:</p>
-                                    <div className='flex gap-2'>
-                                        <span 
-                                            className={`px-3 py-1 text-sm border rounded-md cursor-pointer ${selectedSize === (product.sizeType || product.sizes) ? 'border-primary bg-primary/10' : 'hover:border-primary'}`}
-                                            onClick={resetVariantSelection}
-                                        >
-                                            {product.sizeType}
-                                        </span>
+                                    <div className='flex flex-wrap gap-2'>
+                                        {product.sizeType && (
+                                            <span 
+                                                className={`px-3 py-1 text-sm border rounded-md cursor-pointer ${selectedSize === product.sizeType ? 'border-primary bg-primary/10' : 'hover:border-primary'}`}
+                                                onClick={resetVariantSelection}
+                                            >
+                                                {product.sizeType}
+                                            </span>
+                                        )}
                                         {product.variants?.map((variant) => (
                                             <span 
                                                 key={variant.id}
-                                                className={`px-3 py-1 text-sm border rounded-md cursor-pointer ${selectedSize === (variant.sizeType || variant.customSize) ? 'border-primary bg-primary/10' : 'hover:border-primary'}`}
-                                                onClick={() => handleVariantSelection(variant)}
+                                                className={`px-3 py-1 text-sm border rounded-md cursor-pointer ${selectedSize === (variant.sizeType || variant.customSize) ? 'border-primary bg-primary/10' : 'hover:border-primary'} ${variant.quantity === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                                onClick={() => variant.quantity > 0 && handleVariantSelection(variant)}
                                             >
                                                 {variant.sizeType || variant.customSize}
+                                                {variant.quantity === 0 && ' (Out of Stock)'}
                                             </span>
                                         ))}
                                     </div>
@@ -111,10 +117,15 @@ const ProductCard = ({
                             <SizeChart chartImage={sizeChartImage} />
                             <div className='mt-4'>
                                 <p className='text-lg font-semibold text-gray-900'>
-                                    Price: ${selectedVariant ? selectedVariant.salePrice : product.salePrice}
-                                    {(selectedVariant ? selectedVariant.regularPrice : product.regularPrice) > (selectedVariant ? selectedVariant.salePrice : product.salePrice) && (
+                                    Price: ${selectedVariant ? selectedVariant.salePrice.toFixed(2) : (product.salePrice || 0).toFixed(2)}
+                                    {((selectedVariant ? selectedVariant.regularPrice : product.regularPrice) || 0) > ((selectedVariant ? selectedVariant.salePrice : product.salePrice) || 0) && (
                                         <span className='ml-2 text-sm line-through text-gray-500 opacity-75'>
-                                            ${selectedVariant ? selectedVariant.regularPrice : product.regularPrice}
+                                            ${(selectedVariant ? selectedVariant.regularPrice : product.regularPrice || 0).toFixed(2)}
+                                        </span>
+                                    )}
+                                    {(!selectedVariant && product.toggleFirstDeal) && (
+                                        <span className='ml-2 text-sm text-green-600'>
+                                            (10% off first purchase)
                                         </span>
                                     )}
                                 </p>
@@ -141,8 +152,8 @@ const ProductCard = ({
                                     onChange={(e) => {
                                         const value = Number(e.target.value);
                                         const maxStock = selectedVariant ? selectedVariant.quantity : product.stockQuantity;
-                                        if (value > maxStock) {
-                                            setQuantity(maxStock);
+                                        if (value > (maxStock ?? 0)) {
+                                            setQuantity(maxStock ?? 1);
                                         } else if (value < 1) {
                                             setQuantity(1);
                                         } else {

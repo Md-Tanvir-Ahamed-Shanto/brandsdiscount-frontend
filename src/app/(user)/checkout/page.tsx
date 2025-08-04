@@ -12,7 +12,19 @@ import { useAppSelector } from '@/store';
 
 export default function Checkout() {
     const [isLoading, setIsLoading] = useState(false);
-    const cart = useAppSelector((state) => state.cart.products);
+    const cart = useAppSelector((state) => state.cart.products.map(product => {
+        const variant = product.variants?.find(v => 
+            v.color === product.color && 
+            (v.sizeType === product.sizeType || v.customSize === product.sizeType)
+        );
+        
+        return {
+            ...product,
+            regularPrice: variant?.regularPrice || product.regularPrice,
+            salePrice: variant?.salePrice || product.salePrice,
+            stockQuantity: variant?.quantity || product.stockQuantity
+        };
+    }));
 
     const [userId, setUserId] = useState<string | null>(null);
     const { data: userData } = useGetSingleProfileQuery(userId);

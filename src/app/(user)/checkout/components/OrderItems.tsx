@@ -44,7 +44,7 @@ const OrderItems = ({ cart }: any) => {
                                 <div className='flex-shrink-0 w-24 h-24 bg-gray-100 rounded-md overflow-hidden'>
                                     <Image
                                         src={
-                                            product?.images[0]?.url ||
+                                            product?.images[0] ||
                                             '/single-product/single.webp'
                                         }
                                         alt={product?.title}

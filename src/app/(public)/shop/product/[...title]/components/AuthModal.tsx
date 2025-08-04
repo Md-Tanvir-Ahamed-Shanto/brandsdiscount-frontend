@@ -24,7 +24,7 @@ interface IProps {
 }
 
 const SignInModal = ({ product, quantity = 1 }: IProps) => {
-    const { brandName, title, platFormPrice, salePrice } = product;
+    const { brandName, title, salePrice , regularPrice } = product;
     const [open, setOpen] = useState(false);
     const [step, setStep] = useState(1);
     const dispatch = useAppDispatch();
@@ -69,8 +69,8 @@ const SignInModal = ({ product, quantity = 1 }: IProps) => {
                         <div className='w-[120px]'>
                             <Avatar
                                 src={
-                                    product?.images[0]?.url
-                                        ? product?.images[0]?.url
+                                    product?.images[0]
+                                        ? product?.images[0]
                                         : '/shop/no-image.jpeg'
                                 }
                                 alt={product?.title}
@@ -89,14 +89,14 @@ const SignInModal = ({ product, quantity = 1 }: IProps) => {
                             {/* Pricing */}
                             <div className='space-y-1'>
                                 <div className='text-sm text-green-600'>
-                                    PLATFORM PRICE: $
-                                    {platFormPrice ? platFormPrice : 0}
+                                    SALE PRICE: $
+                                    {salePrice ? salePrice : 0}
                                 </div>
                                 {/* <div className='text-sm'>
                         VIP Price: ${vipPrice.toFixed(2)}
                     </div> */}
                                 <div className='text-sm text-gray-500 line-through'>
-                                    Sale Price: ${salePrice ? salePrice : ''}
+                                    Regular Price: ${regularPrice ? regularPrice : ''}
                                 </div>
                             </div>
                         </div>

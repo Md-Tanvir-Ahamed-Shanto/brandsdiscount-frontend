@@ -18,7 +18,7 @@ const ProductItem = ({ product }: any) => {
             <div className='sm:w-32 flex-shrink-0'>
                 <Image
                     src={
-                        product?.images[0]?.url || '/single-product/single.webp'
+                        product?.images[0] || '/single-product/single.webp'
                     }
                     alt={product?.title}
                     width={120}
