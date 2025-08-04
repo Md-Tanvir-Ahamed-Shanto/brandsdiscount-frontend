@@ -21,7 +21,7 @@ const userApi = baseApi.injectEndpoints({
         }),  
         getAllProfileOrder: build.query({
             query: () => ({
-                url: `/order/user/allOrders`,
+                url: `/order/me`,
                 method: "GET", 
             }), 
             providesTags: [tagTypes.profile], 

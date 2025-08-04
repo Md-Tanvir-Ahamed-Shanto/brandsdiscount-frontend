@@ -34,8 +34,9 @@ interface UserProfile {
 const UpdateProfile = () => {
     const [userId, setUserId] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-console.log("user id", userId)
-    const { data: userData } = useGetSingleProfileQuery(userId);
+    const { data: userData } = useGetSingleProfileQuery(userId, {
+        skip: !userId,
+    });
 
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [imageFile, setImageFile] = useState<File | null>(null);

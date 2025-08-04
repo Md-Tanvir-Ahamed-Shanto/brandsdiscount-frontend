@@ -55,7 +55,9 @@ const OrderPage = () => {
         }
     };
 
-    const filteredOrders = orderData?.filter((order: any) => {
+    console.log("orderData", orderData)
+
+    const filteredOrders = orderData?.data?.filter((order: any) => {
         const matchesSearch =
             order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
             order.orderDetails.some((detail: any) =>

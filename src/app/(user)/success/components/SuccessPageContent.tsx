@@ -19,7 +19,7 @@ const SuccessPageContent = () => {
     const cart = useAppSelector((state) => state.cart.products as any);
     const usedRedeemPoint = useAppSelector((state) => state.cart.appliedPoints);
     console.log('usedRedeemPoint we see from successPage', usedRedeemPoint); // 0
-
+console.log("cart products", cart)
     const dispatch = useAppDispatch();
     const router = useRouter();
 
@@ -37,7 +37,7 @@ const SuccessPageContent = () => {
                     const { status: paymentStatus, session } =
                         await getSessionStatus(sessionId);
                     setStatus(paymentStatus);
-
+// console.log("session", session)
                     // Only proceed with order creation if payment was successful
                     if (paymentStatus === 'paid') {
                         const orderDetails = cart?.map((item: any) => {
@@ -47,6 +47,7 @@ const SuccessPageContent = () => {
                                 price: item?.salePrice,
                                 total: item?.salePrice * item?.quantity,
                                 productName: item?.title,
+                                sku: item?.sku || 'undefined',
                                 categoryName:
                                     item?.category?.name || 'undefined',
                                 sizeName: item?.size?.name || 'undefined'
@@ -57,7 +58,7 @@ const SuccessPageContent = () => {
                             totalAmount: Number(session?.amount_total) / 100,
                             sku: session?.id,
                             status: 'Pending',
-                            transactionId: session?.payment_intent,
+                            transactionId: session?.payment_intent || session?.id,
                             claimLoyaltyOffer: false,
                             redeemPoint: usedRedeemPoint ? usedRedeemPoint : 0,
                             orderDetails

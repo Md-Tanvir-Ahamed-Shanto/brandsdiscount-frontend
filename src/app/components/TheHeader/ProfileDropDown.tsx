@@ -12,7 +12,9 @@ import { useGetSingleProfileQuery } from '@/api';
 
 const ProfileDropDown = () => {
     const [userId, setUserId] = useState<string | null>(null);
-    const { data: userData } = useGetSingleProfileQuery(userId);
+    const { data: userData } = useGetSingleProfileQuery(userId, {
+        skip: !userId,
+    });
 
     const [isLoginIn, setIsLoginIn] = useState(false);
     const [isHovered, setIsHovered] = useState(false);

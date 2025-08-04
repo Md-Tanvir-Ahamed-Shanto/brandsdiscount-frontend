@@ -22,7 +22,7 @@ const ShoppingCart = () => {
     const savings = useAppSelector(selectCartSavings);
 
     const cart = useAppSelector((state: RootState) => state.cart.products);
-
+// console.log("cart products", cart)
     const handleApplyPromoCode = () => {
         console.log('Promo code applied:', promoCode);
     };

@@ -29,10 +29,10 @@ interface MyTokenPayload {
 
 export default function UserProfile() {
     // const [userData, setUserData] = useState<UserProfile | null>(null);
-    const [userId, setUserId] = useState('');
-    const { data: userData } = useGetSingleProfileQuery(userId);
-
-    console.log('🚀 ~ UserProfile ~ userId:', userData);
+    const [userId, setUserId] = useState<string | null>(null);
+    const { data: userData } = useGetSingleProfileQuery(userId, {
+        skip: !userId,
+    });
 
     const [loading, setLoading] = useState(true);
 

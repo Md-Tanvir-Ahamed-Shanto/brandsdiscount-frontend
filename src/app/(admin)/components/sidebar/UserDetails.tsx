@@ -8,8 +8,9 @@ import Image from 'next/image';
 
 const UserDetails = () => {
     const [userId, setUserId] = useState<string | null>(null);
-    const { data: userData } = useGetSingleProfileQuery(userId);
-    console.log('🚀 ~ UserDetails ~ userData:', userData);
+    const { data: userData } = useGetSingleProfileQuery(userId, {
+        skip: !userId,
+    });
 
     const token = Cookies.get('token');
     useEffect(() => {
