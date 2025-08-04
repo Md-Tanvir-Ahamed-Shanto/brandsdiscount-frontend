@@ -21,6 +21,7 @@ const ShopPage = () => {
     const searchParams = useSearchParams();
     const searchTerm = searchParams.get('q') || '';
     const filters = searchParams.get('filter') || '';
+    const hasVisitedBefore = localStorage.getItem('has_visited_shop');
 
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(5);
@@ -45,7 +46,7 @@ const ShopPage = () => {
             skip: !!searchTerm // skip default fetch if search exists
         }
     ) as any;
-console.log("response data ",productData)
+    console.log('response data ', productData);
     // Search fetch
     const {
         data: searchData = [],
@@ -68,9 +69,28 @@ console.log("response data ",productData)
         return 'Something went wrong';
     }
 
+    // Set visited flag
+    React.useEffect(() => {
+        if (!hasVisitedBefore) {
+            localStorage.setItem('has_visited_shop', 'true');
+        }
+    }, [hasVisitedBefore]);
+
+    // localStorage.getItem('selected_sizes');
+    // const selectedSizes = localStorage.getItem('selected_sizes');
+
+    // React.useEffect(() => {
+    //     console.log("selectedSizes", selectedSizes?.length)
+    //        if(selectedSizes && selectedSizes?.length === 2) {
+    //         console.log("call this")
+    //         localStorage.removeItem('has_visited_shop');
+    //        }
+        
+    //     console.log("call 2")
+    // }, [selectedSizes]);
     return (
         <div className='container py-6 !overflow-hidden'>
-            <SizeFilterSheet />
+            <SizeFilterSheet showInitially={!hasVisitedBefore} />
             <div className='flex items-center justify-between'>
                 <div className=''>
                     <h3 className='font-bold text-2xl mb-4'>

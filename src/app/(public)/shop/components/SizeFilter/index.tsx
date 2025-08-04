@@ -15,7 +15,11 @@ const SIZE_VALUE_DISPLAY: Record<string, string> = {
 
 const STORAGE_KEY = 'selected_sizes';
 
-const SizeFilterSheet = () => {
+interface SizeFilterSheetProps {
+    showInitially?: boolean;
+}
+
+const SizeFilterSheet = ({ showInitially = false }: SizeFilterSheetProps) => {
     const [open, setOpen] = useState(false);
     const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
     const [showModal, setShowModal] = useState(false);
@@ -24,10 +28,13 @@ const SizeFilterSheet = () => {
         const storedSizes = localStorage.getItem(STORAGE_KEY);
         if (storedSizes) {
             setSelectedSizes(JSON.parse(storedSizes));
-        } else {
+        }
+        
+        // Show modal automatically on first visit
+        if (showInitially) {
             handleOpen();
         }
-    }, []);
+    }, [showInitially]);
 
     const handleOpen = () => {
         setShowModal(true);
@@ -43,7 +50,21 @@ const SizeFilterSheet = () => {
     const handleSizeChange = (sizes: string[]) => {
         setSelectedSizes(sizes);
         localStorage.setItem(STORAGE_KEY, JSON.stringify(sizes));
-        console.log('Selected sizes:', sizes);
+        
+        // Create size filter string
+        const sizeFilter = sizes.length > 0 ? `size_${sizes.join(',')}` : '';
+        
+        // Update URL with size filter
+        const url = new URL(window.location.href);
+        if (sizeFilter) {
+            url.searchParams.set('filter', sizeFilter);
+        } else {
+            url.searchParams.delete('filter');
+        }
+        window.history.pushState({}, '', url);
+        
+        // Force page reload to apply filters
+        window.location.reload();
     };
 
     return (
