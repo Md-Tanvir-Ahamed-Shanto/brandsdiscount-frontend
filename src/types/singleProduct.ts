@@ -5,12 +5,23 @@ export interface ISingleProductImage {
     url: string;
 }
 
+export interface ISingleProductVariant {
+    id: string;
+    color: string;
+    sizeType: string;
+    customSize: string;
+    quantity: number;
+    regularPrice: number;
+    salePrice: number;
+}
+
 
 export interface ISingleProduct {
     id: string;
     title: string;
     brandName: string;
     color: string;
+    sizes: string;
     sku: string;
     images: string[];
     itemLocation: string;
@@ -33,4 +44,5 @@ export interface ISingleProduct {
     size: ISize;
     category: ICategory;
     parentCategory: ICategory | null;
+    variants: ISingleProductVariant[] | null;
 }
