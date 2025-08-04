@@ -13,15 +13,13 @@ export interface ProductCardProps {
 
 
 export interface IProduct {
+    imageUrl: string;
     id: string;
     title: string;
     brandName: string;
     color: string;
     sku: string;
-    images: {
-        id: string;
-        url: string;
-    }[];
+    images: string[];
     itemLocation: string;
     sizeId: string;
     sizeType: string | null;

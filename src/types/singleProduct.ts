@@ -4,13 +4,15 @@ export interface ISingleProductImage {
     id: string;
     url: string;
 }
+
+
 export interface ISingleProduct {
     id: string;
     title: string;
     brandName: string;
     color: string;
     sku: string;
-    images: ISingleProductImage[];
+    images: string[];
     itemLocation: string;
     sizeId: string | null;
     sizeType: string;

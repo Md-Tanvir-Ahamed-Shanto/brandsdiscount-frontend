@@ -4,10 +4,9 @@ import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
 import Image from 'next/image';
 import { Icons } from '@/components';
-import { ISingleProductImage } from '@/types';
 
 interface IProps {
-    image: ISingleProductImage[];
+    image: string[];
 }
 const ProductImage = ({ image }: IProps) => {
     const imageRef = useRef<HTMLImageElement | null>(null);
@@ -28,7 +27,7 @@ const ProductImage = ({ image }: IProps) => {
                     unoptimized
                     ref={imageRef}
                     className='rounded-lg shadow-lg w-full h-full object-cover"'
-                    src={image[0]?.url || '/single-product/single.webp'}
+                    src={image[0] || '/single-product/single.webp'}
                 />
             </Zoom>
             <button

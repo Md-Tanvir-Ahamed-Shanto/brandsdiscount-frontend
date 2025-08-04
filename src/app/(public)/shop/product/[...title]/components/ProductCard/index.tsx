@@ -29,7 +29,7 @@ const ProductCard = ({
             <div className='container mx-auto p-4 md:p-6 max-w-5xl bg-white rounded-xl shadow-xl mt-1'>
                 <div className='md:flex md:space-x-8'>
                     <div className='md:w-1/2 max-w-[480px] mx-auto overflow-hidden'>
-                        <ProductImage image={product?.images} />
+                        <img src={product?.images[0] || ''} />
                     </div>
                     <div className='md:w-1/2 mt-6 md:mt-0 flex flex-col justify-between'>
                         <div>

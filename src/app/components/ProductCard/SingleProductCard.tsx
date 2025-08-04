@@ -22,6 +22,7 @@ const SingleProductCard = ({ product }: { product: IProduct }) => {
         // description,
         // status
     } = product; // Destructuring inside the function
+    console.log("product", product)
 
     return (
         <div className='group relative rounded '>
@@ -43,10 +44,10 @@ const SingleProductCard = ({ product }: { product: IProduct }) => {
             >
                 <Avatar
                     src={
-                        images[0]?.url ? images[0]?.url : '/shop/no-image.jpeg'
+                        product.imageUrl || product.images[0] || '/shop/no-image.jpeg'
                     }
                     alt={title ? title : ''}
-                    className='!object-contain rounded'
+                    className='object-cover w-full h-80 rounded'
                     priority={true}
                 />
             </Link>
