@@ -44,9 +44,12 @@ const SingleProductPage = () => {
         if (!cookie) return true;
         const userId = jwtDecode<MyTokenPayload>(cookie).id;
         if (!userId) return true;
-        if (!orderData) return true;
-        return orderData?.length === 0;
+        if (!orderData?.data) return true;
+        return orderData?.data?.length === 0;
+
     }, [orderData]);
+    console.log("order data",orderData)
+console.log("eligible", isAllowedForFirstItemDiscount)
 
     if (isLoading || isOrderLoading) return <LoadingPublic />;
     if (isError || !data)

@@ -54,7 +54,7 @@ const createAxiosInstance = (baseUrl: string): AxiosInstance => {
                         // Clear all auth tokens if refresh token is missing
                         Cookies.remove('token');
                         Cookies.remove('rtoken');
-                        window.location.href = '/login';
+                        window.location.href = '/auth/login';
                         return Promise.reject(error);
                     }
 
@@ -91,7 +91,7 @@ const createAxiosInstance = (baseUrl: string): AxiosInstance => {
                     // Clear tokens and redirect on refresh failure
                     Cookies.remove('token');
                     Cookies.remove('rtoken');
-                    window.location.href = '/login';
+                    window.location.href = '/auth/login';
                     return Promise.reject(error);
                 }
             }
