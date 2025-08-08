@@ -6,6 +6,8 @@ export interface ISingleProductImage {
 }
 
 export interface ISingleProductVariant {
+    stockQuantity: number;
+    sizes: string;
     id: string;
     color: string;
     sizeType: string;

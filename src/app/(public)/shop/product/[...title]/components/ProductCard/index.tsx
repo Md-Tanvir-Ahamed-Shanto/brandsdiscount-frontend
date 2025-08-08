@@ -7,7 +7,6 @@ import { OfferCard } from './OfferCard';
 import { SizeChart } from './SizeChart';
 import { AvailablePaymentMethods } from './AvailablePayments';
 import AdditionalInformation from '../AdditionalInformation';
-import ProductImage from '../ProductImage';
 import AuthModal from '../AuthModal';
 
 const ProductCard = ({
@@ -23,7 +22,7 @@ const ProductCard = ({
 }) => {
     const [selectedVariant, setSelectedVariant] = useState<ISingleProductVariant | null>(null);
     const [selectedColor, setSelectedColor] = useState<string>(product.color || '');
-    const [selectedSize, setSelectedSize] = useState<string>(product.sizeType || '');
+    const [selectedSize, setSelectedSize] = useState<string>(product.sizes || '');
 
     const sizeChartImage = product.categoryId
         ? sizeChartMap[product.categoryId as keyof typeof sizeChartMap]
@@ -32,13 +31,13 @@ const ProductCard = ({
     const handleVariantSelection = (variants: ISingleProductVariant) => {
         setSelectedVariant(variants);
         setSelectedColor(variants.color);
-        setSelectedSize(variants.sizeType || variants.customSize || '');
+        setSelectedSize(variants.sizes || variants.customSize || '');
     };
 
     const resetVariantSelection = () => {
         setSelectedVariant(null);
         setSelectedColor(product.color || '');
-        setSelectedSize(product.sizeType || '');
+        setSelectedSize(product.sizes || '');
         setQuantity(1);
     };
 
@@ -46,6 +45,27 @@ const ProductCard = ({
         // Reset quantity when variant changes
         setQuantity(1);
     }, [selectedVariant]);
+
+    useEffect(() => {
+        // Auto-select first available size and color on component mount
+        const selectFirstAvailableVariant = () => {
+            // First try to select from main product size
+            if (product.sizes && (product.stockQuantity ?? 0) > 0) {
+                setSelectedSize(product.sizes);
+                setSelectedColor(product.color || '');
+                return;
+            }
+            
+            // Then try to find first available variant
+            const availableVariants = product.variants?.filter(v => (v.stockQuantity ?? 0) > 0) || [];
+            if (availableVariants.length > 0) {
+                const firstVariant = availableVariants[0];
+                handleVariantSelection(firstVariant);
+            }
+        };
+        
+        selectFirstAvailableVariant();
+    }, [product]);
 
     return (
         <>
@@ -64,11 +84,11 @@ const ProductCard = ({
                             <h1 className='text-2xl lg:text-3xl font-bold text-[#212529] leading-tight'>
                                 {product.title}
                             </h1>
-                            {(product.color || (product.variants && product.variants.length > 0)) && (
+                            {selectedSize && (product.color || (product.variants && product.variants.filter(v => (v.sizes === selectedSize || v.customSize === selectedSize) && v.stockQuantity > 0).length > 0)) && (
                                 <div className='mt-1'>
                                     <p className='text-sm font-medium text-gray-700 mb-1'>Color Options:</p>
                                     <div className='flex flex-wrap gap-2'>
-                                        {product.color && (
+                                        {product.color && (product.stockQuantity ?? 0) > 0 && (
                                             <span 
                                                 className={`px-3 py-1 text-sm border rounded-md cursor-pointer ${selectedColor === product.color ? 'border-primary bg-primary/10' : 'hover:border-primary'}`}
                                                 onClick={resetVariantSelection}
@@ -76,41 +96,56 @@ const ProductCard = ({
                                                 {product.color}
                                             </span>
                                         )}
-                                        {product.variants?.map((variant) => (
+                                        {product.variants?.filter(v => 
+                                            (v.sizes === selectedSize || v.customSize === selectedSize) && (v.stockQuantity ?? 0) > 0
+                                        ).map((variant) => (
                                             <span 
                                                 key={variant.id}
-                                                className={`px-3 py-1 text-sm border rounded-md cursor-pointer ${selectedColor === variant.color ? 'border-primary bg-primary/10' : 'hover:border-primary'} ${variant.quantity === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                                onClick={() => variant.quantity > 0 && handleVariantSelection(variant)}
+                                                className={`px-3 py-1 text-sm border rounded-md cursor-pointer ${selectedColor === variant.color ? 'border-primary bg-primary/10' : 'hover:border-primary'}`}
+                                                onClick={() => handleVariantSelection(variant)}
                                             >
                                                 {variant.color}
-                                                {variant.quantity === 0 && ' (Out of Stock)'}
                                             </span>
                                         ))}
                                     </div>
                                 </div>
                             )}
-                            {(product.sizeType || (product.variants && product.variants.some(v => v.sizeType || v.customSize))) && (
+                            {(product.sizes || (product.variants && product.variants.some(v => v.sizes || v.customSize))) && (
                                 <div className='mt-3'>
                                     <p className='text-sm font-medium text-gray-700 mb-1'>Size Options:</p>
                                     <div className='flex flex-wrap gap-2'>
-                                        {product.sizeType && (
+                                        {product.sizes && (product.stockQuantity ?? 0) > 0 && (
                                             <span 
-                                                className={`px-3 py-1 text-sm border rounded-md cursor-pointer ${selectedSize === product.sizeType ? 'border-primary bg-primary/10' : 'hover:border-primary'}`}
+                                                className={`px-3 py-1 text-sm border rounded-md cursor-pointer ${selectedSize === product.sizes ? 'border-primary bg-primary/10' : 'hover:border-primary'}`}
                                                 onClick={resetVariantSelection}
                                             >
-                                                {product.sizeType}
+                                                {product.sizes}
                                             </span>
                                         )}
-                                        {product.variants?.map((variant) => (
-                                            <span 
-                                                key={variant.id}
-                                                className={`px-3 py-1 text-sm border rounded-md cursor-pointer ${selectedSize === (variant.sizeType || variant.customSize) ? 'border-primary bg-primary/10' : 'hover:border-primary'} ${variant.quantity === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                                onClick={() => variant.quantity > 0 && handleVariantSelection(variant)}
-                                            >
-                                                {variant.sizeType || variant.customSize}
-                                                {variant.quantity === 0 && ' (Out of Stock)'}
-                                            </span>
-                                        ))}
+                                        {/* Get unique sizes from variants with stock */}
+                                        {Array.from(new Set(product.variants
+                                            ?.filter(v => (v.stockQuantity ?? 0) > 0)
+                                            .map(v => v.sizes || v.customSize)))
+                                            .filter(Boolean)
+                                            .map((size) => (
+                                                <span 
+                                                    key={size}
+                                                    className={`px-3 py-1 text-sm border rounded-md cursor-pointer ${selectedSize === size ? 'border-primary bg-primary/10' : 'hover:border-primary'}`}
+                                                    onClick={() => {
+                                                        setSelectedSize(size);
+                                                        // Find first variant with this size and stock
+                                                        const firstVariant = product.variants?.find(v => 
+                                                            (v.sizes === size || v.customSize === size) && 
+                                                            (v.stockQuantity ?? 0) > 0
+                                                        );
+                                                        if (firstVariant) {
+                                                            handleVariantSelection(firstVariant);
+                                                        }
+                                                    }}
+                                                >
+                                                    {size}
+                                                </span>
+                                            ))}
                                     </div>
                                 </div>
                             )}
@@ -130,7 +165,7 @@ const ProductCard = ({
                                     )}
                                 </p>
                             </div>
-                            <ProductStock product={selectedVariant ? { ...product, stockQuantity: selectedVariant.quantity } : product} />
+                            <ProductStock product={selectedVariant ? { ...product, stockQuantity: selectedVariant.stockQuantity } : product} />
                             <OfferCard
                                 product={product}
                                 isAllowedForFirstItemDiscount={
@@ -151,8 +186,8 @@ const ProductCard = ({
                                     min={1}
                                     onChange={(e) => {
                                         const value = Number(e.target.value);
-                                        const maxStock = selectedVariant ? selectedVariant.quantity : product.stockQuantity;
-                                        if (value > (maxStock ?? 0)) {
+                                        const maxStock = selectedVariant ? (selectedVariant.stockQuantity ?? 0) : (product.stockQuantity ?? 0);
+                                        if (value > maxStock) {
                                             setQuantity(maxStock ?? 1);
                                         } else if (value < 1) {
                                             setQuantity(1);
@@ -160,8 +195,8 @@ const ProductCard = ({
                                             setQuantity(value);
                                         }
                                     }}
-                                    disabled={product.status === 'outofstock' || (selectedVariant ? selectedVariant.quantity === 0 : product.stockQuantity === 0)}
-                                    max={selectedVariant ? selectedVariant.quantity : product.stockQuantity}
+                                    disabled={product.status === 'outofstock' || (selectedVariant ? selectedVariant.stockQuantity === 0 : product.stockQuantity === 0)}
+                                    max={selectedVariant ? selectedVariant.stockQuantity : product.stockQuantity}
                                     className='w-24 p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition duration-150'
                                 />
                             </div>
@@ -172,8 +207,8 @@ const ProductCard = ({
                                 product={selectedVariant ? {
                                     ...product,
                                     color: selectedVariant.color,
-                                    sizeType: selectedVariant.sizeType || selectedVariant.customSize,
-                                    stockQuantity: selectedVariant.quantity,
+                                    sizes: selectedVariant.sizes || selectedVariant.customSize,
+                                    stockQuantity: selectedVariant.stockQuantity,
                                     regularPrice: selectedVariant.regularPrice,
                                     salePrice: selectedVariant.salePrice
                                 } : product} 
