@@ -47,24 +47,25 @@ const ProductCard = ({
     }, [selectedVariant]);
 
     useEffect(() => {
-        // Auto-select first available size and color on component mount
-        const selectFirstAvailableVariant = () => {
+        // Only select size on component mount, not color
+        const selectFirstAvailableSize = () => {
             // First try to select from main product size
             if (product.sizes && (product.stockQuantity ?? 0) > 0) {
                 setSelectedSize(product.sizes);
-                setSelectedColor(product.color || '');
                 return;
             }
             
-            // Then try to find first available variant
+            // Then try to find first available variant size
             const availableVariants = product.variants?.filter(v => (v.stockQuantity ?? 0) > 0) || [];
             if (availableVariants.length > 0) {
-                const firstVariant = availableVariants[0];
-                handleVariantSelection(firstVariant);
+                setSelectedSize(availableVariants[0].sizes || availableVariants[0].customSize || '');
             }
         };
         
-        selectFirstAvailableVariant();
+        selectFirstAvailableSize();
+        // Reset color when component mounts
+        setSelectedColor('');
+        setSelectedVariant(null);
     }, [product]);
 
     return (
@@ -84,11 +85,12 @@ const ProductCard = ({
                             <h1 className='text-2xl lg:text-3xl font-bold text-[#212529] leading-tight'>
                                 {product.title}
                             </h1>
-                            {selectedSize && (product.color || (product.variants && product.variants.filter(v => (v.sizes === selectedSize || v.customSize === selectedSize) && v.stockQuantity > 0).length > 0)) && (
+                            {selectedSize && (
                                 <div className='mt-1'>
                                     <p className='text-sm font-medium text-gray-700 mb-1'>Color Options:</p>
                                     <div className='flex flex-wrap gap-2'>
-                                        {product.color && (product.stockQuantity ?? 0) > 0 && (
+                                        {/* Show main product color only if it matches the selected size and has stock */}
+                                        {product.color && product.sizes === selectedSize && (product.stockQuantity ?? 0) > 0 && (
                                             <span 
                                                 className={`px-3 py-1 text-sm border rounded-md cursor-pointer ${selectedColor === product.color ? 'border-primary bg-primary/10' : 'hover:border-primary'}`}
                                                 onClick={resetVariantSelection}
@@ -96,17 +98,18 @@ const ProductCard = ({
                                                 {product.color}
                                             </span>
                                         )}
-                                        {product.variants?.filter(v => 
-                                            (v.sizes === selectedSize || v.customSize === selectedSize) && (v.stockQuantity ?? 0) > 0
-                                        ).map((variant) => (
-                                            <span 
-                                                key={variant.id}
-                                                className={`px-3 py-1 text-sm border rounded-md cursor-pointer ${selectedColor === variant.color ? 'border-primary bg-primary/10' : 'hover:border-primary'}`}
-                                                onClick={() => handleVariantSelection(variant)}
-                                            >
-                                                {variant.color}
-                                            </span>
-                                        ))}
+                                        {/* Show variant colors that match the selected size and have stock */}
+                                        {product.variants
+                                            ?.filter(v => (v.sizes === selectedSize || v.customSize === selectedSize) && (v.stockQuantity ?? 0) > 0)
+                                            .map((variant) => (
+                                                <span 
+                                                    key={variant.id}
+                                                    className={`px-3 py-1 text-sm border rounded-md cursor-pointer ${selectedColor === variant.color ? 'border-primary bg-primary/10' : 'hover:border-primary'}`}
+                                                    onClick={() => handleVariantSelection(variant)}
+                                                >
+                                                    {variant.color}
+                                                </span>
+                                            ))}
                                     </div>
                                 </div>
                             )}
