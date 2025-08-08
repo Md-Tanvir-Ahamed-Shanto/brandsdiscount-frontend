@@ -20,7 +20,7 @@ const SingleProductCard = ({ product }: { product: IProduct }) => {
         : toggleFirstDeal ? 10 : 0;
 
     return (
-        <div className='group relative rounded '>
+        <div className='group relative bg-gray-100 p-2 shadow-md rounded '>
             {/* Discount Badge */}
             <div className='absolute left-0 top-4 z-10 bg-red-600 text-white px-2 py-1'>
                 -{discountPercent ? discountPercent : 15}%
@@ -35,14 +35,14 @@ const SingleProductCard = ({ product }: { product: IProduct }) => {
             <Link
                 href={`/shop/product/${slugify(title)}/?id=${product?.id} `}
                 // href={`/shop`}
-                className='relative overflow-hidden rounded-lg block mb-4 bg-orange-600'
+                className='relative overflow-hidden h-80 rounded-lg block mb-4 bg-white'
             >
                 <Avatar
                     src={
                         product.imageUrl || product.images[0] || '/shop/no-image.jpeg'
                     }
-                    alt={title ? title : ''}
-                    className='object-cover w-full h-80 rounded'
+                    alt={title ? title : ''}    
+                    className='object-scale-down w-full h-80 rounded'
                     priority={true}
                 />
             </Link>
