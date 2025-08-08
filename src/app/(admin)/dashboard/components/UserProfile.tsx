@@ -71,7 +71,7 @@ export default function UserProfile() {
             <CardHeader>
                 <CardTitle className='text-2xl font-bold'>
                     Account Information
-                </CardTitle>
+                </CardTitle>    
             </CardHeader>
 
             <CardContent className='px-6'>
@@ -82,8 +82,7 @@ export default function UserProfile() {
                             <Avatar className='h-16 w-16 border-2 border-primary/20'>
                                 <AvatarImage
                                     src={
-                                        userData?.profilePicture ||
-                                        '/placeholder.svg'
+                                        userData?.profilePicture
                                     }
                                     alt={userData?.role}
                                 />

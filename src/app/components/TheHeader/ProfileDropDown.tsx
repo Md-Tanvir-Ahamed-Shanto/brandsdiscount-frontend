@@ -4,11 +4,11 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import { ChevronDown, Power, UserRound } from 'lucide-react';
-import Avatar from '@/components/Avatar';
 import toast from 'react-hot-toast';
 import { jwtDecode } from 'jwt-decode';
 import { MyTokenPayload } from '@/app/(profile)/profile/page';
 import { useGetSingleProfileQuery } from '@/api';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const ProfileDropDown = () => {
     const [userId, setUserId] = useState<string | null>(null);
@@ -77,13 +77,19 @@ const ProfileDropDown = () => {
                             <p className='text-xs'>{userData?.role || ''}</p>
                         </div>
                         <div className='!w-9 !h-9 !rounded-full bg-main-400'>
-                            <Avatar
-                                src={
-                                    userData?.profilePicture?.url ||
-                                    '/logos/male_avatar_two.png'
-                                }
-                                className='w-full h-full !rounded-full'
-                            />
+                           <Avatar className='h-full w-full border-2 border-primary/20'>
+                                <AvatarImage
+                                    src={
+                                        userData?.profilePicture
+                                    }
+                                    alt={userData?.username}
+                                />
+                                <AvatarFallback>
+                                    {userData?.username
+                                        .substring(0, 1)
+                                        .toUpperCase()}
+                                </AvatarFallback>
+                            </Avatar>
                         </div>
                         <ChevronDown className='min-w-5 min-h-5' />
                     </div>
