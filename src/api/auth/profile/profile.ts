@@ -2,41 +2,45 @@ import { baseApi, tagTypes } from '@/store';
 
 const userApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
-        /* updateUserProfile: build.mutation<any, any>({
-            query: ({id, form}) => {  
-                return {
-                    url: `/userroute/update/659d408f-1cc1-471e-af2e-2b4cef939847`,
-                    method: 'PUT',
-                    body: form,
-                };
-            },
-        }), */
-        
         getSingleProfile: build.query({
             query: (id) => ({
                 url: `/userroute/user/${id}`,
                 method: "GET", 
             }), 
-            providesTags: [tagTypes.profile], 
+            providesTags: [tagTypes.profile],
+            transformErrorResponse: (response: { status: number }) => {
+                if (response.status === 401) {
+                    return { error: 'Authentication required' };
+                }
+                return response;
+            },
         }),  
         getAllProfileOrder: build.query({
             query: () => ({
                 url: `/order/me`,
                 method: "GET", 
             }), 
-            providesTags: [tagTypes.profile], 
+            providesTags: [tagTypes.profile],
+            transformErrorResponse: (response: { status: number }) => {
+                if (response.status === 401) {
+                    return { error: 'Authentication required' };
+                }
+                return response;
+            },
         }),   
         updatePassword: build.mutation({
-            query: ({ id, formData }) => {
-                console.log(id);
-                console.log(formData);   
-                return {
+            query: ({ id, formData }) => ({
                 url: `/userroute/update/${id}`,
                 method: "PUT",
                 data: formData,
-                };
-            },
+            }),
             invalidatesTags: [tagTypes.profile],
+            transformErrorResponse: (response: { status: number }) => {
+                if (response.status === 401) {
+                    return { error: 'Authentication required' };
+                }
+                return response;
+            },
         }),
     })
 });

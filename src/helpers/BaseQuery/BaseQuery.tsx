@@ -50,6 +50,14 @@ const createAxiosInstance = (baseUrl: string): AxiosInstance => {
                 originalRequest._retry = true;
                 try {
                     const rtoken = Cookies.get('rtoken');
+                    if (!rtoken) {
+                        // Clear all auth tokens if refresh token is missing
+                        Cookies.remove('token');
+                        Cookies.remove('rtoken');
+                        window.location.href = '/login';
+                        return Promise.reject(error);
+                    }
+
                     const response = await axios.get(
                         `${API_BASE_URL}/authroute/refreshtoken`,
                         {
@@ -80,11 +88,11 @@ const createAxiosInstance = (baseUrl: string): AxiosInstance => {
                     };
                     return axios(originalRequest);
                 } catch (err) {
-                    /* if (typeof window !== 'undefined') {
-                        localStorage.removeItem('accessToken');
-                        redirect('/login');
-                    } */
-                    console.log(err);
+                    // Clear tokens and redirect on refresh failure
+                    Cookies.remove('token');
+                    Cookies.remove('rtoken');
+                    window.location.href = '/login';
+                    return Promise.reject(error);
                 }
             }
 

@@ -15,7 +15,7 @@ const ProfileDropDown = () => {
     const { data: userData } = useGetSingleProfileQuery(userId, {
         skip: !userId,
     });
-
+console.log("user data", userData)
     const [isLoginIn, setIsLoginIn] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
     const router = useRouter();
@@ -80,7 +80,7 @@ const ProfileDropDown = () => {
                            <Avatar className='h-full w-full border-2 border-primary/20'>
                                 <AvatarImage
                                     src={
-                                        userData?.profilePicture
+                                        userData?.profilePicture?.url
                                     }
                                     alt={userData?.username}
                                 />
