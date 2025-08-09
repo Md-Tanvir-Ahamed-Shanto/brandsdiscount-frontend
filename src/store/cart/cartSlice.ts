@@ -87,14 +87,15 @@ export const selectCartProducts = (state: { cart: ICart }) =>
 
 export const selectCartSubtotal = (state: { cart: ICart }) =>
     state.cart.products.reduce((total, product) => {
-        return total + product.salePrice * product.quantity;
+        return total + (product.salePrice ?? 0) * product.quantity;
     }, 0);
 
 export const selectCartSavings = (state: { cart: ICart }) =>
     state.cart.products.reduce((total, product) => {
         return (
             total +
-            (product.regularPrice - product.salePrice) * product.quantity
+            ((product.regularPrice ?? 0) - (product.salePrice ?? 0)) *
+                (product.quantity ?? 0)
         );
     }, 0);
 

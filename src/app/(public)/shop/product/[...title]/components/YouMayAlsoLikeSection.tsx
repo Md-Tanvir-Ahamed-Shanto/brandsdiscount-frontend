@@ -52,7 +52,7 @@ const YouMayAlsoLikeSection = ({ product }: any) => {
                         <div className='relative aspect-[3/4] mb-4 rounded overflow-hidden'>
                             <Avatar
                                 src={
-                                    product?.images?.[0]?.url ||
+                                    product?.images?.[0] ||
                                     '/shop/no-image.jpeg'
                                 }
                                 alt={product?.title}
@@ -68,7 +68,7 @@ const YouMayAlsoLikeSection = ({ product }: any) => {
                             </p>
                             <div className='space-y-1'>
                                 <p className='font-medium text-green-700'>
-                                    USD {product?.platFormPrice}
+                                    USD {product?.regularPrice}
                                 </p>
                                 <p className='text-sm text-red-600'>
                                     With offer USD {product?.salePrice}
