@@ -36,12 +36,12 @@ const AdditionalInformation = ({ product }: IProps) => {
                 <div className='!w-full'>
                     <BoxData title='Product Name' content={title} />
                     <BoxData title='Category' content={categoryName} />
-                    <BoxData title='Color' content={color} />
-                    <BoxData title='Brand' content={brandName} />
+                    <BoxData title='Color' content={color || 'N/A'} />
+                    <BoxData title='Brand' content={brandName || 'N/A'} />
                     <BoxData title='Size Type' content={sizeType || 'N/A'} />
                     <BoxData title='Size' content={size?.name || 'N/A'} />
-                    <BoxData title='SKU' content={sku} />
-                    <BoxData title='Condition' content={condition} />
+                    <BoxData title='SKU' content={sku || 'N/A'} />
+                    <BoxData title='Condition' content={condition || 'N/A'} />
                     <BoxData
                         title='Regular Price'
                         content={`$${regularPrice}`}

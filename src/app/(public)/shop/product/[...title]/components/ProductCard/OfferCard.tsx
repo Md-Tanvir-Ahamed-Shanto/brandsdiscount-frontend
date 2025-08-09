@@ -53,7 +53,7 @@ const OfferCard = ({
                     )}
                     {product.salePrice !== null && product.salePrice !== undefined && (
                         <p className='text-[#28a745] font-semibold text-sm mt-1'>
-                            You Save ${(product.regularPrice - product.salePrice).toFixed(2)} on
+                            You Save ${((product.regularPrice || 0) - product.salePrice).toFixed(2)} on
                             this item!
                         </p>
                     )}
