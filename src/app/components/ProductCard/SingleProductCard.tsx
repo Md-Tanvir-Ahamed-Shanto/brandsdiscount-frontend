@@ -9,7 +9,6 @@ const SingleProductCard = ({ product }: { product: IProduct }) => {
     const {
         title,
         brandName,
-        images,
         salePrice,
         regularPrice,
         toggleFirstDeal

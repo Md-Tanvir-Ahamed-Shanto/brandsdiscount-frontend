@@ -65,16 +65,19 @@ const ShopPage = () => {
     const isError = searchTerm ? isSearchError : isDefaultError;
     const error = searchTerm ? searchError : defaultError;
 
+    const handlevisit = () => {
+         if (!hasVisitedBefore) {
+            localStorage.setItem('has_visited_shop', 'true');
+        }
+    }
+    // Set visited flag
+    React.useEffect(() => {
+       handlevisit();
+    }, [hasVisitedBefore]);
+
     if (error || isError) {
         return 'Something went wrong';
     }
-
-    // Set visited flag
-    React.useEffect(() => {
-        if (!hasVisitedBefore) {
-            localStorage.setItem('has_visited_shop', 'true');
-        }
-    }, [hasVisitedBefore]);
 
     // localStorage.getItem('selected_sizes');
     // const selectedSizes = localStorage.getItem('selected_sizes');

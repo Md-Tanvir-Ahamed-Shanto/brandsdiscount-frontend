@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Search, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 
 const MAX_RECENT_SEARCHES = 5;
 

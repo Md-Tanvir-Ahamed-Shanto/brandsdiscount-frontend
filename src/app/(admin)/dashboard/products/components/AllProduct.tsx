@@ -63,7 +63,7 @@ const AllProduct = ({
                               <span className='flex items-center gap-2 p-3'>
                                   <Image
                                       src={
-                                          product?.images[0]?.url ||
+                                          product?.images[0] ||
                                           '/astronaut.png'
                                       }
                                       alt=''

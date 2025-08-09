@@ -89,6 +89,7 @@ const createAxiosInstance = (baseUrl: string): AxiosInstance => {
                     return axios(originalRequest);
                 } catch (err) {
                     // Clear tokens and redirect on refresh failure
+                     console.log("Error", err)
                     Cookies.remove('token');
                     Cookies.remove('rtoken');
                     window.location.href = '/auth/login';
