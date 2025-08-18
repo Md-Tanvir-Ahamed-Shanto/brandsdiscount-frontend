@@ -100,7 +100,7 @@ const ProductCard = ({
                                         )}
                                         {/* Show variant colors that match the selected size and have stock */}
                                         {product.variants
-                                            ?.filter(v => (v.sizes === selectedSize || v.customSize === selectedSize) && (v.stockQuantity ?? 0) > 0)
+                                            ?.filter(v =>  (v.stockQuantity ?? 0) > 0)
                                             .map((variant) => (
                                                 <span 
                                                     key={variant.id}
