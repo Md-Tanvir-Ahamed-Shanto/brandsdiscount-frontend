@@ -39,7 +39,7 @@ const ShopPage = () => {
         {
             page: currentPage,
             limit: 100,
-            sort: sortValue,
+            sort: sortValue, // Use sortValue here
             filters: `filtering=${filters}`
         },
         {

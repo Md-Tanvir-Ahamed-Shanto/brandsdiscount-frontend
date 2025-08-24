@@ -11,7 +11,7 @@ const allProductsApi = publicApi.injectEndpoints({
     endpoints: (build) => ({
         getAllPublicProduct: build.query({
             query: ({ page = 1, limit = 100, sort = 'createdAt_desc', filters = '' }) => ({
-                url: `/api/products/all?page=${page}&limit=${limit}&sort=${sort}${filters ? `&${filters}` : '' }${sizes ? `&sizeType=${sizes}` : ''}`,
+                url: `/api/products/all?page=${page}&limit=${limit}&sortPrice=${sort}${filters ? `&${filters}` : '' }${sizes ? `&sizeType=${sizes}` : ''}`,
                 method: 'GET',
             }),
             providesTags: [publicTagTypes.products],
