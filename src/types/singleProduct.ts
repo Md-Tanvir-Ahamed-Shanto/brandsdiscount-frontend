@@ -12,6 +12,7 @@ export interface ISingleProductVariant {
     color: string;
     sizeType: string;
     customSize: string;
+    images: string[];
     quantity: number;
     regularPrice: number;
     salePrice: number;
