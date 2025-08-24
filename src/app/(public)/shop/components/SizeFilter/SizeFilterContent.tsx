@@ -1,12 +1,12 @@
 const SIZE_OPTIONS = [
-    { label: 'XXS (00)', value: 'xxs' },
-    { label: 'XS (0-2)', value: 'xs' },
-    { label: 'S (4-6)', value: 's' },
-    { label: 'M (8-10)', value: 'm' },
-    { label: 'L (12-14)', value: 'l' },
-    { label: 'XL (16-18)', value: 'xl' },
-    { label: 'XXL+ (20+)', value: 'xxl' },
-    { label: 'O/S', value: 'os' }
+    { label: 'XXS (00)', value: 'XXS (00)' },
+    { label: 'XS (0-2)', value: 'XS (0-2)' },
+    { label: 'S (4-6)', value: 'S (4-6)' },
+    { label: 'M (8-10)', value: 'M (8-10)' },
+    { label: 'L (12-14)', value: 'L (12-14)' },
+    { label: 'XL (16-18)', value: 'XL (16-18)' },
+    { label: 'XXL+ (20+)', value: 'XXL+ (20+)' },
+    { label: 'O/S', value: 'O/S' }
 ];
 
 const SizeFilterContent = ({

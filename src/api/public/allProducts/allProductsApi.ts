@@ -3,11 +3,15 @@ import { publicTagTypes } from '@/store';
 import { publicApi } from '@/store/publicApi';
 import { ISingleProduct } from '@/types';
 
+const sizes = JSON.parse(localStorage.getItem("selected_sizes") || "[]");
+
+console.log("seach size",sizes)
+
 const allProductsApi = publicApi.injectEndpoints({
     endpoints: (build) => ({
         getAllPublicProduct: build.query({
             query: ({ page = 1, limit = 100, sort = 'createdAt_desc', filters = '' }) => ({
-                url: `/api/products/all?page=${page}&limit=${limit}&sort=${sort}${filters ? `&${filters}` : ''}`,
+                url: `/api/products/all?page=${page}&limit=${limit}&sort=${sort}${filters ? `&${filters}` : '' }${sizes ? `&sizeType=${sizes}` : ''}`,
                 method: 'GET',
             }),
             providesTags: [publicTagTypes.products],
@@ -33,7 +37,7 @@ const allProductsApi = publicApi.injectEndpoints({
         }), 
         getAllSearchProduct: build.query<ISingleProduct, string>({
             query: (searchTerm) => ({
-            url: `/api/products/all?searchTerm=${searchTerm}`,
+            url: `/api/products/all?searchTerm=${searchTerm}${sizes ? `&sizeType=${sizes}` : ''}`,
             method: 'GET',
             }),
         }),

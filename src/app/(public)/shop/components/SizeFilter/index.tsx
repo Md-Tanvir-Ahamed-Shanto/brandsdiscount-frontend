@@ -52,7 +52,7 @@ const SizeFilterSheet = ({ showInitially = false }: SizeFilterSheetProps) => {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(sizes));
         
         // Create size filter string
-        const sizeFilter = sizes.length > 0 ? `size_${sizes.join(',')}` : '';
+        const sizeFilter = sizes.length > 0 ? `sizeType=${sizes.join(',')}` : '';
         
         // Update URL with size filter
         const url = new URL(window.location.href);

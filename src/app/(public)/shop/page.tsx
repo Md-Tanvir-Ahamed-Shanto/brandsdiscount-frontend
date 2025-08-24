@@ -124,8 +124,15 @@ const ShopPage = () => {
                           />
                       ))}
             </div>
+            {
+                productData?.products?.length === 0 && (
+                    <div className='pt-24 pb-48 flex items-center justify-center'>
+                        <p className='font-bold text-2xl'>No Product Found!!</p>
+                    </div>
+                )
+            }
 
-            {searchTerm && !searchData?.length ? (
+            {searchTerm && (!searchData?.length) ? (
                 <div className='pt-24 pb-48 flex items-center justify-center'>
                     <p className='font-bold text-2xl'>No Product Found!!</p>
                 </div>
