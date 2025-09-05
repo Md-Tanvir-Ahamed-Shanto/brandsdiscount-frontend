@@ -29,7 +29,7 @@ const ProductCard = ({ product }: any) => {
             >
                 <Avatar
                     src={
-                        images[0]?.url ? images[0]?.url : '/shop/no-image.jpeg'
+                        images[0] ? images[0] : '/shop/no-image.jpeg'
                     }
                     alt={title ? title : ''}
                     className='h-full w-full !object-contain'
