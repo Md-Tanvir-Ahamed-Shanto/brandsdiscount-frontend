@@ -17,7 +17,7 @@ const WomenCollection = () => {
                 </h3>
 
                 <div className='flex justify-center'>
-                    <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 max-w-[1400px]'>
+                    <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-4 max-w-[1400px]'>
                         {allCategories?.map((category) => (
                             <Link
                                 href={`/shop?filter=categoryId_${category.id}`}
@@ -34,7 +34,7 @@ const WomenCollection = () => {
                                         <div className='absolute inset-0 bg-black/20'></div>
                                     </div>
                                 </div>
-                                <h4 className='text-center mt-1 text-xs'>
+                                <h4 className='text-center mt-1'>
                                     {category.title}
                                 </h4>
                             </Link>

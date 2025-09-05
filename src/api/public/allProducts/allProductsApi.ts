@@ -10,10 +10,13 @@ console.log("seach size",sizes)
 const allProductsApi = publicApi.injectEndpoints({
     endpoints: (build) => ({
         getAllPublicProduct: build.query({
-            query: ({ page = 1, limit = 100, sort = 'createdAt_desc', filters = '' }) => ({
-                url: `/api/products/all?page=${page}&limit=${limit}&sortPrice=${sort}${filters ? `&${filters}` : '' }${sizes ? `&sizeType=${sizes}` : ''}`,
-                method: 'GET',
-            }),
+            query: ({ page = 1, limit = 100, sort = 'createdAt_desc', filters = '' }) => {
+                console.log('API call with params:', { page, limit, sort, filters });
+                return {
+                    url: `/api/products/all?page=${page}&limit=${limit}&sortPrice=${sort}${filters ? `&${filters}` : '' }${sizes ? `&sizeType=${sizes}` : ''}`,
+                    method: 'GET',
+                };
+            },
             providesTags: [publicTagTypes.products],
             keepUnusedDataFor: 60, // optional: cache data for 60s
         }), 
@@ -35,11 +38,15 @@ const allProductsApi = publicApi.injectEndpoints({
             method: 'GET',
             }),
         }), 
-        getAllSearchProduct: build.query<ISingleProduct, string>({
-            query: (searchTerm) => ({
-            url: `/api/products/all?searchTerm=${searchTerm}${sizes ? `&sizeType=${sizes}` : ''}`,
-            method: 'GET',
-            }),
+        getAllSearchProduct: build.query<ISingleProduct, { searchTerm: string, limit?: number, page?: number }>({            query: ({ searchTerm, limit = 30, page = 1 }) => {
+                console.log('Search API call with params:', { searchTerm, limit, page });
+                return {
+                    url: `/api/products/all?searchTerm=${searchTerm}&limit=${limit}&page=${page}${sizes ? `&sizeType=${sizes}` : ''}`,
+                    method: 'GET',
+                };
+            },
+            providesTags: [publicTagTypes.products],
+            keepUnusedDataFor: 60, // optional: cache data for 60s
         }),
     }),
 });

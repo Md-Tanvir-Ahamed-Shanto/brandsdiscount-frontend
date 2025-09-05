@@ -24,11 +24,14 @@ const ShopPage = () => {
     const hasVisitedBefore = localStorage.getItem('has_visited_shop');
 
     const [currentPage, setCurrentPage] = useState(1);
-    const [pageSize, setPageSize] = useState(5);
+    const [pageSize, setPageSize] = useState(30); // Match the default in Pagination component
     const [sortValue, setSortValue] = useState('');
     // const [filters, setFilters] = useState('');
 
     // Default product fetch
+    // Log the query parameters to verify they're being updated correctly
+    console.log('Query parameters:', { currentPage, pageSize, sortValue, filters });
+    
     const {
         data: productData = [],
         isLoading: isDefaultLoading,
@@ -38,7 +41,7 @@ const ShopPage = () => {
     } = useGetAllPublicProductQuery(
         {
             page: currentPage,
-            limit: 100,
+            limit: pageSize, // Use pageSize from state instead of hardcoded value
             sort: sortValue, // Use sortValue here
             filters: `filtering=${filters}`
         },
@@ -54,9 +57,14 @@ const ShopPage = () => {
         isFetching: isSearchFetching,
         isError: isSearchError,
         error: searchError
-    } = useGetAllSearchProductQuery(searchTerm, {
-        skip: !searchTerm
-    }) as any;
+    } = useGetAllSearchProductQuery(
+        { 
+            searchTerm, 
+            limit: pageSize,
+            page: currentPage
+        },
+        { skip: !searchTerm }
+    ) as any;
 
     console.log('searchData', searchData);
 
@@ -74,6 +82,13 @@ const ShopPage = () => {
     React.useEffect(() => {
        handlevisit();
     }, [hasVisitedBefore]);
+    
+    // Log when pageSize changes to verify it's updating
+    React.useEffect(() => {
+        console.log('Page size changed to:', pageSize);
+        // No need to manually refetch as RTK Query will handle this automatically
+        // when the query parameters change
+    }, [pageSize]);
 
     if (error || isError) {
         return 'Something went wrong';
@@ -124,23 +139,18 @@ const ShopPage = () => {
                           />
                       ))}
             </div>
-            {
-                productData?.products?.length === 0 && (
-                    <div className='pt-24 pb-48 flex items-center justify-center'>
-                        <p className='font-bold text-2xl'>No Product Found!!</p>
-                    </div>
-                )
-            }
 
-            {searchTerm && (!searchData?.length) ? (
+            {/* Show No Products Found message when appropriate */}
+            {((searchTerm && (!searchData?.products || searchData?.products?.length === 0)) || 
+              (!searchTerm && (!productData?.products || productData?.products?.length === 0))) && (
                 <div className='pt-24 pb-48 flex items-center justify-center'>
                     <p className='font-bold text-2xl'>No Product Found!!</p>
                 </div>
-            ) : (
-                ''
             )}
 
-            {!searchTerm && (
+            {/* Show pagination when there are products to display */}
+            {((searchTerm && searchData?.products && searchData?.products?.length > 0) || 
+              (!searchTerm && productData?.products && productData?.products?.length > 0)) && (
                 <div className='mb-12'>
                     <Pagination
                         totalPages={100}

@@ -47,16 +47,7 @@ const SignInModal = ({ product, quantity = 1 }: IProps) => {
                         className='w-full bg-red-700 hover:bg-red-800 
                                                 text-white py-6'
                         onClick={() => {
-                            // If toggleFirstDeal is true, mark as first item deal and set price to $10
-                            const productToAdd = product.toggleFirstDeal ? {
-                                ...product,
-                                quantity,
-                                firstItemDeal: true,
-                                originalPrice: product.salePrice,
-                                salePrice: 10
-                            } : { ...product, quantity };
-                            
-                            dispatch(addToCart(productToAdd));
+                            dispatch(addToCart({ ...product, quantity }));
                         }}
                     >
                         Add To Bag
@@ -65,7 +56,7 @@ const SignInModal = ({ product, quantity = 1 }: IProps) => {
                 <AlertDialogContent>
                     <AlertDialogHeader>
                         <AlertDialogTitle className='relative flex items-center justify-between'>
-                            <p>Your First Item is {product.toggleFirstDeal ? '$10.00' : `$${product?.salePrice}`}</p>
+                            <p>Your First Item is ${product?.salePrice}</p>
                             <button
                                 onClick={() => setOpen(false)}
                                 className='absolute right-0.5 top-0.5'
@@ -101,19 +92,12 @@ const SignInModal = ({ product, quantity = 1 }: IProps) => {
                                     SALE PRICE: $
                                     {salePrice ? salePrice : 0}
                                 </div>
-                                {product.toggleFirstDeal && (
-                                    <div className='text-sm text-blue-600 font-semibold'>
-                                        Your First Item Price: $10.00
-                                    </div>
-                                )}
+                                {/* <div className='text-sm'>
+                        VIP Price: ${vipPrice.toFixed(2)}
+                    </div> */}
                                 <div className='text-sm text-gray-500 line-through'>
                                     Regular Price: ${regularPrice ? regularPrice : ''}
                                 </div>
-                                {product.toggleFirstDeal && regularPrice && (
-                                    <div className='text-sm text-green-600 font-semibold'>
-                                        You Save ${(regularPrice - 10).toFixed(2)} on this item!
-                                    </div>
-                                )}
                             </div>
                         </div>
                     </div>
