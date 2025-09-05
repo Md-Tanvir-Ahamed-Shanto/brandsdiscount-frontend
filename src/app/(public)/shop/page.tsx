@@ -83,11 +83,12 @@ const ShopPage = () => {
        handlevisit();
     }, [hasVisitedBefore]);
     
-    // Log when pageSize changes to verify it's updating
+    // Force refetch when pageSize changes
     React.useEffect(() => {
         console.log('Page size changed to:', pageSize);
-        // No need to manually refetch as RTK Query will handle this automatically
-        // when the query parameters change
+        // Reset to page 1 when page size changes
+        setCurrentPage(1);
+        // The query will automatically refetch with the new parameters
     }, [pageSize]);
 
     if (error || isError) {

@@ -32,7 +32,10 @@ const Pagination = ({
     const handlePageSizeChange = (size: number) => {
         console.log('Pagination: changing page size to', size);
         setPageSize(size);
-        onPageSizeChange(size); // Update in parent
+        // Reset to page 1 when changing page size
+        setCurrentPage(1);
+        onPageChange(1); // Reset page in parent
+        onPageSizeChange(size); // Update size in parent
     };
 
     const handlePageChange = (page: number) => {

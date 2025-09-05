@@ -17,7 +17,10 @@ const allProductsApi = publicApi.injectEndpoints({
                     method: 'GET',
                 };
             },
-            providesTags: [publicTagTypes.products],
+            providesTags: (result, error, arg) => [
+                { type: publicTagTypes.products, id: `page_${arg.page}_limit_${arg.limit}_sort_${arg.sort}_filters_${arg.filters}` },
+                { type: publicTagTypes.products }
+            ],
             keepUnusedDataFor: 60, // optional: cache data for 60s
         }), 
         getSinglePublicProduct: build.query<ISingleProduct, string>({
@@ -38,14 +41,17 @@ const allProductsApi = publicApi.injectEndpoints({
             method: 'GET',
             }),
         }), 
-        getAllSearchProduct: build.query<ISingleProduct, { searchTerm: string, limit?: number, page?: number }>({            query: ({ searchTerm, limit = 30, page = 1 }) => {
-                console.log('Search API call with params:', { searchTerm, limit, page });
+        getAllSearchProduct: build.query<ISingleProduct, { searchTerm: string, limit?: number, page?: number, sort?: string }>({            query: ({ searchTerm, limit = 30, page = 1, sort = 'createdAt_desc' }) => {
+                console.log('Search API call with params:', { searchTerm, limit, page, sort });
                 return {
-                    url: `/api/products/all?searchTerm=${searchTerm}&limit=${limit}&page=${page}${sizes ? `&sizeType=${sizes}` : ''}`,
+                    url: `/api/products/all?searchTerm=${searchTerm}&limit=${limit}&page=${page}&sortPrice=${sort}${sizes ? `&sizeType=${sizes}` : ''}`,
                     method: 'GET',
                 };
             },
-            providesTags: [publicTagTypes.products],
+            providesTags: (result, error, arg) => [
+                { type: publicTagTypes.products, id: `search_${arg.searchTerm}_page_${arg.page}_limit_${arg.limit}_sort_${arg.sort}` },
+                { type: publicTagTypes.products }
+            ],
             keepUnusedDataFor: 60, // optional: cache data for 60s
         }),
     }),
