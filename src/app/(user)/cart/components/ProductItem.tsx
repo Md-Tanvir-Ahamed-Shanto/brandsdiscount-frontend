@@ -86,8 +86,13 @@ const ProductItem = ({ product }: any) => {
                             </span>
                         </div>
                         <span className='font-medium'>
-                            ${product?.salePrice}
+                            ${product?.firstItemDeal ? '10.00' : product?.salePrice}
                         </span>
+                        {product?.firstItemDeal && (
+                            <div className='text-xs text-green-600'>
+                                First Item Deal (was ${product?.originalPrice})
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
