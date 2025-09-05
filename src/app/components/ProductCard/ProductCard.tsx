@@ -7,19 +7,12 @@ const ProductCard = ({ product }: any) => {
     const {
         title,
         brandName,
-        // sku,
         images,
-        // itemLocation,
-        // sizeId,
-        // sizeType,
         salePrice,
-        platFormPrice,
-        discountPercent
-        // stockQuantity,
-        // condition,
-        // description,
-        // status
+        regularPrice,
     } = product; // Destructuring inside the function
+        const discountPercent = regularPrice && salePrice? Math.round(((regularPrice - salePrice) / regularPrice) * 100) : 0;
+
     return (
         <div className='group relative'>
             {/* Product Image */}
@@ -28,9 +21,7 @@ const ProductCard = ({ product }: any) => {
                 className='relative aspect-[3/4] overflow-hidden rounded-lg bg-main-500 block mb-4 h-[275px] w-full'
             >
                 <Avatar
-                    src={
-                        images[0] ? images[0] : '/shop/no-image.jpeg'
-                    }
+                    src={images[0] ? images[0] : '/shop/no-image.jpeg'}
                     alt={title ? title : ''}
                     className='h-full w-full !object-contain'
                 />
@@ -64,13 +55,13 @@ const ProductCard = ({ product }: any) => {
                 {/* Pricing */}
                 <div className='space-y-1'>
                     <div className='text-sm text-green-600'>
-                        PLATFORM PRICE: ${platFormPrice ? platFormPrice : 0}
+                        Sale Price: ${salePrice ? salePrice : ''}
                     </div>
                     {/* <div className='text-sm'>
                         VIP Price: ${vipPrice.toFixed(2)}
                     </div> */}
                     <div className='text-sm text-gray-500 line-through'>
-                        Sale Price: ${salePrice ? salePrice : ''}
+                        Regular Price: ${regularPrice ? regularPrice : 0}
                     </div>
                 </div>
             </Link>
