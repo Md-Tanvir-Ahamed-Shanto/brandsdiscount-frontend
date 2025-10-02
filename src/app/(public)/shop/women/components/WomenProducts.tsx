@@ -65,9 +65,9 @@ const WomenProducts = () => {
             {searchData?.products?.length > 0 && (
                 <div className='mb-12'>
                     <Pagination
-                        totalPages={searchData?.totalPages || 1}
-                        defaultPage={currentPage}
-                        defaultPageSize={pageSize}
+                        totalItems={searchData?.totalItems || 0}
+                        currentPage={currentPage}
+                        pageSize={pageSize}
                         onPageChange={setCurrentPage}
                         onPageSizeChange={setPageSize}
                     />

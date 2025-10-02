@@ -69,8 +69,9 @@ const ShopPage = () => {
         refetch: refetchProducts
     } = useGetAllPublicProductQuery(queryParams, {
         skip: !!searchTerm,
-        refetchOnMountOrArgChange: true
-    }) as any;
+        // Only refetch on mount if data is stale (older than 2 minutes)
+        refetchOnMountOrArgChange: 120
+    });
     
     // Query for search results (runs only when a search term is present)
     const {
@@ -84,9 +85,10 @@ const ShopPage = () => {
         { searchTerm, limit: pageSize, page: currentPage },
         { 
             skip: !searchTerm,
-            refetchOnMountOrArgChange: true
+            // Only refetch on mount if data is stale (older than 2 minutes)
+            refetchOnMountOrArgChange: 120
         }
-    ) as any;
+    );
 
     // --- Data Aggregation ---
     const isSearchMode = !!searchTerm;
@@ -179,10 +181,10 @@ const ShopPage = () => {
                     </svg>
                     <h3 className="text-2xl font-bold text-destructive mb-2">Service Temporarily Unavailable</h3>
                     <p className="text-muted-foreground mb-4">
-                        We're having trouble loading the products. This is often a network or server issue.
+                        We&apos;re having trouble loading the products. This is often a network or server issue.
                     </p>
                     <p className="text-xs text-muted-foreground mb-6">
-                        {error?.status ? `Error ${error.status}: ${error.data?.message || 'Unknown server response'}` : 'A network connection error occurred.'}
+                        {'A network connection error occurred.'}
                     </p>
                     <button
                         onClick={() => window.location.reload()}
@@ -210,7 +212,7 @@ const ShopPage = () => {
                     
                     {searchTerm && (
                         <p className='text-md text-muted-foreground mt-1'>
-                            Displaying results for <span className='font-semibold text-primary'>"{searchTerm}"</span>
+                            Displaying results for <span className='font-semibold text-primary'>&quot;{searchTerm}&quot;</span>
                         </p>
                     )}
 

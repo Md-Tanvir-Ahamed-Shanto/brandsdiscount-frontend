@@ -112,7 +112,7 @@ const ProductCard = ({
     if (availableColors.length > 0) {
       handleColorSelection(availableColors[0]);
     }
-  }, [product]);
+  }, [product, availableColors, handleColorSelection]);
 
   return (
     <>
