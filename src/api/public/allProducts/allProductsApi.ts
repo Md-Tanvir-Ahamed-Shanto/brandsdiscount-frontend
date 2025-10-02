@@ -13,7 +13,7 @@ const allProductsApi = publicApi.injectEndpoints({
             query: ({ page = 1, limit = 100, sort = 'createdAt_desc', filters = '' }) => {
                 console.log('API call with params:', { page, limit, sort, filters });
                 return {
-                    url: `/api/products/all?page=${page}&limit=${limit}&sortPrice=${sort}${filters ? `&${filters}` : '' }${sizes ? `&sizeType=${sizes}` : ''}`,
+                    url: `/api/products/all?page=${page}&pageSize=${limit}&sortPrice=${sort}${filters ? `&${filters}` : '' }${sizes ? `&sizeType=${sizes}` : ''}`,
                     method: 'GET',
                 };
             },
@@ -44,7 +44,7 @@ const allProductsApi = publicApi.injectEndpoints({
         getAllSearchProduct: build.query<ISingleProduct, { searchTerm: string, limit?: number, page?: number, sort?: string }>({            query: ({ searchTerm, limit = 30, page = 1, sort = 'createdAt_desc' }) => {
                 console.log('Search API call with params:', { searchTerm, limit, page, sort });
                 return {
-                    url: `/api/products/all?searchTerm=${searchTerm}&limit=${limit}&page=${page}&sortPrice=${sort}${sizes ? `&sizeType=${sizes}` : ''}`,
+                    url: `/api/products/all?searchTerm=${searchTerm}&pageSize=${limit}&page=${page}&sortPrice=${sort}${sizes ? `&sizeType=${sizes}` : ''}`,
                     method: 'GET',
                 };
             },

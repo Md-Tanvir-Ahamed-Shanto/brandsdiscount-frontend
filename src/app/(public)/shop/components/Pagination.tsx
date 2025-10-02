@@ -1,138 +1,169 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+// Assuming Dropdown components are from a standard library like Shadcn/ui
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/utils'; // Utility for conditional class joining
+
+// --- Configuration ---
+const PAGE_SIZE_OPTIONS = [30, 60, 120]; // Page size options shown in the UI
+const MAX_PAGES_AROUND_CURRENT = 2; // Pages to show before and after current
 
 interface PaginationProps {
-    totalPages?: number;
-    defaultPage?: number;
-    defaultPageSize?: number;
+    /** Total number of items in the collection. Required for accurate totalPages calculation. */
+    totalItems: number; 
+    /** Current active page number (1-indexed). */
+    currentPage: number;
+    /** Current number of items per page. */
+    pageSize: number; 
+    /** Callback for when the page number changes. */
     onPageChange: (page: number) => void;
+    /** Callback for when the page size changes. */
     onPageSizeChange: (size: number) => void;
 }
 
 const Pagination = ({
-    totalPages = 7,
-    defaultPage = 1,
-    defaultPageSize = 30,
+    totalItems,
+    currentPage,
+    pageSize,
     onPageChange,
     onPageSizeChange
 }: PaginationProps) => {
-    const [currentPage, setCurrentPage] = useState(defaultPage);
-    const [pageSize, setPageSize] = useState(defaultPageSize);
 
-    const handlePageSizeChange = (size: number) => {
-        console.log('Pagination: changing page size to', size);
-        setPageSize(size);
-        // Reset to page 1 when changing page size
-        setCurrentPage(1);
-        onPageChange(1); // Reset page in parent
-        onPageSizeChange(size); // Update size in parent
-    };
+    // Calculate total pages based on items and size. Fallback to 1 if totalItems is 0.
+    const totalPages = useMemo(() => {
+        if (totalItems <= 0 || pageSize <= 0) return 1;
+        return Math.ceil(totalItems / pageSize);
+    }, [totalItems, pageSize]);
 
-    const handlePageChange = (page: number) => {
-        if (page >= 1 && page <= totalPages) {
-            setCurrentPage(page);
-            onPageChange(page); // Update in parent
+
+    /**
+     * Handles changing the page size. Resets to page 1.
+     */
+    const handlePageSizeChange = (newSize: number) => {
+        if (newSize !== pageSize) {
+            onPageSizeChange(newSize); // Update size in parent first
+            // Small delay to ensure size change is processed before page change
+            setTimeout(() => {
+                onPageChange(1); // Reset to page 1 in parent
+            }, 50);
         }
     };
 
-    // Calculate visible page numbers for pagination
+    /**
+     * Handles changing the page number.
+     */
+    const handlePageChange = (page: number) => {
+        if (page >= 1 && page <= totalPages && page !== currentPage) {
+            // Scroll to top for better UX on page change
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            onPageChange(page); 
+        }
+    };
+    
+    /**
+     * Generates a list of visible page numbers/ellipses.
+     */
     const getVisiblePages = () => {
-        const delta = 2; // Number of pages to show before and after current page
-        const pages = [];
+        const pages: (number | 'ellipsis')[] = [];
+        const startPage = Math.max(2, currentPage - MAX_PAGES_AROUND_CURRENT);
+        const endPage = Math.min(totalPages - 1, currentPage + MAX_PAGES_AROUND_CURRENT);
         
-        // Always include first page
-        pages.push(1);
+        pages.push(1); // Always include the first page
         
-        // Calculate range around current page
-        const rangeStart = Math.max(2, currentPage - delta);
-        const rangeEnd = Math.min(totalPages - 1, currentPage + delta);
-        
-        // Add ellipsis after first page if needed
-        if (rangeStart > 2) {
-            pages.push('ellipsis1');
+        // Add first ellipsis
+        if (startPage > 2) {
+            pages.push('ellipsis');
         }
         
         // Add pages in range
-        for (let i = rangeStart; i <= rangeEnd; i++) {
+        for (let i = startPage; i <= endPage; i++) {
             pages.push(i);
         }
         
-        // Add ellipsis before last page if needed
-        if (rangeEnd < totalPages - 1) {
-            pages.push('ellipsis2');
+        // Add second ellipsis
+        if (endPage < totalPages - 1) {
+            // Only push if the last page isn't already directly next to the range
+            if (endPage < totalPages - 2 || currentPage + MAX_PAGES_AROUND_CURRENT < totalPages - 1) {
+                 pages.push('ellipsis');
+            }
         }
         
-        // Always include last page if not already included
-        if (totalPages > 1) {
+        // Always include last page (if not page 1)
+        if (totalPages > 1 && !pages.includes(totalPages)) {
             pages.push(totalPages);
         }
-        
-        return pages;
+
+        // Clean up duplicates if the range overlaps 1 or totalPages
+        return Array.from(new Set(pages));
     };
 
     const visiblePages = getVisiblePages();
 
+    // Calculate item range display
+    const startItem = totalItems > 0 ? (currentPage - 1) * pageSize + 1 : 0;
+    const endItem = Math.min(currentPage * pageSize, totalItems);
+
     return (
-        <div className='flex flex-col sm:flex-row items-center justify-between gap-4 w-full'>
-            {/* Items per page selector */}
-            <div className='flex items-center gap-2'>
-                <span className='text-sm font-medium'>Show</span>
-                <div className='flex gap-1 rounded-md overflow-hidden border'>
-                    <Button
-                        variant={pageSize === 30 ? 'default' : 'ghost'}
-                        size='sm'
-                        onClick={() => handlePageSizeChange(30)}
-                        className='rounded-none h-8 px-3'
-                    >
-                        30
-                    </Button>
-                    <Button
-                        variant={pageSize === 60 ? 'default' : 'ghost'}
-                        size='sm'
-                        onClick={() => handlePageSizeChange(60)}
-                        className='rounded-none h-8 px-3'
-                    >
-                        60
-                    </Button>
-                    <Button
-                        variant={pageSize === 120 ? 'default' : 'ghost'}
-                        size='sm'
-                        onClick={() => handlePageSizeChange(120)}
-                        className='rounded-none h-8 px-3'
-                    >
-                        120
-                    </Button>
+        <div className='flex flex-col sm:flex-row items-center justify-between gap-4 w-full p-4 border-t'>
+            
+            {/* Left Section: Item Count and Page Size Selector */}
+            <div className='flex items-center gap-4'>
+                <span className='text-sm text-muted-foreground'>
+                    Showing <span className="font-semibold text-foreground">{startItem}-{endItem}</span> of <span className="font-semibold text-foreground">{totalItems}</span> items
+                </span>
+                
+                <div className='flex items-center gap-2'>
+                    <span className='text-sm font-medium whitespace-nowrap'>Items per page:</span>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant='outline' size='sm' className='h-8 px-3 transition-colors'>
+                                {pageSize} <ChevronDown className='ml-2 h-4 w-4' />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align='start'>
+                            {PAGE_SIZE_OPTIONS.map((size) => (
+                                <DropdownMenuItem
+                                    key={size}
+                                    onSelect={() => handlePageSizeChange(size)}
+                                    className={cn(
+                                        'cursor-pointer',
+                                        pageSize === size ? 'bg-primary/10 font-medium' : ''
+                                    )}
+                                >
+                                    {size}
+                                </DropdownMenuItem>
+                            ))}
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 </div>
             </div>
 
-            {/* Page navigation */}
-            <div className='flex items-center gap-1'>
+            {/* Right Section: Page Navigation */}
+            <div className='flex items-center gap-2'>
                 <Button
-                    variant='ghost'
+                    variant='outline'
                     size='icon'
                     onClick={() => handlePageChange(currentPage - 1)}
                     disabled={currentPage === 1}
-                    className='h-8 w-8 rounded-full'
+                    className='h-8 w-8 rounded-full transition-colors hover:bg-primary/10'
                     aria-label="Previous page"
                 >
                     <ChevronLeft className='h-4 w-4' />
                 </Button>
 
-                <div className='flex items-center'>
+                <div className='flex items-center gap-1'>
                     {visiblePages.map((page, index) => {
-                        if (page === 'ellipsis1' || page === 'ellipsis2') {
+                        if (page === 'ellipsis') {
                             return (
-                                <span key={`${page}-${index}`} className='px-2'>
+                                <span key={`ellipsis-${index}`} className='px-1 text-muted-foreground' aria-hidden="true">
                                     &hellip;
                                 </span>
                             );
@@ -144,10 +175,15 @@ const Pagination = ({
                                 variant={currentPage === page ? 'default' : 'ghost'}
                                 size='sm'
                                 onClick={() => handlePageChange(Number(page))}
+                                disabled={currentPage === page}
                                 className={cn(
-                                    'h-8 w-8 p-0 rounded-full font-medium',
-                                    currentPage === page ? 'bg-primary text-primary-foreground' : ''
+                                    'h-8 w-8 p-0 rounded-full font-medium transition-colors',
+                                    currentPage === page 
+                                        ? 'bg-primary text-primary-foreground shadow-sm' 
+                                        : 'hover:bg-primary/10'
                                 )}
+                                aria-current={currentPage === page ? 'page' : undefined}
+                                aria-label={`Go to page ${page}`}
                             >
                                 {page}
                             </Button>
@@ -156,46 +192,15 @@ const Pagination = ({
                 </div>
 
                 <Button
-                    variant='ghost'
+                    variant='outline'
                     size='icon'
                     onClick={() => handlePageChange(currentPage + 1)}
                     disabled={currentPage === totalPages}
-                    className='h-8 w-8 rounded-full'
+                    className='h-8 w-8 rounded-full transition-colors hover:bg-primary/10'
                     aria-label="Next page"
                 >
                     <ChevronRight className='h-4 w-4' />
                 </Button>
-            </div>
-
-            {/* Mobile dropdown for smaller screens */}
-            <div className='sm:hidden w-full flex justify-center mt-2'>
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant='outline' className='w-full max-w-[200px]'>
-                            <span>
-                                Page {currentPage} of {totalPages}
-                            </span>
-                            <ChevronDown className='ml-2 h-4 w-4' />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align='center' className='w-full max-h-[300px] overflow-y-auto'>
-                        {Array.from(
-                            { length: totalPages },
-                            (_, i) => i + 1
-                        ).map((page) => (
-                            <DropdownMenuItem
-                                key={page}
-                                onSelect={() => handlePageChange(page)}
-                                className={cn(
-                                    'cursor-pointer justify-center',
-                                    currentPage === page ? 'bg-muted' : ''
-                                )}
-                            >
-                                Page {page} of {totalPages}
-                            </DropdownMenuItem>
-                        ))}
-                    </DropdownMenuContent>
-                </DropdownMenu>
             </div>
         </div>
     );
