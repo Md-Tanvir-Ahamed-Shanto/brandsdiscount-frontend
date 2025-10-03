@@ -10,11 +10,17 @@ const WomenProducts = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(5);
     const [sortValue, setSortValue] = useState('');
+    const [isPaginationLoading, setIsPaginationLoading] = useState(false);
     
     // Reset to page 1 when page size or sort value changes
     useEffect(() => {
         setCurrentPage(1);
     }, [pageSize, sortValue]);
+
+    // Set pagination loading state when page, pageSize or sortValue changes
+    useEffect(() => {
+        setIsPaginationLoading(true);
+    }, [currentPage, pageSize, sortValue]);
 
     const {
         data: searchData = [],
@@ -27,6 +33,13 @@ const WomenProducts = () => {
         page: currentPage,
         sort: sortValue || 'createdAt_desc'
     }) as any;
+    
+    // Reset pagination loading when data is loaded
+    useEffect(() => {
+        if (searchData?.products) {
+            setIsPaginationLoading(false);
+        }
+    }, [searchData]);
 
     if (error || isError) {
         return 'Something went wrong';
@@ -46,15 +59,17 @@ const WomenProducts = () => {
                 />
             </div>
 
-            {isLoading && <ProductSkeleton />}
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 py-12'>
-                {searchData?.products?.length > 0 && searchData?.products?.map((product: IProduct) => (
-                    <SingleProductCard
-                        key={product?.id}
-                        product={product}
-                    />
-                ))}
-            </div>
+            {(isLoading || isPaginationLoading) && <ProductSkeleton />}
+            {!isPaginationLoading && !isLoading && (
+                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 py-12'>
+                    {searchData?.products?.length > 0 && searchData?.products?.map((product: IProduct) => (
+                        <SingleProductCard
+                            key={product?.id}
+                            product={product}
+                        />
+                    ))}
+                </div>
+            )}
 
             {!searchData?.products?.length && (
                 <div className='pt-24 pb-48 flex items-center justify-center'>
