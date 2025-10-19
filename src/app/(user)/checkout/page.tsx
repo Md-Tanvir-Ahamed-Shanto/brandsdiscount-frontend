@@ -40,9 +40,15 @@ export default function Checkout() {
         try {
             const { sessionId } = await createCheckoutSession(finalAmount);
             const stripe = await getStripe();
-            await stripe.redirectToCheckout({ sessionId });
+            const { error } = await stripe.redirectToCheckout({ sessionId });
+            
+            if (error) {
+                throw new Error(error.message || 'Payment failed. Please try again.');
+            }
         } catch (error) {
             console.error('Checkout error:', error);
+            // Show error to user with toast or alert
+            alert('Payment processing failed. Please try again or contact support.');
         } finally {
             setIsLoading(false);
         }

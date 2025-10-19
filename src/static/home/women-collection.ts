@@ -77,7 +77,7 @@ export const WOMEN_COLLECTIONS = [
                 image: '/category/heels_and_pumps.jpg'
             },
             {
-                id: '6f88e3b2-32b0-452b-a207-a1dc1304f22',
+                id: '6f88e3b2-32b0-452b-a207-a1dc1304f228',
                 title: 'Sandals and Flats',
                 image: '/category/sandals_and_flats.jpg'
             }
