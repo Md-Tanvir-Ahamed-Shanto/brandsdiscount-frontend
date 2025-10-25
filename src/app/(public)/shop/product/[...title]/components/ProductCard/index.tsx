@@ -1,5 +1,6 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import Image from "next/image";
 import { sizeChartMap } from "@/static";
 import { ISingleProduct, ISingleProductVariant } from "@/types";
 import { ProductStock } from "./ProductStock";
@@ -69,22 +70,22 @@ const ProductCard = ({
     return [...sizes, ...variantSizes];
   };
 
-  // Get image for selected color
-  const getImageForColor = (color: string) => {
-    if (color === product.color) {
-      return product.images?.[0] || "";
-    }
-    const variant = product.variants?.find((v) => v.color === color);
-    return variant?.images?.[0] || product.images?.[0] || "";
-  };
-
-  const handleColorSelection = (color: string) => {
+  const handleColorSelection = useCallback((color: string) => {
+    // Get image for selected color (moved inside useCallback)
+    const getImageForColor = (colorValue: string) => {
+      if (colorValue === product.color) {
+        return product.images?.[0] || "";
+      }
+      const variant = product.variants?.find((v) => v.color === colorValue);
+      return variant?.images?.[0] || product.images?.[0] || "";
+    };
+    
     setSelectedColor(color);
     setSelectedSize("");
     setSelectedVariant(null);
     setCurrentImage(getImageForColor(color));
     setQuantity(1);
-  };
+  }, [product.color, product.images, product.variants, setQuantity]);
 
   const handleSizeSelection = (size: string) => {
     setSelectedSize(size);
@@ -120,10 +121,12 @@ const ProductCard = ({
         <div className="md:flex md:space-x-8">
           {/* Image */}
           <div className="md:w-1/2 max-w-[480px] mx-auto overflow-hidden">
-            <img
+            <Image
               src={currentImage || product.images[0] || ""}
               alt={product.title}
               className="w-full h-auto object-cover"
+              width={480}
+              height={480}
             />
           </div>
 

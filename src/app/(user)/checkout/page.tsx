@@ -1,6 +1,5 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { getStripe } from '@/lib/stripe';
 import { createCheckoutSession } from './actions';
 import { jwtDecode } from 'jwt-decode';
 import type { MyTokenPayload } from '@/app/(profile)/profile/page';
@@ -38,23 +37,25 @@ export default function Checkout() {
     const handleCheckout = async () => {
         setIsLoading(true);
         try {
-            // Prepare checkout data
+            // Prepare checkout data with proper Address format
             const checkoutData = {
                 cartItems: cart,
                 userId: userId,
                 appliedPoints: usedRedeemPoint,
                 shippingAddress: userDetails?.address ? {
-                    line1: userDetails.address,
+                    fullName: `${userDetails.firstName || ''} ${userDetails.lastName || ''}`.trim(),
+                    addressLine1: userDetails.address,
                     city: userDetails.city || '',
                     state: userDetails.state || '',
-                    postal_code: userDetails.zipCode || '',
+                    postalCode: userDetails.zipCode || '',
                     country: userDetails.country || 'US'
                 } : null,
                 billingAddress: userDetails?.address ? {
-                    line1: userDetails.address,
+                    fullName: `${userDetails.firstName || ''} ${userDetails.lastName || ''}`.trim(),
+                    addressLine1: userDetails.address,
                     city: userDetails.city || '',
                     state: userDetails.state || '',
-                    postal_code: userDetails.zipCode || '',
+                    postalCode: userDetails.zipCode || '',
                     country: userDetails.country || 'US'
                 } : null,
                 finalAmount: finalAmount,

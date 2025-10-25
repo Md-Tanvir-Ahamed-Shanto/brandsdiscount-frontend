@@ -1,5 +1,6 @@
 import { ISingleProduct } from '@/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '../store';
 
 interface ICartProduct extends ISingleProduct {
     quantity: number;
@@ -82,16 +83,16 @@ export default cartSlice.reducer;
 //
 // Selectors
 //
-export const selectCartProducts = (state: { cart: ICart }) =>
-    state.cart.products;
+export const selectCartProducts = (state: RootState) =>
+    state.cart?.products;
 
-export const selectCartSubtotal = (state: { cart: ICart }) =>
-    state.cart.products.reduce((total, product) => {
+export const selectCartSubtotal = (state: RootState) =>
+    state.cart?.products.reduce((total, product) => {
         return total + (product.salePrice ?? 0) * product.quantity;
     }, 0);
 
-export const selectCartSavings = (state: { cart: ICart }) =>
-    state.cart.products.reduce((total, product) => {
+export const selectCartSavings = (state: RootState) =>
+    state.cart?.products.reduce((total, product) => {
         return (
             total +
             ((product.regularPrice ?? 0) - (product.salePrice ?? 0)) *

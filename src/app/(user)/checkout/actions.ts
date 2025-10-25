@@ -1,15 +1,42 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { ISize } from '@/types/user';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
 
+interface CartItem {
+  id: string;
+  title: string;
+  quantity: number;
+  color?: string;
+  size?: string | ISize;
+  image?: string;
+  regularPrice?: number;
+  salePrice?: number;
+  stockQuantity?: number;
+  brandName?: string;
+  // Allow additional properties with string keys and unknown values
+  [key: string]: unknown;
+}
+
+interface Address {
+  fullName: string;
+  addressLine1: string;
+  addressLine2?: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  country: string;
+  phone?: string;
+}
+
 interface CheckoutSessionData {
-  cartItems: any[];
+  cartItems: CartItem[];
   userId?: string | null;
   appliedPoints?: number;
-  shippingAddress?: any;
-  billingAddress?: any;
+  shippingAddress?: Address | null;
+  billingAddress?: Address | null;
   finalAmount: number;
   customerEmail?: string;
   ui_mode?: string;
