@@ -30,6 +30,12 @@ export default function Checkout() {
     const userDetails = userData?.userDetails;
 
     const finalAmount = useAppSelector((state) => state.order.finalAmount);
+    
+    // Calculate total from cart if finalAmount is 0
+    const calculatedTotal = cart.reduce((total, item) => {
+        const price = item.salePrice || item.regularPrice || 0;
+        return total + (price * (item.quantity || 1));
+    }, 0);
 
     const usedRedeemPoint = useAppSelector((state) => state.cart.appliedPoints);
     console.log('usedRedeemPoint we see from parent page', usedRedeemPoint); // 2000
@@ -37,6 +43,14 @@ export default function Checkout() {
     const handleCheckout = async () => {
         setIsLoading(true);
         try {
+            // Use calculated total if finalAmount is 0
+            const effectiveAmount = finalAmount > 0 ? finalAmount : calculatedTotal;
+            
+            // Don't proceed if we still have no valid amount
+            if (effectiveAmount <= 0 && cart.length > 0) {
+                throw new Error("Unable to determine order amount. Please try again or contact support.");
+            }
+            
             // Prepare checkout data with proper Address format
             const checkoutData = {
                 cartItems: cart,
@@ -58,7 +72,7 @@ export default function Checkout() {
                     postalCode: userDetails.zipCode || '',
                     country: userDetails.country || 'US'
                 } : null,
-                finalAmount: finalAmount,
+                finalAmount: effectiveAmount,
                 customerEmail: userDetails?.email || '',
                 ui_mode: 'hosted'
             };

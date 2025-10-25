@@ -57,11 +57,11 @@ export async function createCheckoutSession(data: CheckoutSessionData) {
 
     // Validate required data
     if (!cartItems || !Array.isArray(cartItems) || cartItems.length === 0) {
-      throw new Error("Cart items are required");
+      throw new Error("Your cart is empty. Please add items to your cart before checkout.");
     }
 
     if (!finalAmount || finalAmount <= 0) {
-      throw new Error("Valid final amount is required");
+      throw new Error("Invalid order amount. Please try again or contact support.");
     }
 
     const requestBody = {
@@ -71,7 +71,7 @@ export async function createCheckoutSession(data: CheckoutSessionData) {
       shippingAddress: shippingAddress || null,
       billingAddress: billingAddress || null,
       finalAmount,
-      customerEmail: customerEmail || null,
+      customerEmail: customerEmail || 'customer@example.com',
       ui_mode,
       metadata: {
         source: "frontend_checkout",
