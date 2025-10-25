@@ -40,10 +40,10 @@ export const FOOTER_SECTIONS = [
 ];
 
 export const SOCIAL_LINKS = [
-    { icon: FacebookLogo, href: '#', label: 'Facebook' },
-    { icon: Instagram, href: '#', label: 'Instagram' },
-    { icon: Twitter, href: '#', label: 'Twitter' },
-    { icon: Youtube, href: '#', label: 'YouTube' }
+    { icon: FacebookLogo, href: 'https://www.facebook.com/brandsdiscountsusa', label: 'Facebook' },
+    { icon: Instagram, href: 'https://www.instagram.com/brandsdiscounts.official/', label: 'Instagram' },
+    { icon: Twitter, href: 'https://x.com/BrandsDiscount_', label: 'Twitter' },
+    { icon: Youtube, href: 'https://www.youtube.com/@BrandsDiscounts/', label: 'YouTube' }
 ];
 
 export const LEGAL_LINKS = [

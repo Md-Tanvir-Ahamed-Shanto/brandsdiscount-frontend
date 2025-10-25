@@ -124,37 +124,36 @@ export default function ContactUsForm() {
 
                 <div className='flex justify-center gap-4 mb-8'>
                     <a
-                        href='#'
+                        href='https://www.facebook.com/brandsdiscountsusa'
+                        target='_blank'
+                        rel='noopener noreferrer'
                         className='w-12 h-12 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors'
                         aria-label='Facebook'
                     >
                         <Facebook className='w-5 h-5 text-gray-600' />
                     </a>
                     <a
-                        href='#'
+                        href='https://www.instagram.com/brandsdiscounts.official/'
+                        target='_blank'
+                        rel='noopener noreferrer'
                         className='w-12 h-12 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors'
                         aria-label='Instagram'
                     >
                         <Instagram className='w-5 h-5 text-gray-600' />
                     </a>
                     <a
-                        href='#'
-                        className='w-12 h-12 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors'
-                        aria-label='TikTok'
-                    >
-                        <div className='w-5 h-5 text-gray-600 font-bold text-sm flex items-center justify-center'>
-                            TT
-                        </div>
-                    </a>
-                    <a
-                        href='#'
+                        href='https://x.com/BrandsDiscount_'
+                        target='_blank'
+                        rel='noopener noreferrer'
                         className='w-12 h-12 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors'
                         aria-label='Twitter'
                     >
                         <Twitter className='w-5 h-5 text-gray-600' />
                     </a>
                     <a
-                        href='#'
+                        href='https://www.youtube.com/@BrandsDiscounts/'
+                        target='_blank'
+                        rel='noopener noreferrer'
                         className='w-12 h-12 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors'
                         aria-label='YouTube'
                     >

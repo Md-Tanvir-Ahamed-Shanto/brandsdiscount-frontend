@@ -38,17 +38,39 @@ export default function Checkout() {
     const handleCheckout = async () => {
         setIsLoading(true);
         try {
-            const { sessionId } = await createCheckoutSession(finalAmount);
-            const stripe = await getStripe();
-            const { error } = await stripe.redirectToCheckout({ sessionId });
+            // Prepare checkout data
+            const checkoutData = {
+                cartItems: cart,
+                userId: userId,
+                appliedPoints: usedRedeemPoint,
+                shippingAddress: userDetails?.address ? {
+                    line1: userDetails.address,
+                    city: userDetails.city || '',
+                    state: userDetails.state || '',
+                    postal_code: userDetails.zipCode || '',
+                    country: userDetails.country || 'US'
+                } : null,
+                billingAddress: userDetails?.address ? {
+                    line1: userDetails.address,
+                    city: userDetails.city || '',
+                    state: userDetails.state || '',
+                    postal_code: userDetails.zipCode || '',
+                    country: userDetails.country || 'US'
+                } : null,
+                finalAmount: finalAmount,
+                customerEmail: userDetails?.email || '',
+                ui_mode: 'hosted'
+            };
+
+            // Call the updated createCheckoutSession function
+            await createCheckoutSession(checkoutData);
             
-            if (error) {
-                throw new Error(error.message || 'Payment failed. Please try again.');
-            }
+            // The function will redirect automatically for hosted mode
         } catch (error) {
             console.error('Checkout error:', error);
             // Show error to user with toast or alert
-            alert('Payment processing failed. Please try again or contact support.');
+            const errorMessage = error instanceof Error ? error.message : 'Payment processing failed. Please try again or contact support.';
+            alert(errorMessage);
         } finally {
             setIsLoading(false);
         }
