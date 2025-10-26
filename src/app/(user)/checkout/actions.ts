@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { ISize } from '@/types/user';
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
+const BACKEND_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://dashboard.brandsdiscounts.com";
 
 interface CartItem {
   id: string;
