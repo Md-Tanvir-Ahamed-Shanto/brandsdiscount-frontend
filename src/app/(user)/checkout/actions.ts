@@ -71,7 +71,7 @@ export async function createCheckoutSession(data: CheckoutSessionData) {
       shippingAddress: shippingAddress || null,
       billingAddress: billingAddress || null,
       finalAmount,
-      customerEmail: customerEmail || 'customer@example.com',
+      customerEmail: customerEmail || 'customer@brandsdiscounts.com',
       ui_mode,
       metadata: {
         source: "frontend_checkout",
