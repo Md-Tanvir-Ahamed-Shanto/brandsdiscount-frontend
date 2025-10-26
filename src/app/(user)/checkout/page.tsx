@@ -73,14 +73,18 @@ export default function Checkout() {
                     country: userDetails.country || 'US'
                 } : null,
                 finalAmount: effectiveAmount,
-                customerEmail: userDetails?.email || '',
+                customerEmail: userDetails?.email || 'customer@brandsdiscounts.com',
                 ui_mode: 'hosted'
             };
 
             // Call the updated createCheckoutSession function
-            await createCheckoutSession(checkoutData);
+            const result = await createCheckoutSession(checkoutData);
             
-            // The function will redirect automatically for hosted mode
+            // If we're in embedded mode and get a result back instead of redirect
+            if (result && result.sessionId) {
+                window.location.href = `/checkout/success?session_id=${result.sessionId}`;
+            }
+            // Otherwise, the function will redirect automatically for hosted mode
         } catch (error) {
             console.error('Checkout error:', error);
             // Show error to user with toast or alert
