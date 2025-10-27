@@ -26,7 +26,10 @@ export default function Checkout() {
     }));
 
     const [userId, setUserId] = useState<string | null>(null);
-    const { data: userData } = useGetSingleProfileQuery(userId);
+    // Only fetch user data if userId is not null
+    const { data: userData } = useGetSingleProfileQuery(userId, {
+        skip: !userId // Skip the query if userId is null
+    });
     const userDetails = userData?.userDetails;
 
     const finalAmount = useAppSelector((state) => state.order.finalAmount);
