@@ -43,42 +43,42 @@ interface CheckoutSessionData {
 }
 
 export async function createCheckoutSession(data: CheckoutSessionData) {
+  const {
+    cartItems,
+    userId,
+    appliedPoints = 0,
+    shippingAddress,
+    billingAddress,
+    finalAmount,
+    customerEmail,
+    ui_mode = "hosted"
+  } = data;
+
+  // Validate required data
+  if (!cartItems || !Array.isArray(cartItems) || cartItems.length === 0) {
+    throw new Error("Your cart is empty. Please add items to your cart before checkout.");
+  }
+
+  if (!finalAmount || finalAmount <= 0) {
+    throw new Error("Invalid order amount. Please try again or contact support.");
+  }
+
+  const requestBody = {
+    cartItems,
+    userId: userId || null,
+    appliedPoints,
+    shippingAddress: shippingAddress || null,
+    billingAddress: billingAddress || null,
+    finalAmount,
+    customerEmail: customerEmail, // Pass the email as-is, let backend handle fallback
+    ui_mode,
+    metadata: {
+      source: "frontend_checkout",
+      timestamp: new Date().toISOString()
+    }
+  };
+
   try {
-    const {
-      cartItems,
-      userId,
-      appliedPoints = 0,
-      shippingAddress,
-      billingAddress,
-      finalAmount,
-      customerEmail,
-      ui_mode = "hosted"
-    } = data;
-
-    // Validate required data
-    if (!cartItems || !Array.isArray(cartItems) || cartItems.length === 0) {
-      throw new Error("Your cart is empty. Please add items to your cart before checkout.");
-    }
-
-    if (!finalAmount || finalAmount <= 0) {
-      throw new Error("Invalid order amount. Please try again or contact support.");
-    }
-
-    const requestBody = {
-      cartItems,
-      userId: userId || null,
-      appliedPoints,
-      shippingAddress: shippingAddress || null,
-      billingAddress: billingAddress || null,
-      finalAmount,
-      customerEmail: customerEmail || 'customer@brandsdiscounts.com',
-      ui_mode,
-      metadata: {
-        source: "frontend_checkout",
-        timestamp: new Date().toISOString()
-      }
-    };
-
     const response = await fetch(`${BACKEND_URL}/api/stripe/create-checkout-session`, {
       method: "POST",
       headers: {
@@ -104,9 +104,15 @@ export async function createCheckoutSession(data: CheckoutSessionData) {
         sessionId: checkoutSession.sessionId,
       };
     } else {
+      // For hosted mode, redirect to Stripe checkout
       redirect(checkoutSession.url);
     }
   } catch (error) {
+    // Handle NEXT_REDIRECT error specifically - it's not actually an error
+    if (error instanceof Error && error.message === 'NEXT_REDIRECT') {
+      throw error; // Re-throw redirect errors as they are expected
+    }
+    
     console.error("Error creating checkout session:", error);
     throw new Error(error instanceof Error ? error.message : "Failed to create checkout session. Please try again.");
   }

@@ -31,7 +31,6 @@ export default function Checkout() {
         skip: !userId // Skip the query if userId is null
     });
     const userDetails = userData?.userDetails;
-
     const finalAmount = useAppSelector((state) => state.order.finalAmount);
     
     // Calculate total from cart if finalAmount is 0
@@ -76,7 +75,7 @@ export default function Checkout() {
                     country: userDetails.country || 'US'
                 } : null,
                 finalAmount: effectiveAmount,
-                customerEmail: userDetails?.email || 'customer@brandsdiscounts.com',
+                customerEmail: userData?.email, // Pass the actual user email
                 ui_mode: 'hosted'
             };
 
