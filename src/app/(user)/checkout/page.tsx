@@ -97,6 +97,18 @@ export default function Checkout() {
                 ui_mode: 'hosted'
             };
 
+            // Enhanced logging for production debugging
+            if (process.env.NODE_ENV === 'production') {
+                console.log('Checkout attempt:', {
+                    timestamp: new Date().toISOString(),
+                    userId: userId,
+                    cartItemCount: cart.length,
+                    finalAmount: effectiveAmount,
+                    userAgent: navigator.userAgent,
+                    url: window.location.href
+                });
+            }
+
             // Call the updated createCheckoutSession function with timeout
             const result = await Promise.race([
                 createCheckoutSession(checkoutData),
@@ -111,7 +123,9 @@ export default function Checkout() {
             
             // Handle fallback redirect if server action redirect failed
             if (result && typeof result === 'object' && 'fallback' in result && result.fallback) {
-                console.log('Using fallback redirect to:', (result as unknown as { url: string }).url);
+                if (process.env.NODE_ENV === 'production') {
+                    console.log('Manual redirect to:', (result as unknown as { url: string }).url);
+                }
                 window.location.href = (result as unknown as { url: string }).url;
                 return;
             }
@@ -124,7 +138,40 @@ export default function Checkout() {
             
             // Otherwise, the function will redirect automatically for hosted mode
         } catch (error) {
-            console.error('Checkout error:', error);
+            // Enhanced error logging for production
+             const errorInfo = {
+                 timestamp: new Date().toISOString(),
+                 userId: userId,
+                 finalAmount: finalAmount,
+                 cartItemCount: cart.length,
+                 userAgent: navigator.userAgent,
+                 url: window.location.href,
+                 error: error instanceof Error ? {
+                     name: error.name,
+                     message: error.message,
+                     stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,
+                     digest: error && typeof error === 'object' && 'digest' in error ? (error as { digest: string }).digest : undefined
+                 } : error
+             };
+
+            console.error('Checkout error details:', errorInfo);
+
+            // Send error to monitoring service in production
+            if (process.env.NODE_ENV === 'production' && typeof window !== 'undefined') {
+                try {
+                    // You can replace this with your preferred error monitoring service
+                    fetch('/api/log-error', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(errorInfo)
+                    }).catch(() => {
+                        // Silently fail if logging service is unavailable
+                    });
+                } catch {
+                    // Silently fail if fetch is not available
+                }
+            }
+
             const checkoutError = error as CheckoutError;
             let errorMessage = 'Payment processing failed. Please try again or contact support.';
             
@@ -137,6 +184,8 @@ export default function Checkout() {
                 errorMessage = 'Please complete your profile information before checkout.';
             } else if (checkoutError.code === 'REDIRECT_ERROR') {
                 errorMessage = 'Redirect failed. Please try again or contact support.';
+            } else if (checkoutError.message && checkoutError.message.includes('Server Components render')) {
+                errorMessage = 'A server error occurred. Please try again in a moment or contact support if the issue persists.';
             } else if (checkoutError.message) {
                 errorMessage = checkoutError.message;
             }

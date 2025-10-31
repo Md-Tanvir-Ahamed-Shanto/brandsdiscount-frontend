@@ -7,19 +7,50 @@ const BACKEND_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://dashboard.b
 
 // Custom error class for checkout errors
 class CheckoutError extends Error {
-  constructor(message: string, public code?: string) {
+  constructor(message: string, public code?: string, public digest?: string) {
     super(message);
     this.name = 'CheckoutError';
+    this.digest = digest;
+  }
+}
+
+// Enhanced error logging for production
+function logProductionError(error: unknown, context: string) {
+  if (process.env.NODE_ENV === 'production') {
+    console.error(`[PRODUCTION ERROR] ${context}:`, {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined,
+      digest: 'digest' in (error as object) ? (error as { digest: string }).digest : undefined,
+      timestamp: new Date().toISOString(),
+      context
+    });
   }
 }
 
 // Helper function to safely handle redirects in production
 function safeRedirect(url: string): never {
   try {
-    redirect(url);
+    // Validate URL before redirecting
+    if (!url || typeof url !== 'string') {
+      throw new CheckoutError('Invalid redirect URL', 'INVALID_URL');
+    }
+    
+    // Ensure URL is properly formatted
+    const validUrl = url.startsWith('http') ? url : `https://${url}`;
+    redirect(validUrl);
   } catch (error) {
+    logProductionError(error, 'safeRedirect');
+    
     // In production, redirect might throw an error that needs to be handled
-    console.error('Redirect error:', error);
+    if (error instanceof Error && 
+        (error.message.includes('NEXT_REDIRECT') || 
+         error.name === 'RedirectError' ||
+         'digest' in error)) {
+      // This is expected Next.js redirect behavior, re-throw
+      throw error;
+    }
+    
+    // For other errors, provide fallback
     throw new CheckoutError('Redirect failed', 'REDIRECT_ERROR');
   }
 }
@@ -73,38 +104,46 @@ export async function createCheckoutSession(data: CheckoutSessionData) {
     ui_mode = "hosted"
   } = data;
 
-  // Validate required data
-  if (!cartItems || !Array.isArray(cartItems) || cartItems.length === 0) {
-    throw new CheckoutError("Your cart is empty. Please add items to your cart before checkout.", "EMPTY_CART");
-  }
-
-  if (!finalAmount || finalAmount <= 0) {
-    throw new CheckoutError("Invalid order amount. Please try again or contact support.", "INVALID_AMOUNT");
-  }
-
-  const requestBody = {
-    cartItems,
-    userId: userId || null,
-    appliedPoints,
-    shippingAddress: shippingAddress || null,
-    billingAddress: billingAddress || null,
-    finalAmount,
-    customerEmail: customerEmail, // Pass the email as-is, let backend handle fallback
-    ui_mode,
-    metadata: {
-      source: "frontend_checkout",
-      timestamp: new Date().toISOString()
-    }
-  };
-
   try {
+    // Validate required data
+    if (!cartItems || !Array.isArray(cartItems) || cartItems.length === 0) {
+      throw new CheckoutError("Your cart is empty. Please add items to your cart before checkout.", "EMPTY_CART");
+    }
+
+    if (!finalAmount || finalAmount <= 0) {
+      throw new CheckoutError("Invalid order amount. Please try again or contact support.", "INVALID_AMOUNT");
+    }
+
+    const requestBody = {
+      cartItems,
+      userId: userId || null,
+      appliedPoints,
+      shippingAddress: shippingAddress || null,
+      billingAddress: billingAddress || null,
+      finalAmount,
+      customerEmail: customerEmail, // Pass the email as-is, let backend handle fallback
+      ui_mode,
+      metadata: {
+        source: "frontend_checkout",
+        timestamp: new Date().toISOString(),
+        environment: process.env.NODE_ENV
+      }
+    };
+
+    // Add timeout for production reliability
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+
     const response = await fetch(`${BACKEND_URL}/api/stripe/create-checkout-session`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(requestBody),
+      signal: controller.signal
     });
+
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       let errorMessage = "Failed to create checkout session";
@@ -139,6 +178,8 @@ export async function createCheckoutSession(data: CheckoutSessionData) {
       try {
         safeRedirect(checkoutSession.url);
       } catch (redirectError) {
+        logProductionError(redirectError, 'createCheckoutSession redirect');
+        
         // If it's a NEXT_REDIRECT error, it's expected behavior
         if (redirectError instanceof Error && 
             (redirectError.message.includes('NEXT_REDIRECT') || 
@@ -157,20 +198,30 @@ export async function createCheckoutSession(data: CheckoutSessionData) {
       }
     }
   } catch (error) {
-    // Handle NEXT_REDIRECT error specifically - it's not actually an error
-    if (error instanceof Error && (error.message.includes('NEXT_REDIRECT') || error.name === 'RedirectError')) {
-      throw error; // Re-throw redirect errors as they are expected
+    logProductionError(error, 'createCheckoutSession');
+    
+    // Handle timeout errors
+    if (error instanceof Error && error.name === 'AbortError') {
+      throw new CheckoutError('Request timed out. Please check your connection and try again.', 'TIMEOUT');
     }
     
-    // Handle our custom checkout errors
+    // Handle network errors
+    if (error instanceof Error && (error.message.includes('fetch') || error.message.includes('network'))) {
+      throw new CheckoutError('Network error. Please check your connection and try again.', 'NETWORK_ERROR');
+    }
+    
+    // Re-throw CheckoutError instances
     if (error instanceof CheckoutError) {
       throw error;
     }
     
-    console.error("Error creating checkout session:", error);
+    // Handle unexpected errors
     throw new CheckoutError(
-      error instanceof Error ? error.message : "Failed to create checkout session. Please try again.",
-      "UNKNOWN_ERROR"
+      process.env.NODE_ENV === 'production' 
+        ? 'An unexpected error occurred. Please try again or contact support.'
+        : error instanceof Error ? error.message : 'Unknown error occurred',
+      'UNEXPECTED_ERROR',
+      'digest' in (error as object) ? (error as { digest: string }).digest : undefined
     );
   }
 }
