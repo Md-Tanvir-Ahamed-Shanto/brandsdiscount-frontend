@@ -5,6 +5,25 @@ import { ISize } from '@/types/user';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://dashboard.brandsdiscounts.com";
 
+// Custom error class for checkout errors
+class CheckoutError extends Error {
+  constructor(message: string, public code?: string) {
+    super(message);
+    this.name = 'CheckoutError';
+  }
+}
+
+// Helper function to safely handle redirects in production
+function safeRedirect(url: string): never {
+  try {
+    redirect(url);
+  } catch (error) {
+    // In production, redirect might throw an error that needs to be handled
+    console.error('Redirect error:', error);
+    throw new CheckoutError('Redirect failed', 'REDIRECT_ERROR');
+  }
+}
+
 interface CartItem {
   id: string;
   title: string;
@@ -56,11 +75,11 @@ export async function createCheckoutSession(data: CheckoutSessionData) {
 
   // Validate required data
   if (!cartItems || !Array.isArray(cartItems) || cartItems.length === 0) {
-    throw new Error("Your cart is empty. Please add items to your cart before checkout.");
+    throw new CheckoutError("Your cart is empty. Please add items to your cart before checkout.", "EMPTY_CART");
   }
 
   if (!finalAmount || finalAmount <= 0) {
-    throw new Error("Invalid order amount. Please try again or contact support.");
+    throw new CheckoutError("Invalid order amount. Please try again or contact support.", "INVALID_AMOUNT");
   }
 
   const requestBody = {
@@ -88,14 +107,21 @@ export async function createCheckoutSession(data: CheckoutSessionData) {
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || "Failed to create checkout session");
+      let errorMessage = "Failed to create checkout session";
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.error || errorMessage;
+      } catch {
+        // If we can't parse the error response, use the default message
+        errorMessage = `Server error: ${response.status} ${response.statusText}`;
+      }
+      throw new CheckoutError(errorMessage, `HTTP_${response.status}`);
     }
 
     const checkoutSession = await response.json();
 
     if (!checkoutSession.success) {
-      throw new Error(checkoutSession.error || "Failed to create checkout session");
+      throw new CheckoutError(checkoutSession.error || "Failed to create checkout session", "SESSION_FAILED");
     }
 
     if (ui_mode === "embedded") {
@@ -105,37 +131,86 @@ export async function createCheckoutSession(data: CheckoutSessionData) {
       };
     } else {
       // For hosted mode, redirect to Stripe checkout
-      redirect(checkoutSession.url);
+      // Handle redirect properly for production environment
+      if (!checkoutSession.url) {
+        throw new CheckoutError("Invalid checkout URL received from server", "INVALID_URL");
+      }
+      
+      try {
+        safeRedirect(checkoutSession.url);
+      } catch (redirectError) {
+        // If it's a NEXT_REDIRECT error, it's expected behavior
+        if (redirectError instanceof Error && 
+            (redirectError.message.includes('NEXT_REDIRECT') || 
+             redirectError.name === 'RedirectError' ||
+             'digest' in redirectError)) {
+          throw redirectError; // Re-throw to allow Next.js to handle
+        }
+        
+        // For other redirect errors, provide fallback
+        console.error('Redirect failed, providing fallback:', redirectError);
+        return {
+          url: checkoutSession.url,
+          sessionId: checkoutSession.sessionId,
+          fallback: true
+        };
+      }
     }
   } catch (error) {
     // Handle NEXT_REDIRECT error specifically - it's not actually an error
-    if (error instanceof Error && error.message === 'NEXT_REDIRECT') {
+    if (error instanceof Error && (error.message.includes('NEXT_REDIRECT') || error.name === 'RedirectError')) {
       throw error; // Re-throw redirect errors as they are expected
     }
     
+    // Handle our custom checkout errors
+    if (error instanceof CheckoutError) {
+      throw error;
+    }
+    
     console.error("Error creating checkout session:", error);
-    throw new Error(error instanceof Error ? error.message : "Failed to create checkout session. Please try again.");
+    throw new CheckoutError(
+      error instanceof Error ? error.message : "Failed to create checkout session. Please try again.",
+      "UNKNOWN_ERROR"
+    );
   }
 }
 
 export async function getSessionStatus(sessionId: string) {
+  // Validate sessionId
+  if (!sessionId || typeof sessionId !== 'string') {
+    throw new Error("Invalid session ID provided");
+  }
+
   try {
     const response = await fetch(`${BACKEND_URL}/api/stripe/session-status/${sessionId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
+      // Add timeout for production reliability
+      signal: AbortSignal.timeout(10000), // 10 second timeout
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || "Failed to get session status");
+      let errorMessage = "Failed to get session status";
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.error || errorMessage;
+      } catch {
+        errorMessage = `Server error: ${response.status} ${response.statusText}`;
+      }
+      throw new Error(errorMessage);
     }
 
     const sessionData = await response.json();
 
     if (!sessionData.success) {
       throw new Error(sessionData.error || "Failed to get session status");
+    }
+
+    // Ensure we have the required data
+    if (!sessionData.session) {
+      throw new Error("Invalid session data received from server");
     }
 
     return {
@@ -148,6 +223,17 @@ export async function getSessionStatus(sessionId: string) {
     };
   } catch (error) {
     console.error("Error getting session status:", error);
+    
+    // Handle timeout errors specifically
+    if (error instanceof Error && error.name === 'TimeoutError') {
+      throw new Error("Request timed out. Please check your connection and try again.");
+    }
+    
+    // Handle network errors
+    if (error instanceof Error && error.message.includes('fetch')) {
+      throw new Error("Network error. Please check your connection and try again.");
+    }
+    
     throw new Error(error instanceof Error ? error.message : "Failed to get session status. Please try again.");
   }
 }

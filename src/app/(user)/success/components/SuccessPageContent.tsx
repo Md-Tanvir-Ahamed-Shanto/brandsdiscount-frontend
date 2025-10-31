@@ -37,9 +37,25 @@ console.log("cart products", cart)
                     const { status: paymentStatus, session } =
                         await getSessionStatus(sessionId);
                     setStatus(paymentStatus);
-// console.log("session", session)
+
                     // Only proceed with order creation if payment was successful
                     if (paymentStatus === 'paid') {
+                        // Validate cart data before processing
+                        if (!cart || !Array.isArray(cart) || cart.length === 0) {
+                            console.error('Invalid cart data:', cart);
+                            toast.error('Cart data is missing. Please contact support.');
+                            setLoading(false);
+                            return;
+                        }
+
+                        // Validate session data
+                        if (!session || !session.amount_total) {
+                            console.error('Invalid session data:', session);
+                            toast.error('Payment session data is invalid. Please contact support.');
+                            setLoading(false);
+                            return;
+                        }
+
                         const orderDetails = cart?.map((item: any) => {
                             return {
                                 productId: item?.id,
@@ -64,16 +80,27 @@ console.log("cart products", cart)
                             orderDetails
                         };
 
-                        // Create the order
-                        const response = await createOrder(payload).unwrap();
+                        try {
+                            // Create the order with timeout
+                            const response = await Promise.race([
+                                createOrder(payload).unwrap(),
+                                new Promise((_, reject) => 
+                                    setTimeout(() => reject(new Error('Order creation timeout')), 15000)
+                                )
+                            ]);
 
-                        if (response) {
-                            dispatch(clearCart());
-                            toast.success('Order created successfully');
-                            // Delay the navigation slightly to ensure toast is visible
-                            setTimeout(() => {
-                                router.push('/');
-                            }, 1000);
+                            if (response) {
+                                dispatch(clearCart());
+                                toast.success('Order created successfully');
+                                // Delay the navigation slightly to ensure toast is visible
+                                setTimeout(() => {
+                                    router.push('/');
+                                }, 1000);
+                            }
+                        } catch (orderError) {
+                            console.error('Error creating order:', orderError);
+                            toast.error('Order creation failed. Please contact support with your payment confirmation.');
+                            // Don't redirect on order creation failure
                         }
                     }
 
@@ -81,7 +108,20 @@ console.log("cart products", cart)
                 } catch (error) {
                     setLoading(false);
                     console.error('Error checking payment status:', error);
-                    toast.error('Error processing your order');
+                    
+                    // Provide more specific error messages
+                    let errorMessage = 'Error processing your order';
+                    if (error instanceof Error) {
+                        if (error.message.includes('timeout') || error.message.includes('Timeout')) {
+                            errorMessage = 'Request timed out. Please refresh the page to check your order status.';
+                        } else if (error.message.includes('network') || error.message.includes('fetch')) {
+                            errorMessage = 'Network error. Please check your connection and refresh the page.';
+                        } else if (error.message.includes('Invalid session')) {
+                            errorMessage = 'Invalid payment session. Please contact support if payment was deducted.';
+                        }
+                    }
+                    
+                    toast.error(errorMessage);
                 }
             };
 
