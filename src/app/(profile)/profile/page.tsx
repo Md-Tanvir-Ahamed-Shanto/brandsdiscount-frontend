@@ -106,7 +106,24 @@ const UpdateProfile = () => {
                 form.append('file', imageFile);
             }
 
-            form.append('userDetails', JSON.stringify(formData));
+            // Send email as separate field for backend processing
+            if (formData.email) {
+                form.append('email', formData.email);
+            }
+
+            // Send userDetails without email since it's handled separately
+            const userDetails = {
+                fullName: formData.fullName,
+                phoneNumber: formData.phoneNumber,
+                addressLine1: formData.addressLine1,
+                addressLine2: formData.addressLine2,
+                city: formData.city,
+                stateProvince: formData.stateProvince,
+                postalCode: formData.postalCode,
+                country: formData.country
+            };
+            
+            form.append('userDetails', JSON.stringify(userDetails));
             setIsLoading(true);
             const res = await fetch(
                 `${API_BASE_URL}/userroute/update/${userId}`,
