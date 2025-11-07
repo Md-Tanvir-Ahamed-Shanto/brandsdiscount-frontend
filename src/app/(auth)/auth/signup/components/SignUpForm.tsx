@@ -21,9 +21,19 @@ import { useRouter } from 'next/navigation';
 const SignUpForm = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
-
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [passwordStrength, setPasswordStrength] = useState(0);
+
+    // Password strength checker
+    const checkPasswordStrength = (pwd: string) => {
+        let strength = 0;
+        if (pwd.length >= 6) strength += 1;
+        if (pwd.match(/[a-z]/) && pwd.match(/[A-Z]/)) strength += 1;
+        if (pwd.match(/[0-9]/)) strength += 1;
+        if (pwd.match(/[^A-Za-z0-9]/)) strength += 1;
+        return strength;
+    };
 
     // const [confirmPassword, setConfirmPassword] = useState('');
     // const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -35,13 +45,29 @@ const SignUpForm = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        
+        // Basic validation
+        if (!name.trim() || !email.trim() || !password.trim()) {
+            toast.error('Please fill in all required fields');
+            return;
+        }
+        
+        if (password.length < 6) {
+            toast.error('Password must be at least 6 characters long');
+            return;
+        }
+        
+        if (!email.includes('@') || !email.includes('.')) {
+            toast.error('Please enter a valid email address');
+            return;
+        }
+        
         setIsLoading(true);
         try {
-            setIsLoading(true);
             const response = await axios.post(
                 `${getBaseUrl()}/authroute/signup`,
                 {
-                    username: name,
+                    username: email,
                     password,
                     email,
                     role: 'PlatformUser'
@@ -59,13 +85,14 @@ const SignUpForm = () => {
                     path: '/'
                 });
                 window.location.href = '/cart';
-                setIsLoading(false);
             }
         } catch (error: any) {
-            toast.error(
-                error?.response?.data?.message ||
-                    'Something went wrong during signup'
-            );
+            const errorMessage = error?.response?.data?.message ||
+                error?.response?.data?.error ||
+                'Something went wrong during signup';
+            toast.error(errorMessage);
+            console.error('Signup error:', error);
+        } finally {
             setIsLoading(false);
         }
     };
@@ -99,7 +126,11 @@ const SignUpForm = () => {
                     type={showPassword ? 'text' : 'password'}
                     placeholder='Password'
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => {
+                        const newPassword = e.target.value;
+                        setPassword(newPassword);
+                        setPasswordStrength(checkPasswordStrength(newPassword));
+                    }}
                     required
                     className='border border-gray-600 lg:py-6'
                 />
@@ -110,6 +141,35 @@ const SignUpForm = () => {
                 >
                     {showPassword ? 'Hide' : 'Show'}
                 </button>
+                {password && (
+                    <div className='mt-2'>
+                        <div className='flex justify-between items-center mb-1'>
+                            <span className='text-xs text-muted-foreground'>Password strength:</span>
+                            <span className={`text-xs font-medium ${
+                                passwordStrength <= 1 ? 'text-red-500' :
+                                passwordStrength <= 2 ? 'text-orange-500' :
+                                passwordStrength <= 3 ? 'text-yellow-500' :
+                                'text-green-500'
+                            }`}>
+                                {passwordStrength <= 1 ? 'Weak' :
+                                 passwordStrength <= 2 ? 'Fair' :
+                                 passwordStrength <= 3 ? 'Good' :
+                                 'Strong'}
+                            </span>
+                        </div>
+                        <div className='w-full bg-gray-200 rounded-full h-1'>
+                            <div 
+                                className={`h-1 rounded-full transition-all duration-300 ${
+                                    passwordStrength <= 1 ? 'bg-red-500 w-1/4' :
+                                    passwordStrength <= 2 ? 'bg-orange-500 w-1/2' :
+                                    passwordStrength <= 3 ? 'bg-yellow-500 w-3/4' :
+                                    'bg-green-500 w-full'
+                                }`}
+                                style={{ width: `${(passwordStrength / 4) * 100}%` }}
+                            />
+                        </div>
+                    </div>
+                )}
             </div>
 
             {/* <div className='space-y-1 relative'>
@@ -159,7 +219,12 @@ const SignUpForm = () => {
                 className='w-full bg-red-700 hover:bg-red-800 py-4 lg:py-6'
                 disabled={isLoading}
             >
-                {isLoading ? 'Signing up...' : 'Sign Up'}
+                {isLoading ? (
+                    <div className='flex items-center justify-center gap-2'>
+                        <div className='w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin'></div>
+                        Creating account...
+                    </div>
+                ) : 'Sign Up'}
             </Button>
         </form>
     );

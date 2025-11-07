@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
     ACCESS_TOKEN_EXPIRY,
-    API_BASE_URL,
+    getBaseUrl,
     REFRESH_TOKEN_EXPIRY
 } from '@/config';
 import toast from 'react-hot-toast';
@@ -24,11 +24,23 @@ const LoginForm = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        
+        // Basic validation
+        if (!email.trim() || !password.trim()) {
+            toast.error('Please fill in all required fields');
+            return;
+        }
+        
+        if (!email.includes('@') || !email.includes('.')) {
+            toast.error('Please enter a valid email address');
+            return;
+        }
+        
         setIsLoading(true);
 
         try {
             const response = await axios.post(
-                `${API_BASE_URL}/authroute/login`,
+                `${getBaseUrl()}/authroute/login`,
                 {
                     username: email,
                     password
@@ -37,19 +49,37 @@ const LoginForm = () => {
             if (response.data) {
                 toast.success('Login successfully!');
                 const { access_token, refresh_token } = response.data;
-                Cookies.set('token', access_token, {
-                    expires: new Date(Date.now() + ACCESS_TOKEN_EXPIRY),
-                    path: '/'
-                });
-                Cookies.set('rtoken', refresh_token, {
-                    expires: new Date(Date.now() + REFRESH_TOKEN_EXPIRY),
-                    path: '/'
-                });
-                window.location.href = '/';
+                
+                console.log('Login response:', response.data);
+                console.log('Setting cookies:', { access_token, refresh_token });
+                
+                // Set cookies without expiry (session cookies) or with proper expiry
+                const cookieOptions = {
+                    path: '/',
+                    ...(keepSignedIn && { expires: 7 }) // 7 days if keep signed in
+                };
+                
+                Cookies.set('token', access_token, cookieOptions);
+                Cookies.set('rtoken', refresh_token, cookieOptions);
+                
+                console.log('Cookies set, dispatching tokenChange event');
+                // Dispatch custom event to notify other components of token change
+                window.dispatchEvent(new Event('tokenChange'));
+                
+                // Add a small delay to ensure event is processed
+                setTimeout(() => {
+                    console.log('Redirecting to home page...');
+                    window.location.href = '/';
+                }, 100);
             }
-        } catch (error) {
+        } catch (error: any) {
+            const errorMessage = error?.response?.data?.message ||
+                error?.response?.data?.error ||
+                'Email or password not valid';
+            toast.error(errorMessage);
+            console.error('Login error:', error);
+        } finally {
             setIsLoading(false);
-            toast.error('Email or password not valid');
         }
     };
 
@@ -113,7 +143,12 @@ const LoginForm = () => {
                 className='w-full bg-red-700 hover:bg-red-800 py-4 lg:py-6'
                 disabled={isLoading}
             >
-                {isLoading ? 'Signing in...' : 'Sign In'}
+                {isLoading ? (
+                    <div className='flex items-center justify-center gap-2'>
+                        <div className='w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin'></div>
+                        Signing in...
+                    </div>
+                ) : 'Sign In'}
             </Button>
         </form>
     );

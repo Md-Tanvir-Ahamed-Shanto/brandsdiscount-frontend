@@ -15,40 +15,77 @@ const ProfileDropDown = () => {
     const { data: userData } = useGetSingleProfileQuery(userId, {
         skip: !userId,
     });
-console.log("user data", userData)
+    console.log("ProfileDropDown: user data", userData);
+    console.log("ProfileDropDown: userId", userId);
     const [isLoginIn, setIsLoginIn] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
     const router = useRouter();
 
-    const token = Cookies.get('token');
-    useEffect(() => {
+    // Function to check login status and decode token
+    const checkLoginStatus = () => {
+        console.log('ProfileDropDown: Checking login status...');
+        const token = Cookies.get('token');
+        console.log('ProfileDropDown: Token found:', token ? 'Yes' : 'No');
+        
         if (token) {
             try {
-                setIsLoginIn(true);
                 const decoded = jwtDecode<MyTokenPayload>(token);
+                console.log('ProfileDropDown: Token decoded successfully:', decoded);
+                setIsLoginIn(true);
                 setUserId(decoded.id);
             } catch (error) {
-                console.error('Error decoding token:', error);
+                console.error('ProfileDropDown: Error decoding token:', error);
+                setIsLoginIn(false);
+                setUserId(null);
             }
+        } else {
+            console.log('ProfileDropDown: No token found');
+            setIsLoginIn(false);
+            setUserId(null);
         }
-    }, [token]);
+    };
 
     useEffect(() => {
-        const token = Cookies.get('token');
-        if (token) {
-            try {
-                const decoded = jwtDecode<MyTokenPayload>(token);
-                setUserId(decoded.id);
-            } catch (error) {
-                console.error('Error decoding token:', error);
+        // Initial check
+        checkLoginStatus();
+
+        // Add event listener for token changes
+        const handleTokenChange = () => {
+            console.log('ProfileDropDown: Token change event detected');
+            checkLoginStatus();
+        };
+
+        // Listen for storage events (when token is set/removed in other tabs)
+        window.addEventListener('storage', handleTokenChange);
+        
+        // Create a custom event for same-tab token changes
+        window.addEventListener('tokenChange', handleTokenChange);
+
+        // Set up an interval to periodically check for token changes
+        const interval = setInterval(() => {
+            const currentToken = Cookies.get('token');
+            const hasTokenChanged = (currentToken && !isLoginIn) || (!currentToken && isLoginIn);
+            if (hasTokenChanged) {
+                console.log('ProfileDropDown: Token state changed detected by interval');
+                checkLoginStatus();
             }
-        }
-    }, []);
+        }, 1000);
+
+        return () => {
+            window.removeEventListener('storage', handleTokenChange);
+            window.removeEventListener('tokenChange', handleTokenChange);
+            clearInterval(interval);
+        };
+    }, []); // Empty dependency array to run once on mount
 
     const handleLogout = () => {
         Cookies.remove('token');
         Cookies.remove('rtoken'); // if you're using refresh token
         setIsLoginIn(false);
+        
+        // Dispatch custom event to notify other components of token change
+        window.dispatchEvent(new Event('tokenChange'));
+        
         router.push('/');
         toast.success('Log out successfully');
     };

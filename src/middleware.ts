@@ -53,25 +53,42 @@ export async function middleware(request: NextRequest) {
   }
 
   const token = request.cookies.get("token")?.value;
-  const accessToken = request.cookies.get("rtoken")?.value;
 
   // If no token and trying to access protected route
-  if (!token || !accessToken) {
+  if (!token) {
+    console.log('Middleware: No token found, redirecting to login');
     const loginUrl = new URL("/auth/login", request.url);
     loginUrl.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(loginUrl);
   }
 
-  const userResult = await getUserDetails(token);
-  const role = userResult?.userData?.role;
+  try {
+    console.log('Middleware: Checking token:', token?.substring(0, 20) + '...');
+    const userResult = await getUserDetails(token);
+    console.log('Middleware: User result:', userResult);
+    const role = userResult?.userData?.role;
 
-  const allowedRoutes = roleBasedRoutes[role] || [];
-  const isAuthorized = allowedRoutes.some((route) =>
-    pathname.startsWith(route)
-  );
+    // If we can't get user details, redirect to login
+    if (!userResult || !role) {
+      const loginUrl = new URL("/auth/login", request.url);
+      loginUrl.searchParams.set("callbackUrl", pathname);
+      return NextResponse.redirect(loginUrl);
+    }
 
-  if (!isAuthorized) {
-    return NextResponse.redirect(new URL("/unauthorized", request.url));
+    const allowedRoutes = roleBasedRoutes[role] || [];
+    const isAuthorized = allowedRoutes.some((route) =>
+      pathname.startsWith(route)
+    );
+
+    if (!isAuthorized) {
+      return NextResponse.redirect(new URL("/unauthorized", request.url));
+    }
+  } catch (error) {
+    console.error("Middleware error:", error);
+    // If there's an error, redirect to login
+    const loginUrl = new URL("/auth/login", request.url);
+    loginUrl.searchParams.set("callbackUrl", pathname);
+    return NextResponse.redirect(loginUrl);
   }
 
   return NextResponse.next();
