@@ -67,7 +67,7 @@ const SignUpForm = () => {
             const response = await axios.post(
                 `${getBaseUrl()}/authroute/signup`,
                 {
-                    username: email,
+                    username: email.split('@')[0],
                     password,
                     email,
                     role: 'PlatformUser'
