@@ -21,6 +21,7 @@ export interface MyTokenPayload {
 
 interface UserProfile {
     fullName: string;
+    email: string;
     phoneNumber: string;
     addressLine1: string;
     addressLine2: string;
@@ -42,6 +43,7 @@ const UpdateProfile = () => {
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [formData, setFormData] = useState<UserProfile>({
         fullName: '',
+        email: '',
         phoneNumber: '',
         addressLine1: '',
         addressLine2: '',
@@ -72,6 +74,7 @@ const UpdateProfile = () => {
         if (userData && userData.userDetails) {
             setFormData({
                 fullName: userData.userDetails.fullName || '',
+                email: userData.email || '',
                 phoneNumber: userData.userDetails.phoneNumber || '',
                 addressLine1: userData.userDetails.addressLine1 || '',
                 addressLine2: userData.userDetails.addressLine2 || '',
@@ -245,17 +248,27 @@ const UpdateProfile = () => {
                             </div>
 
                             <div className='space-y-2'>
-                                <Label htmlFor='phoneNumber'>
-                                    Phone Number
-                                </Label>
+                                <Label htmlFor='email'>Email</Label>
                                 <Input
-                                    id='phoneNumber'
-                                    name='phoneNumber'
-                                    value={formData.phoneNumber}
+                                    id='email'
+                                    name='email'
+                                    type='email'
+                                    value={formData.email}
                                     onChange={handleInputChange}
-                                    placeholder='+1 (555) 123-4567'
+                                    placeholder='john@example.com'
                                 />
                             </div>
+                        </div>
+
+                        <div className='space-y-2'>
+                            <Label htmlFor='phoneNumber'>Phone Number</Label>
+                            <Input
+                                id='phoneNumber'
+                                name='phoneNumber'
+                                value={formData.phoneNumber}
+                                onChange={handleInputChange}
+                                placeholder='+1 (555) 123-4567'
+                            />
                         </div>
 
                         {/* Address Information */}
