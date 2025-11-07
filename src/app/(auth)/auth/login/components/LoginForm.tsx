@@ -72,9 +72,10 @@ const LoginForm = () => {
                     window.location.href = '/';
                 }, 100);
             }
-        } catch (error: any) {
-            const errorMessage = error?.response?.data?.message ||
-                error?.response?.data?.error ||
+        } catch (error: unknown) {
+            const axiosError = error as { response?: { data?: { message?: string; error?: string } } };
+            const errorMessage = axiosError?.response?.data?.message ||
+                axiosError?.response?.data?.error ||
                 'Email or password not valid';
             toast.error(errorMessage);
             console.error('Login error:', error);

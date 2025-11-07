@@ -76,7 +76,7 @@ const ProfileDropDown = () => {
             window.removeEventListener('tokenChange', handleTokenChange);
             clearInterval(interval);
         };
-    }, []); // Empty dependency array to run once on mount
+    }, [isLoginIn]); // Include isLoginIn in dependency array
 
     const handleLogout = () => {
         Cookies.remove('token');
