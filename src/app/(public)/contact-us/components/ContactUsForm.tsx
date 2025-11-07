@@ -15,11 +15,39 @@ export default function ContactUsForm() {
         email: '',
         message: ''
     });
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Handle form submission here
-        console.log('Form submitted:', formData);
+        setIsSubmitting(true);
+        setSubmitStatus('idle');
+
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/emails/contact-form`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                setSubmitStatus('success');
+                setFormData({ name: '', email: '', message: '' });
+                console.log('Contact form submitted successfully:', result.message);
+            } else {
+                const error = await response.json();
+                setSubmitStatus('error');
+                console.error('Failed to submit contact form:', error.message);
+            }
+        } catch (error) {
+            setSubmitStatus('error');
+            console.error('Error submitting contact form:', error);
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     const handleChange = (
@@ -98,11 +126,22 @@ export default function ContactUsForm() {
                         />
                     </div>
 
+                    {submitStatus === 'success' && (
+                        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+                            Thank you for your message! We'll get back to you soon.
+                        </div>
+                    )}
+                    {submitStatus === 'error' && (
+                        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                            Sorry, there was an error sending your message. Please try again.
+                        </div>
+                    )}
                     <Button
                         type='submit'
                         className='bg-black hover:bg-gray-800 text-white px-8 py-3 rounded-full font-medium'
+                        disabled={isSubmitting}
                     >
-                        SUBMIT
+                        {isSubmitting ? 'SENDING...' : 'SUBMIT'}
                     </Button>
                 </form>
             </div>
