@@ -43,7 +43,7 @@ export default function LoyaltyPoints() {
                 <CardContent>
                     <div className='text-center'>
                         <h3 className='text-4xl font-bold mb-2'>
-                            {userData?.loyaltyPoints || 0}
+                            {userData?.orderPoint || 0}
                         </h3>
                         <p className='text-gray-600'>Available Points</p>
                     </div>
