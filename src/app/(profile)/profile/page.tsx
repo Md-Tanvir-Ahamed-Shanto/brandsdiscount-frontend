@@ -71,7 +71,7 @@ const UpdateProfile = () => {
 
     // Add this effect to populate form with existing user data
     useEffect(() => {
-        if (userData && userData.userDetails) {
+        if (userData) {
             setFormData({
                 fullName: userData.userDetails.fullName || '',
                 email: userData.email || '',
