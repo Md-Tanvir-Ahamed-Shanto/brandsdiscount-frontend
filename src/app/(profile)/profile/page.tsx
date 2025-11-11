@@ -73,20 +73,20 @@ const UpdateProfile = () => {
     useEffect(() => {
         if (userData) {
             setFormData({
-                fullName: userData.userDetails.fullName || '',
-                email: userData.email || '',
-                phoneNumber: userData.userDetails.phoneNumber || '',
-                addressLine1: userData.userDetails.addressLine1 || '',
-                addressLine2: userData.userDetails.addressLine2 || '',
-                city: userData.userDetails.city || '',
-                stateProvince: userData.userDetails.stateProvince || '',
-                postalCode: userData.userDetails.postalCode || '',
-                country: userData.userDetails.country || ''
+                fullName: userData?.userDetails?.fullName || '',
+                email: userData?.email || '',
+                phoneNumber: userData?.userDetails?.phoneNumber || '',
+                addressLine1: userData?.userDetails?.addressLine1 || '',
+                addressLine2: userData?.userDetails?.addressLine2 || '',
+                city: userData?.userDetails?.city || '',
+                stateProvince: userData?.userDetails?.stateProvince || '',
+                postalCode: userData?.userDetails?.postalCode || '',
+                country: userData?.userDetails?.country || ''
             });
 
             // Set profile picture preview if available
-            if (userData.profilePicture?.url) {
-                setImagePreview(userData.profilePicture.url);
+            if (userData?.profilePicture?.url) {
+                setImagePreview(userData?.profilePicture?.url);
             }
         }
     }, [userData]);
