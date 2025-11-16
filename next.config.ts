@@ -32,7 +32,7 @@ const withPWA = withPWAInit({
     cacheOnFrontEndNav: true,
     aggressiveFrontEndNavCaching: true,
     reloadOnOnline: true,
-    disable: false,
+    disable: true, // Disable PWA since we removed the service worker
     workboxOptions: {
         disableDevLogs: true
     }
