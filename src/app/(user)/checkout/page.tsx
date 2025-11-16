@@ -35,10 +35,19 @@ export default function Checkout() {
 
     const [userId, setUserId] = useState<string | null>(null);
     // Only fetch user data if userId is not null
-    const { data: userData } = useGetSingleProfileQuery(userId, {
+    const { data: userData, refetch } = useGetSingleProfileQuery(userId, {
         skip: !userId // Skip the query if userId is null
     });
     const userDetails = userData?.userDetails;
+
+    // Handle shipping information update
+    const handleShippingUpdate = async () => {
+        try {
+            await refetch();
+        } catch (error) {
+            console.error('Error refreshing user data:', error);
+        }
+    };
     const finalAmount = useAppSelector((state) => state.order.finalAmount);
     
     // Calculate total from cart if finalAmount is 0
@@ -223,7 +232,7 @@ export default function Checkout() {
             <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
                 {/* Left Column - User Details */}
                 <div className='lg:col-span-2 space-y-6'>
-                    <ShippingInformation userDetails={userDetails} />
+                    <ShippingInformation userDetails={userDetails} onUpdate={handleShippingUpdate} />
                     <OrderItems cart={cart} />
                 </div>
 
