@@ -29,7 +29,9 @@ export const cartSlice = createSlice({
             if (!existingProduct) {
                 state.products.push(action.payload);
             } else {
-                existingProduct.quantity += action.payload.quantity;
+                const newQuantity = existingProduct.quantity + action.payload.quantity;
+                const availableStock = existingProduct.stockQuantity ?? 0;
+                existingProduct.quantity = Math.min(newQuantity, availableStock);
             }
         },
 
@@ -47,7 +49,10 @@ export const cartSlice = createSlice({
         incrementQuantity: (state, action: PayloadAction<string>) => {
             const product = state.products.find((p) => p.id === action.payload);
             if (product) {
-                product.quantity += 1;
+                const availableStock = product.stockQuantity ?? 0;
+                if (product.quantity < availableStock) {
+                    product.quantity += 1;
+                }
             }
         },
 

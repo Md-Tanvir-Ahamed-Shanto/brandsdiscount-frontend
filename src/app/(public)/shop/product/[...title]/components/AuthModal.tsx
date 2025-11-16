@@ -17,6 +17,7 @@ import { LoginForm } from '@/app/(auth)/auth/login/components';
 import Link from 'next/link';
 import Cookies from 'js-cookie';
 import { ForgotPasswordForm } from '@/app/(auth)/auth/forgot-password/components';
+import toast from 'react-hot-toast';
 
 interface IProps {
     product: ISingleProduct;
@@ -47,6 +48,11 @@ const SignInModal = ({ product, quantity = 1 }: IProps) => {
                         className='w-full bg-red-700 hover:bg-red-800 
                                                 text-white py-6'
                         onClick={() => {
+                            const availableStock = product.stockQuantity ?? 0;
+                            if (quantity > availableStock) {
+                                toast.error(`Only ${availableStock} items available in stock`);
+                                return;
+                            }
                             dispatch(addToCart({ ...product, quantity }));
                         }}
                     >

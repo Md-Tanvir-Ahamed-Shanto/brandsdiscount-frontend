@@ -109,11 +109,17 @@ const ProductCard = ({
   };
 
   useEffect(() => {
-    // Auto-select first available color
-    if (availableColors.length > 0) {
+    // Auto-select first available color only on initial mount
+    if (availableColors.length > 0 && !selectedColor) {
       handleColorSelection(availableColors[0]);
     }
-  }, [product, availableColors, handleColorSelection]);
+  }, [availableColors, handleColorSelection, selectedColor]);
+
+  // Simple stock validation - only reset when variants actually change
+  useEffect(() => {
+    // Reset to 1 when color or size changes (user selected different variant)
+    setQuantity(1);
+  }, [selectedColor, selectedSize, setQuantity]);
 
   return (
     <>
@@ -255,37 +261,68 @@ const ProductCard = ({
                 >
                   Quantity:
                 </label>
-                <input
-                  type="number"
-                  name="quantity"
-                  value={quantity}
-                  min={1}
-                  onChange={(e) => {
-                    const value = Number(e.target.value);
-                    const maxStock = selectedVariant
-                      ? selectedVariant.stockQuantity ?? 0
-                      : product.stockQuantity ?? 0;
-                    if (value > maxStock) {
-                      setQuantity(maxStock ?? 1);
-                    } else if (value < 1) {
-                      setQuantity(1);
-                    } else {
-                      setQuantity(value);
+                <div className="flex items-center space-x-3">
+                  <button
+                    onClick={() => {
+                      if (quantity > 1) {
+                        setQuantity(quantity - 1);
+                      }
+                    }}
+                    disabled={quantity <= 1 || (selectedVariant ? (selectedVariant.stockQuantity || 0) : (product.stockQuantity || 0)) <= 0}
+                    className="w-10 h-10 border border-gray-300 rounded-md flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition duration-150"
+                  >
+                    −
+                  </button>
+                  
+                  <input
+                    type="number"
+                    id="quantity"
+                    name="quantity"
+                    value={quantity}
+                    min={1}
+                    onChange={(e) => {
+                      const value = Number(e.target.value);
+                      const maxStock = selectedVariant
+                        ? (selectedVariant.stockQuantity || 0)
+                        : (product.stockQuantity || 0);
+                      
+                      if (value < 1) {
+                        setQuantity(1);
+                      } else if (value > maxStock) {
+                        setQuantity(maxStock);
+                      } else {
+                        setQuantity(value);
+                      }
+                    }}
+                    disabled={(selectedVariant ? (selectedVariant.stockQuantity || 0) : (product.stockQuantity || 0)) <= 0}
+                    className="w-16 h-10 text-center border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition duration-150"
+                  />
+                  
+                  <button
+                    onClick={() => {
+                      const maxStock = selectedVariant
+                        ? (selectedVariant.stockQuantity || 0)
+                        : (product.stockQuantity || 0);
+                      if (quantity < maxStock) {
+                        setQuantity(quantity + 1);
+                      }
+                    }}
+                    disabled={
+                      quantity >= (selectedVariant
+                        ? (selectedVariant.stockQuantity || 0)
+                        : (product.stockQuantity || 0)) ||
+                      (selectedVariant ? (selectedVariant.stockQuantity || 0) : (product.stockQuantity || 0)) <= 0
                     }
-                  }}
-                  disabled={
-                    product.status === "outofstock" ||
-                    (selectedVariant
-                      ? selectedVariant.stockQuantity === 0
-                      : product.stockQuantity === 0)
-                  }
-                  max={
-                    selectedVariant
-                      ? selectedVariant.stockQuantity
-                      : product.stockQuantity
-                  }
-                  className="w-24 p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition duration-150"
-                />
+                    className="w-10 h-10 border border-gray-300 rounded-md flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition duration-150"
+                  >
+                    +
+                  </button>
+                </div>
+                <div className="text-xs text-gray-500 mt-1">
+                  Available: {selectedVariant
+                    ? (selectedVariant.stockQuantity || 0)
+                    : (product.stockQuantity || 0)} items
+                </div>
               </div>
             </div>
 

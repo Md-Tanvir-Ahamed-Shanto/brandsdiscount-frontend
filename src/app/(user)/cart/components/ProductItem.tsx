@@ -63,16 +63,22 @@ const ProductItem = ({ product }: any) => {
                             >
                                 −
                             </Button>
-                            <div className='flex items-center justify-center w-10 h-10 border-x'>
-                                {product?.quantity}
+                            <div className='flex items-center justify-center w-10 h-10 border-x text-sm'>
+                                {product?.quantity} / {product?.stockQuantity || 0}
                             </div>
                             <Button
                                 variant='ghost'
                                 size='icon'
                                 className='h-10 w-10 rounded-l-none'
-                                onClick={() =>
-                                    dispatch(incrementQuantity(product.id))
-                                }
+                                onClick={() => {
+                                    const currentQuantity = product?.quantity || 0;
+                                    const availableStock = product?.stockQuantity || 0;
+                                    if (currentQuantity >= availableStock) {
+                                        toast.error(`Only ${availableStock} items available in stock`);
+                                        return;
+                                    }
+                                    dispatch(incrementQuantity(product.id));
+                                }}
                             >
                                 +
                             </Button>
