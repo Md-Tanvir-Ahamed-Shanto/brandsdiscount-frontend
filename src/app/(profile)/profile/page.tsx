@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { CountryDropdown } from '@/components/ui/CountryDropdown';
 import { X, Upload } from 'lucide-react';
 import toast from 'react-hot-toast';
 import Avatar from '@/components/Avatar';
@@ -154,6 +155,10 @@ const UpdateProfile = () => {
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleCountryChange = (value: string) => {
+        setFormData((prev) => ({ ...prev, country: value }));
     };
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -353,12 +358,10 @@ const UpdateProfile = () => {
 
                             <div className='space-y-2'>
                                 <Label htmlFor='country'>Country</Label>
-                                <Input
-                                    id='country'
-                                    name='country'
+                                <CountryDropdown
                                     value={formData.country}
-                                    onChange={handleInputChange}
-                                    placeholder='Country'
+                                    onChange={handleCountryChange}
+                                    placeholder='Select country'
                                 />
                             </div>
                         </div>

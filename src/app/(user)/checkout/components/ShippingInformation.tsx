@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { CountryDropdown } from '@/components/ui/CountryDropdown';
 import Link from 'next/link';
 import { API_BASE_URL } from '@/config';
 import Cookies from 'js-cookie';
@@ -31,6 +32,13 @@ const ShippingInformation = ({ userDetails, onUpdate }: any) => {
         setEditedDetails((prev: any) => ({
             ...prev,
             [field]: value
+        }));
+    };
+
+    const handleCountryChange = (value: string) => {
+        setEditedDetails((prev: any) => ({
+            ...prev,
+            country: value
         }));
     };
 
@@ -219,11 +227,10 @@ const ShippingInformation = ({ userDetails, onUpdate }: any) => {
 
                                 <div>
                                     <Label htmlFor='country'>Country</Label>
-                                    <Input
-                                        id='country'
+                                    <CountryDropdown
                                         value={editedDetails.country || ''}
-                                        onChange={(e) => handleInputChange('country', e.target.value)}
-                                        placeholder='Country'
+                                        onChange={handleCountryChange}
+                                        placeholder='Select country'
                                     />
                                 </div>
                             </>
